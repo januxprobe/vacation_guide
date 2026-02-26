@@ -1,0 +1,147 @@
+{
+  "common": {
+    "appName": "Andalusia Travel Guide",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "close": "Close",
+    "viewDetails": "View Details",
+    "viewOnMap": "View on Map",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "search": "Search",
+    "filter": "Filter",
+    "reset": "Reset",
+    "minutes": "minutes",
+    "hours": "hours",
+    "days": "days",
+    "euro": "€"
+  },
+  "navigation": {
+    "home": "Home",
+    "itinerary": "Itinerary",
+    "attractions": "Attractions",
+    "map": "Map",
+    "restaurants": "Restaurants",
+    "budget": "Budget"
+  },
+  "cities": {
+    "seville": "Seville",
+    "cordoba": "Córdoba",
+    "granada": "Granada"
+  },
+  "categories": {
+    "monument": "Monument",
+    "church": "Church",
+    "palace": "Palace",
+    "museum": "Museum",
+    "neighborhood": "Neighborhood",
+    "nature": "Nature"
+  },
+  "priority": {
+    "essential": "Essential",
+    "recommended": "Recommended",
+    "optional": "Optional"
+  },
+  "home": {
+    "hero": {
+      "title": "Discover Magical Andalusia",
+      "subtitle": "A family trip through Seville, Córdoba and Granada - September 2026",
+      "cta": "View Itinerary"
+    },
+    "overview": {
+      "title": "Trip Overview",
+      "days": "7 days",
+      "cities": "3 cities",
+      "attractions": "25+ attractions",
+      "distance": "~350 km"
+    },
+    "highlights": {
+      "title": "Highlights",
+      "alhambra": "Alhambra & Generalife",
+      "mezquita": "Mezquita-Catedral",
+      "alcazar": "Real Alcázar de Sevilla",
+      "viewAll": "View all attractions"
+    },
+    "sections": {
+      "itineraryDesc": "View the complete 7-day travel plan with activities and timings",
+      "attractionsDesc": "Explore 25+ must-see attractions across all three cities",
+      "mapDesc": "Interactive map with routes between attractions"
+    }
+  },
+  "itinerary": {
+    "title": "Itinerary",
+    "comingSoon": "Coming soon: Complete 7-day itinerary with activities and timings",
+    "day": "Day",
+    "viewDay": "View day",
+    "activities": "Activities",
+    "meals": "Meals",
+    "transport": "Transport",
+    "walk": "Walk",
+    "bus": "Bus",
+    "train": "Train",
+    "car": "Car",
+    "breakfast": "Breakfast",
+    "lunch": "Lunch",
+    "dinner": "Dinner",
+    "snack": "Snack"
+  },
+  "attractions": {
+    "title": "Attractions",
+    "comingSoon": "Coming soon: Browse all attractions with photos and details",
+    "allAttractions": "All Attractions",
+    "filterByCity": "Filter by City",
+    "filterByCategory": "Filter by Category",
+    "pricing": "Pricing Information",
+    "adult": "Adult",
+    "student": "Student",
+    "child": "Child",
+    "guidedTour": "Guided Tour",
+    "duration": "Duration",
+    "bookingRequired": "Booking Required",
+    "openingHours": "Opening Hours",
+    "website": "Website",
+    "tips": "Tips",
+    "photos": "Photos"
+  },
+  "map": {
+    "title": "Interactive Map",
+    "comingSoon": "Coming soon: Interactive map with all attractions and routes",
+    "showRoute": "Show Route",
+    "hideRoute": "Hide Route",
+    "filterByDay": "Filter by Day",
+    "showRestaurants": "Show Restaurants",
+    "legend": "Legend",
+    "distance": "Distance",
+    "travelTime": "Travel Time"
+  },
+  "restaurants": {
+    "title": "Restaurants",
+    "comingSoon": "Coming soon: Restaurant recommendations by neighborhood",
+    "neighborhood": "Neighborhood",
+    "cuisine": "Cuisine",
+    "priceRange": "Price Range",
+    "specialties": "Specialties",
+    "budget": "Budget",
+    "midRange": "Mid-Range",
+    "upscale": "Upscale",
+    "fineDining": "Fine Dining"
+  },
+  "budget": {
+    "title": "Budget Calculator",
+    "comingSoon": "Coming soon: Budget calculator with student discounts",
+    "configuration": "Configuration",
+    "adults": "Adults (50+)",
+    "youngAdults": "Young Adults (~20 years)",
+    "applyStudentDiscount": "Apply student discount",
+    "summary": "Summary",
+    "categoryBreakdown": "Breakdown by Category",
+    "total": "Total",
+    "perPerson": "Per Person",
+    "attractions": "Attractions",
+    "transport": "Transport",
+    "meals": "Meals",
+    "accommodation": "Accommodation",
+    "subtotal": "Subtotal"
+  }
+}

@@ -1,0 +1,147 @@
+{
+  "common": {
+    "appName": "Andalusië Vakantiegids",
+    "loading": "Laden...",
+    "error": "Er is een fout opgetreden",
+    "close": "Sluiten",
+    "viewDetails": "Details bekijken",
+    "viewOnMap": "Bekijk op kaart",
+    "back": "Terug",
+    "next": "Volgende",
+    "previous": "Vorige",
+    "search": "Zoeken",
+    "filter": "Filter",
+    "reset": "Reset",
+    "minutes": "minuten",
+    "hours": "uur",
+    "days": "dagen",
+    "euro": "€"
+  },
+  "navigation": {
+    "home": "Home",
+    "itinerary": "Dagplanning",
+    "attractions": "Bezienswaardigheden",
+    "map": "Kaart",
+    "restaurants": "Restaurants",
+    "budget": "Budget"
+  },
+  "cities": {
+    "seville": "Sevilla",
+    "cordoba": "Córdoba",
+    "granada": "Granada"
+  },
+  "categories": {
+    "monument": "Monument",
+    "church": "Kerk",
+    "palace": "Paleis",
+    "museum": "Museum",
+    "neighborhood": "Wijk",
+    "nature": "Natuur"
+  },
+  "priority": {
+    "essential": "Essentieel",
+    "recommended": "Aanbevolen",
+    "optional": "Optioneel"
+  },
+  "home": {
+    "hero": {
+      "title": "Ontdek het Magische Andalusië",
+      "subtitle": "Een familiereis door Sevilla, Córdoba en Granada - September 2026",
+      "cta": "Bekijk Reisroute"
+    },
+    "overview": {
+      "title": "Reis Overzicht",
+      "days": "7 dagen",
+      "cities": "3 steden",
+      "attractions": "25+ bezienswaardigheden",
+      "distance": "~350 km"
+    },
+    "highlights": {
+      "title": "Hoogtepunten",
+      "alhambra": "Alhambra & Generalife",
+      "mezquita": "Mezquita-Catedral",
+      "alcazar": "Real Alcázar de Sevilla",
+      "viewAll": "Bekijk alle bezienswaardigheden"
+    },
+    "sections": {
+      "itineraryDesc": "Bekijk het volledige 7-daagse reisplan met activiteiten en tijden",
+      "attractionsDesc": "Ontdek 25+ must-see bezienswaardigheden in alle drie de steden",
+      "mapDesc": "Interactieve kaart met routes tussen bezienswaardigheden"
+    }
+  },
+  "itinerary": {
+    "title": "Dagplanning",
+    "comingSoon": "Binnenkort: Volledige 7-daagse reisplanning met activiteiten en tijden",
+    "day": "Dag",
+    "viewDay": "Bekijk dag",
+    "activities": "Activiteiten",
+    "meals": "Maaltijden",
+    "transport": "Vervoer",
+    "walk": "Lopen",
+    "bus": "Bus",
+    "train": "Trein",
+    "car": "Auto",
+    "breakfast": "Ontbijt",
+    "lunch": "Lunch",
+    "dinner": "Diner",
+    "snack": "Snack"
+  },
+  "attractions": {
+    "title": "Bezienswaardigheden",
+    "comingSoon": "Binnenkort: Bekijk alle bezienswaardigheden met foto's en details",
+    "allAttractions": "Alle Bezienswaardigheden",
+    "filterByCity": "Filter op Stad",
+    "filterByCategory": "Filter op Categorie",
+    "pricing": "Prijsinformatie",
+    "adult": "Volwassene",
+    "student": "Student",
+    "child": "Kind",
+    "guidedTour": "Rondleiding",
+    "duration": "Duur",
+    "bookingRequired": "Reservering Vereist",
+    "openingHours": "Openingstijden",
+    "website": "Website",
+    "tips": "Tips",
+    "photos": "Foto's"
+  },
+  "map": {
+    "title": "Interactieve Kaart",
+    "comingSoon": "Binnenkort: Interactieve kaart met alle bezienswaardigheden en routes",
+    "showRoute": "Toon Route",
+    "hideRoute": "Verberg Route",
+    "filterByDay": "Filter op Dag",
+    "showRestaurants": "Toon Restaurants",
+    "legend": "Legenda",
+    "distance": "Afstand",
+    "travelTime": "Reistijd"
+  },
+  "restaurants": {
+    "title": "Restaurants",
+    "comingSoon": "Binnenkort: Restauranttips per wijk",
+    "neighborhood": "Wijk",
+    "cuisine": "Keuken",
+    "priceRange": "Prijsklasse",
+    "specialties": "Specialiteiten",
+    "budget": "Budget",
+    "midRange": "Middenbereik",
+    "upscale": "Luxe",
+    "fineDining": "Fine Dining"
+  },
+  "budget": {
+    "title": "Budget Calculator",
+    "comingSoon": "Binnenkort: Budget calculator met studentenkortingen",
+    "configuration": "Configuratie",
+    "adults": "Volwassenen (50+)",
+    "youngAdults": "Jongvolwassenen (~20 jaar)",
+    "applyStudentDiscount": "Pas studentenkorting toe",
+    "summary": "Overzicht",
+    "categoryBreakdown": "Verdeling per Categorie",
+    "total": "Totaal",
+    "perPerson": "Per Persoon",
+    "attractions": "Bezienswaardigheden",
+    "transport": "Vervoer",
+    "meals": "Maaltijden",
+    "accommodation": "Accommodatie",
+    "subtotal": "Subtotaal"
+  }
+}
