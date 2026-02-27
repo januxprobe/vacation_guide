@@ -165,6 +165,7 @@ Each trip can have a `restaurants.json` file. See `src/data/trips/andalusia-2026
 ### Budget Calculator
 The budget is derived automatically from the itinerary + attraction pricing data - no separate budget data file is needed. The `calculateBudget()` function in `src/lib/budget-calculator.ts`:
 - Reads itinerary days and resolves attraction pricing per activity
+- Includes all attractions in the day breakdown, including free ones (€0)
 - Applies student discount per traveler group where applicable
 - Adds transport costs (per-person) and meal estimates (per-person)
 - Returns items list, subtotalByCategory, total, and perPerson

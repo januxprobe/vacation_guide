@@ -156,7 +156,7 @@ vacation_guide/
 │   │   ├── utils.ts                     # cn() helper from shadcn
 │   │   ├── data-loaders.ts             # Config-driven fs.readFileSync + Zod validation + cache (clearable)
 │   │   ├── schemas.ts                   # Zod schemas (attraction, tripConfig, itinerary, restaurant)
-│   │   ├── budget-calculator.ts        # Pure utility: calculateBudget() from itinerary + attractions
+│   │   ├── budget-calculator.ts        # Pure utility: calculateBudget() from itinerary + attractions (includes free attractions in breakdown)
 │   │   └── city-colors.ts              # Color utilities (hex->rgba, badge/gradient styles)
 │   ├── types/
 │   │   └── index.ts                     # All TypeScript interfaces (City = string)
