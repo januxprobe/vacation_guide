@@ -5,9 +5,24 @@ import { Polyline } from 'react-leaflet';
 interface MapRouteProps {
   coordinates: { lat: number; lng: number }[];
   color: string;
+  routeGeometry?: [number, number][] | null;
 }
 
-export default function MapRoute({ coordinates, color }: MapRouteProps) {
+export default function MapRoute({ coordinates, color, routeGeometry }: MapRouteProps) {
+  // Use OSRM walking route if available, otherwise fall back to straight line
+  if (routeGeometry && routeGeometry.length >= 2) {
+    return (
+      <Polyline
+        positions={routeGeometry}
+        pathOptions={{
+          color,
+          weight: 4,
+          opacity: 0.8,
+        }}
+      />
+    );
+  }
+
   if (coordinates.length < 2) return null;
 
   return (

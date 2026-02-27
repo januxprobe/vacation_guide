@@ -64,7 +64,9 @@
           "notes": {
             "nl": "Tapas in de Barrio Santa Cruz",
             "en": "Tapas in the Barrio Santa Cruz"
-          }
+          },
+          "coordinates": { "lat": 37.3847, "lng": -5.9888 },
+          "restaurantName": "Bodega Santa Cruz"
         },
         {
           "type": "dinner",
@@ -74,7 +76,9 @@
           "notes": {
             "nl": "Diner bij een traditioneel Sevillaans restaurant",
             "en": "Dinner at a traditional Sevillian restaurant"
-          }
+          },
+          "coordinates": { "lat": 37.3928, "lng": -5.9923 },
+          "restaurantName": "El Rinconcillo"
         }
       ]
     },
@@ -149,7 +153,9 @@
           "notes": {
             "nl": "Diner in de wijk Triana",
             "en": "Dinner in the Triana neighborhood"
-          }
+          },
+          "coordinates": { "lat": 37.3825, "lng": -6.0024 },
+          "restaurantName": "Abades Triana"
         }
       ]
     },
@@ -211,7 +217,9 @@
           "notes": {
             "nl": "Laatste avond in Sevilla",
             "en": "Last evening in Seville"
-          }
+          },
+          "coordinates": { "lat": 37.3861, "lng": -5.9978 },
+          "restaurantName": "Duo Tapas"
         }
       ]
     },
@@ -298,7 +306,9 @@
           "notes": {
             "nl": "Salmorejo en flamenquín proeven",
             "en": "Try the salmorejo and flamenquín"
-          }
+          },
+          "coordinates": { "lat": 37.8791, "lng": -4.7793 },
+          "restaurantName": "Bar Santos"
         },
         {
           "type": "dinner",
@@ -383,7 +393,9 @@
           "notes": {
             "nl": "Diner met uitzicht over de Alhambra",
             "en": "Dinner with views over the Alhambra"
-          }
+          },
+          "coordinates": { "lat": 37.1813, "lng": -3.5913 },
+          "restaurantName": "Carmen de Aben Humeya"
         }
       ]
     },
@@ -448,7 +460,9 @@
           "notes": {
             "nl": "Geniet van gratis tapas bij je drankje",
             "en": "Enjoy free tapas with your drink"
-          }
+          },
+          "coordinates": { "lat": 37.1764, "lng": -3.5977 },
+          "restaurantName": "Bodegas Castañeda"
         },
         {
           "type": "dinner",
@@ -496,7 +510,9 @@
           "notes": {
             "nl": "Laatste lunch in Granada",
             "en": "Last lunch in Granada"
-          }
+          },
+          "coordinates": { "lat": 37.1764, "lng": -3.5977 },
+          "restaurantName": "Bodegas Castañeda"
         }
       ]
     }

@@ -126,6 +126,8 @@ const mealSuggestionSchema = z.object({
   neighborhood: z.string().optional(),
   estimatedCost: z.number(),
   notes: localizedStringSchema.optional(),
+  coordinates: coordinatesSchema.optional(),
+  restaurantName: z.string().optional(),
 });
 
 const itineraryDaySchema = z.object({

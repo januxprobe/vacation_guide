@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Tooltip, useMap } from 'react-leaflet';
 import { useTranslations, useLocale } from 'next-intl';
 import 'leaflet/dist/leaflet.css';
 
@@ -9,13 +9,15 @@ import type { Attraction, ItineraryDay, Restaurant } from '@/types';
 import { useTripConfig } from '@/config/trip-context';
 import { findCity } from '@/lib/city-colors';
 import {
-  createNumberedMarkerIcon,
+  createPhotoMarkerIcon,
+  createMealMarkerIcon,
   createRestaurantMarkerIcon,
   calculateBounds,
 } from '@/components/map/map-utils';
 import { renderAttractionPopup, renderRestaurantPopup } from '@/components/map/MapPopup';
 import MapRoute from '@/components/map/MapRoute';
 import MapLegend from '@/components/map/MapLegend';
+import { useWalkingRoute } from '@/hooks/useOsrmRoute';
 
 interface PlannerMapProps {
   day: ItineraryDay;
@@ -29,7 +31,7 @@ interface PlannerMapProps {
   tripSlug: string;
 }
 
-/** Child component that can call useMap() to get imperativehandle on the map */
+/** Child component that can call useMap() to get imperative handle on the map */
 function MapController({
   highlightedActivityId,
   attractions,
@@ -80,6 +82,7 @@ export default function PlannerMap({
   tripSlug,
 }: PlannerMapProps) {
   const t = useTranslations();
+  const currentLocale = useLocale() as 'nl' | 'en';
   const config = useTripConfig();
 
   const city = findCity(config.cities, day.city);
@@ -97,11 +100,24 @@ export default function PlannerMap({
       .filter((item): item is { attraction: Attraction; index: number } => item !== null);
   }, [activityIds, attractions]);
 
-  // Route coordinates
+  // Route coordinates for OSRM
   const routeCoords = useMemo(() => {
     if (!showRoute) return [];
     return dayAttractions.map((item) => item.attraction.coordinates);
   }, [showRoute, dayAttractions]);
+
+  // Fetch OSRM walking route
+  const walkingRoute = useWalkingRoute(routeCoords, showRoute && routeCoords.length >= 2);
+
+  // Meals with coordinates
+  const mealsWithCoords = useMemo(() => {
+    return day.meals.filter((meal) => meal.coordinates);
+  }, [day.meals]);
+
+  // Meal marker icon
+  const mealIcon = useMemo(() => {
+    return createMealMarkerIcon(cityColor);
+  }, [cityColor]);
 
   // Filtered restaurants for this day's city
   const filteredRestaurants = useMemo(() => {
@@ -122,6 +138,12 @@ export default function PlannerMap({
     return city?.coordinates ?? { lat: 37.5, lng: -5.0 };
   }, [dayAttractions, city]);
 
+  // Meal type labels
+  const mealTypeLabel = (type: string) => {
+    const key = `itinerary.${type}` as const;
+    return t(key);
+  };
+
   return (
     <div className="relative w-full h-full">
       <MapContainer
@@ -130,8 +152,8 @@ export default function PlannerMap({
         className="w-full h-full rounded-lg z-0"
       >
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://carto.com/attributions">CARTO</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+          url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         />
 
         <MapController
@@ -140,14 +162,17 @@ export default function PlannerMap({
           activityIds={activityIds}
         />
 
-        {/* Numbered attraction markers */}
+        {/* Photo thumbnail attraction markers */}
         {dayAttractions.map(({ attraction, index }) => {
-          const icon = createNumberedMarkerIcon(cityColor, index + 1);
+          const isHighlighted = attraction.id === highlightedActivityId;
+          const thumbnail = attraction.thumbnail || attraction.images?.[0] || '';
+          const icon = createPhotoMarkerIcon(thumbnail, cityColor, index + 1, isHighlighted);
           return (
             <Marker
               key={attraction.id}
               position={[attraction.coordinates.lat, attraction.coordinates.lng]}
               icon={icon}
+              zIndexOffset={isHighlighted ? 1000 : 0}
               eventHandlers={{
                 click: () => onMarkerClick(attraction.id),
               }}
@@ -165,9 +190,36 @@ export default function PlannerMap({
                   }}
                 />
               </Popup>
+              <Tooltip
+                permanent
+                direction="bottom"
+                offset={[0, 4]}
+                className="photo-marker-tooltip"
+              >
+                {attraction.name}
+              </Tooltip>
             </Marker>
           );
         })}
+
+        {/* Meal location markers */}
+        {mealsWithCoords.map((meal, index) => (
+          <Marker
+            key={`meal-${meal.type}-${index}`}
+            position={[meal.coordinates!.lat, meal.coordinates!.lng]}
+            icon={mealIcon}
+            zIndexOffset={-100}
+          >
+            <Tooltip
+              permanent
+              direction="bottom"
+              offset={[0, 2]}
+              className="meal-marker-tooltip"
+            >
+              {mealTypeLabel(meal.type)}: {meal.restaurantName}
+            </Tooltip>
+          </Marker>
+        ))}
 
         {/* Restaurant markers */}
         {filteredRestaurants.map((restaurant) => (
@@ -186,9 +238,13 @@ export default function PlannerMap({
           </Marker>
         ))}
 
-        {/* Day route polyline */}
+        {/* Day route polyline (OSRM walking route or straight-line fallback) */}
         {routeCoords.length >= 2 && (
-          <MapRoute coordinates={routeCoords} color={cityColor} />
+          <MapRoute
+            coordinates={routeCoords}
+            color={cityColor}
+            routeGeometry={walkingRoute}
+          />
         )}
       </MapContainer>
 

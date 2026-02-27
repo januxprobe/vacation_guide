@@ -54,8 +54,9 @@ test.describe('Phase 4: Planner Map Features', () => {
     console.log('✓ Route checkbox checked by default');
 
     // Route polyline should be visible (SVG path in leaflet-overlay-pane)
+    // OSRM walking route may take a moment to load
     const polyline = page.locator('.leaflet-overlay-pane path');
-    await expect(polyline.first()).toBeVisible({ timeout: 5000 });
+    await expect(polyline.first()).toBeVisible({ timeout: 10000 });
     console.log('✓ Route polyline visible');
 
     // Uncheck route — polyline should disappear
@@ -68,9 +69,9 @@ test.describe('Phase 4: Planner Map Features', () => {
 
     // Re-check route
     await routeCheckbox.click();
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(1000);
 
-    await expect(page.locator('.leaflet-overlay-pane path').first()).toBeVisible();
+    await expect(page.locator('.leaflet-overlay-pane path').first()).toBeVisible({ timeout: 10000 });
     console.log('✓ Route polyline restored');
 
     console.log('✅ Route polyline toggle works correctly!');

@@ -170,7 +170,9 @@
     "openDetail": "View details",
     "legend": "Legend",
     "distance": "Distance",
-    "travelTime": "Travel Time"
+    "travelTime": "Travel Time",
+    "meals": "Meals",
+    "walkingRoute": "Walking Route"
   },
   "restaurants": {
     "title": "Restaurants",

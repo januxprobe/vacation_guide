@@ -170,7 +170,9 @@
     "openDetail": "Bekijk details",
     "legend": "Legenda",
     "distance": "Afstand",
-    "travelTime": "Reistijd"
+    "travelTime": "Reistijd",
+    "meals": "Maaltijden",
+    "walkingRoute": "Wandelroute"
   },
   "restaurants": {
     "title": "Restaurants",

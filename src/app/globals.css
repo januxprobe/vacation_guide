@@ -156,6 +156,43 @@
   z-index: 100;
 }
 
+/* Photo marker tooltip: persistent name label beneath markers */
+.photo-marker-tooltip {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: none !important;
+  border-radius: 4px !important;
+  padding: 2px 6px !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  color: #374151 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) !important;
+  white-space: nowrap !important;
+  max-width: 140px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.photo-marker-tooltip::before {
+  display: none !important;
+}
+
+/* Meal marker tooltip: warm-colored label for meal stops */
+.meal-marker-tooltip {
+  background: #fef3c7 !important;
+  border: 1px solid #f59e0b !important;
+  border-radius: 4px !important;
+  padding: 2px 6px !important;
+  font-size: 10px !important;
+  font-weight: 500 !important;
+  color: #92400e !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+  white-space: nowrap !important;
+}
+
+.meal-marker-tooltip::before {
+  display: none !important;
+}
+
 /* Accessibility: reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

@@ -90,6 +90,8 @@ export interface MealSuggestion {
   neighborhood?: string;
   estimatedCost: number;
   notes?: LocalizedString;
+  coordinates?: Coordinates;
+  restaurantName?: string;
 }
 
 export interface ItineraryDay {

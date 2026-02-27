@@ -15,7 +15,8 @@ test.describe('Phase 3: Itinerary, Restaurants & Budget', () => {
     console.log('✓ Planner loaded');
 
     // Day 1 panel should show Seville activities by default
-    await expect(page.getByText('Real Alcázar', { exact: false })).toBeVisible();
+    // Scope to panel area to avoid matching map tooltips
+    await expect(page.getByRole('button', { name: /Real Alcázar/ }).first()).toBeVisible();
     console.log('✓ Day 1 shows Real Alcázar activity');
 
     // Check meal entries are visible in panel
@@ -29,14 +30,14 @@ test.describe('Phase 3: Itinerary, Restaurants & Budget', () => {
     await page.waitForTimeout(800);
 
     // Panel should show Córdoba content
-    await expect(page.getByText('Mezquita', { exact: false })).toBeVisible();
+    await expect(page.getByRole('button', { name: /Mezquita/ }).first()).toBeVisible();
     console.log('✓ Day 4 panel shows Mezquita');
 
     // Switch back to Day 1
     await page.click('[role="tab"]:has-text("Dag 1")');
     await page.waitForTimeout(800);
 
-    await expect(page.getByText('Real Alcázar', { exact: false })).toBeVisible();
+    await expect(page.getByRole('button', { name: /Real Alcázar/ }).first()).toBeVisible();
     console.log('✓ Day 1 panel restored');
 
     console.log('✅ Planner panel with activities and meals works correctly!');
