@@ -1,5 +1,9 @@
 # Vacation Guide - Trip Planning Platform
 
+## Important Reminders
+
+- **Documentation files live at the project root:** `README.md`, `CLAUDE.md`, `RESOURCES.md`, `.env.example`. Always check the root directory directly when looking for docs - do NOT use broad glob patterns that match `node_modules/`.
+
 ## Project Overview
 
 A reusable Next.js web application for planning multi-city trips. Users can browse pre-configured trips or create new ones via an AI-powered conversational trip builder (Gemini with Google Search grounding). The platform supports multiple trips via URL routing (`/[locale]/[tripSlug]/...`).
