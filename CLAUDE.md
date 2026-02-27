@@ -20,7 +20,7 @@ A reusable Next.js web application for planning multi-city trips. Users can brow
 - Budget calculator with configurable student discounts
 - Bilingual: Dutch (NL) and English (EN)
 - Unified planner with split-view map + itinerary panel
-- Interactive map with OpenStreetMap (Leaflet)
+- Interactive map with photo markers, walking routes, and meal stops (Leaflet + Valhalla)
 - Restaurant tips by neighborhood
 - Hero imagery with gradient overlay per trip
 - Loading skeletons, error boundaries, custom 404 page
@@ -38,6 +38,7 @@ A reusable Next.js web application for planning multi-city trips. Users can brow
 | next-intl v4 | Internationalization (NL/EN) |
 | @google/genai | Gemini AI for trip builder |
 | React-Leaflet | Interactive maps |
+| Valhalla (OSM) | Pedestrian walking routes (free public API) |
 | react-leaflet-cluster | Marker clustering |
 | Zod | Runtime validation |
 | Lucide React | Icons |
@@ -114,7 +115,7 @@ vacation_guide/
 │   │   ├── planner/
 │   │   │   ├── PlannerView.tsx          # Main split-view container (map + panel + day tabs)
 │   │   │   ├── PlannerWrapper.tsx       # Client wrapper for dynamic import (ssr: false)
-│   │   │   ├── PlannerMap.tsx           # Map with numbered markers, routes, restaurants
+│   │   │   ├── PlannerMap.tsx           # Map with photo markers, walking routes, meal stops
 │   │   │   ├── PlannerPanel.tsx         # Day header + scrollable timeline
 │   │   │   ├── PlannerTimeline.tsx      # Activity cards + meals in time order
 │   │   │   ├── PlannerActivityCard.tsx  # Activity card with time, duration, booking tip
@@ -129,10 +130,10 @@ vacation_guide/
 │   │   │   ├── CategoryBreakdown.tsx    # Category bars with amounts + percentages
 │   │   │   └── TravelerCountSelector.tsx # +/- steppers for each traveler group
 │   │   ├── map/                          # Shared map utilities (used by planner)
-│   │   │   ├── MapLegend.tsx            # Overlay legend with city colors
+│   │   │   ├── MapLegend.tsx            # Overlay legend with city colors + meal/route icons
 │   │   │   ├── MapPopup.tsx             # HTML popup content for markers
-│   │   │   ├── MapRoute.tsx             # Dashed polyline for day routes
-│   │   │   └── map-utils.ts            # SVG marker icons + bounds calculation
+│   │   │   ├── MapRoute.tsx             # Walking route polyline (OSRM geometry or straight-line fallback)
+│   │   │   └── map-utils.ts            # Photo/meal/restaurant marker icons + bounds calculation
 │   │   └── trip-creator/
 │   │       ├── TripChat.tsx             # Main chat container + state management
 │   │       ├── ChatMessage.tsx          # Message bubble with structured data parsing
@@ -140,6 +141,8 @@ vacation_guide/
 │   │       ├── AttractionSuggestion.tsx # Rich attraction card with accept button
 │   │       ├── TripPreview.tsx          # Side panel showing trip being built
 │   │       └── CreateTripButton.tsx     # "Create Trip" button with loading state
+│   ├── hooks/
+│   │   └── useOsrmRoute.ts             # Valhalla pedestrian walking route hook with cache
 │   ├── lib/
 │   │   ├── utils.ts                     # cn() helper from shadcn
 │   │   ├── data-loaders.ts             # Config-driven fs.readFileSync + Zod validation + cache
@@ -246,6 +249,14 @@ Colors are applied via inline styles using `src/lib/city-colors.ts` utilities (n
 - **Trip CRUD** (`/api/trips`): Creates trip directory + `trip-config.json`, manages attractions
 - **Flow:** Chat → Accept suggestions → Click "Create Trip" → Finalize → Save → Redirect
 - **Gemini model:** `gemini-2.5-flash` with `tools: [{ googleSearch: {} }]` for grounding
+
+### Planner Map Architecture
+- **Photo markers:** `createPhotoMarkerIcon()` in `map-utils.ts` renders attraction thumbnails as 44px square markers with city-colored borders and number badges. Highlighted markers scale to 56px.
+- **Walking routes:** `useWalkingRoute()` hook in `src/hooks/useOsrmRoute.ts` fetches pedestrian routes from **Valhalla** (`valhalla1.openstreetmap.de/route`), a free public OpenStreetMap routing service. No API key needed. Responses use encoded polyline (precision 6). Results are cached in a `useRef<Map>` keyed by coordinate hash. Falls back to straight-line dashed polyline on error.
+- **Permanent labels:** Each attraction marker has a `<Tooltip permanent>` showing its name. Styled via `.photo-marker-tooltip` in `globals.css`.
+- **Meal markers:** Meals in `itinerary.json` can have optional `coordinates` and `restaurantName` fields. When present, a small circle marker with a warm-yellow tooltip label appears on the map. Styled via `.meal-marker-tooltip`.
+- **Base tiles:** CartoDB Positron (`basemaps.cartocdn.com/light_all`) for a clean, uncluttered background.
+- **Important:** The OSRM demo server (`router.project-osrm.org`) only has **car** routing data — do NOT use it for walking routes. Always use Valhalla for pedestrian routing.
 
 ## Development
 
@@ -357,13 +368,15 @@ npx shadcn@latest add card      # Example: add card component
 
 ### Phase 4: Interactive Map [COMPLETED]
 - [x] React-Leaflet setup with client-side MapWrapper + dynamic import (ssr: false)
-- [x] InteractiveMap client component with OpenStreetMap tiles
-- [x] Custom SVG colored markers per city (teardrop pins from TripConfig colors)
+- [x] Photo thumbnail markers with city-colored borders and number badges
+- [x] Pedestrian walking routes via Valhalla (OpenStreetMap) with cache and fallback
+- [x] Permanent name labels beneath attraction markers
+- [x] Meal location markers with restaurant names (warm-yellow tooltips)
+- [x] CartoDB Positron base tiles for clean map background
 - [x] Marker clustering via react-leaflet-cluster
 - [x] Map filters: by city (colored pills), by day (auto-selects city)
 - [x] Restaurant marker toggle (separate unclustered layer, circle icons)
-- [x] Day route polyline (dashed, city-colored, connecting day's attractions)
-- [x] Map legend overlay with city colors + restaurant icon
+- [x] Map legend overlay with photo marker style, meals, restaurants, walking route
 - [x] Popups with attraction/restaurant info + "View details" links
 - [x] Responsive map height (500px → 600px → 70vh)
 - [x] 3 Playwright tests (17 total, all passing)
