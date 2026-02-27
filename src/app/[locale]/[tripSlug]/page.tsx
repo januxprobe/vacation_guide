@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
+import Image from 'next/image';
 import { Link } from '@/i18n/routing';
 import { getTripBySlug } from '@/config/trips';
 import { hexToRgba } from '@/lib/city-colors';
@@ -64,9 +65,13 @@ export default async function TripHomePage({ params }: Props) {
       >
         {heroImage ? (
           <>
-            <div
-              className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: `url(${heroImage})` }}
+            <Image
+              src={heroImage}
+              alt=""
+              fill
+              priority
+              className="object-cover"
+              sizes="100vw"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
             <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 py-20 sm:py-28 md:py-36">
@@ -152,9 +157,9 @@ export default async function TripHomePage({ params }: Props) {
                   borderColor: hexToRgba(city.color, 0.2),
                 }}
               >
-                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                <h2 className="text-xl font-bold text-gray-900 mb-2">
                   {linkLabels[index]}
-                </h3>
+                </h2>
                 <p className="text-gray-600">
                   {t(descKeys[index])}
                 </p>

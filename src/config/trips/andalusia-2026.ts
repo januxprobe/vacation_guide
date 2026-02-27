@@ -68,7 +68,7 @@ export const andalusia2026: TripConfig = {
     totalDistance: '~350 km',
   },
   theme: {
-    primaryColor: '#f97316', // orange-500 (Seville as primary city)
+    primaryColor: '#c2410c', // orange-700 (WCAG AA compliant: 5.18:1 on white)
   },
   highlights: [
     'granada-alhambra',

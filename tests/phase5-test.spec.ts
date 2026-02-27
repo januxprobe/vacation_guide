@@ -17,9 +17,9 @@ test.describe('Phase 5: Homepage & Polish', () => {
     await expect(page.locator('h1')).toContainText('Andalusië');
     console.log('✓ Hero title visible');
 
-    // Check hero background image is rendered (section with bg-cover)
-    const heroBg = page.locator('.bg-cover');
-    await expect(heroBg).toBeVisible();
+    // Check hero image is rendered (Next.js Image with object-cover)
+    const heroImg = page.locator('section.relative img.object-cover');
+    await expect(heroImg).toBeVisible();
     console.log('✓ Hero background image visible');
 
     // Check gradient overlay exists
