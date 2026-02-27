@@ -17,7 +17,7 @@ A reusable Next.js web application for planning multi-city trips. Users can brow
 - **Trip Selector Homepage** - Browse existing trips, create new ones, delete user-created trips
 - **AI Trip Builder** - Conversational chat with Gemini AI to plan trips, suggest attractions with real data from Google Search
 - Attraction details with photos, prices, opening hours
-- Budget calculator with configurable student discounts
+- Budget calculator with configurable student discounts and day-by-day breakdown
 - Bilingual: Dutch (NL) and English (EN)
 - Unified planner with split-view map + itinerary panel
 - Interactive map with photo markers, walking routes, and meal stops (Leaflet + Valhalla)
@@ -128,6 +128,7 @@ vacation_guide/
 │   │   │   ├── BudgetCalculator.tsx     # Main wrapper managing state + calculation
 │   │   │   ├── BudgetSummaryCard.tsx    # Highlighted total + per-person display
 │   │   │   ├── CategoryBreakdown.tsx    # Category bars with amounts + percentages
+│   │   │   ├── DayBreakdown.tsx         # Collapsible per-day cost cards with line items
 │   │   │   └── TravelerCountSelector.tsx # +/- steppers for each traveler group
 │   │   ├── map/                          # Shared map utilities (used by planner)
 │   │   │   ├── MapLegend.tsx            # Overlay legend with city colors + meal/route icons
@@ -356,13 +357,13 @@ npx shadcn@latest add card      # Example: add card component
 ### Phase 3: Itinerary, Restaurants & Budget [COMPLETED]
 - [x] Zod schemas for itinerary + restaurant data (schemas.ts)
 - [x] Complete itinerary.json with 7 days (activities, meals, transport)
-- [x] Restaurant data: 12 restaurants (4 per city) in restaurants.json
+- [x] Restaurant data: 12 verified restaurants (4 per city) in restaurants.json
 - [x] Data loaders: getItineraryForTrip + getRestaurantsForTrip
 - [x] Translations extended for itinerary, restaurants, budget
 - [x] Restaurant components: RestaurantCard, RestaurantFilter, RestaurantsList
 - [x] Itinerary components: DayCard, ActivityTimeline, ItineraryList
 - [x] Budget calculator utility (budget-calculator.ts)
-- [x] Budget components: TravelerCountSelector, CategoryBreakdown, BudgetSummaryCard, BudgetCalculator
+- [x] Budget components: TravelerCountSelector, CategoryBreakdown, BudgetSummaryCard, DayBreakdown, BudgetCalculator
 - [x] All 3 page stubs replaced with full implementations
 - [x] 4 Playwright tests (14 total, all passing)
 
