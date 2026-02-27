@@ -205,9 +205,19 @@ See `src/config/trips/andalusia-2026.ts` for a complete static example, or `src/
 1. Navigate to `/{locale}/create-trip` (or click "Create New Trip" on the homepage)
 2. Describe your trip in natural language to the Gemini AI chat
 3. Accept attraction suggestions (the AI uses Google Search grounding for real data)
-4. Click "Create Trip" to save
-5. The AI creates `src/data/trips/{slug}/trip-config.json` and attraction JSON files automatically
-6. User-created trips can be deleted from the trip selector homepage
+4. Click "Create Trip" to save — the finalize API generates:
+   - `trip-config.json` — trip configuration
+   - Attraction JSON files (one per attraction, in `attractions/{city}/`)
+   - `restaurants.json` — 3-4 restaurants per city with real names, coordinates, and bilingual descriptions
+   - `itinerary.json` — day-by-day plan referencing attraction IDs, with meals and transport (best-effort; may fail Zod validation)
+5. After creation, visit the restaurants page to search for and add more restaurants via AI-powered search
+6. Remove restaurants with the trash icon (two-step confirmation)
+7. User-created trips can be deleted from the trip selector homepage
+
+**Notes on AI-generated data:**
+- Restaurants are reliably generated (Zod validation is lenient for optional fields)
+- Itinerary generation is best-effort — Gemini must produce exact `attractionId` matches, valid transport enums, etc. Falls back gracefully to `null` if validation fails
+- Attraction categories/priorities are normalized (e.g. `"square"` → `"monument"`, `"important"` → `"essential"`) before validation
 
 ### Option 2: Manual
 1. Create trip config: `src/config/trips/{trip-slug}.ts` (implement TripConfig)
@@ -236,6 +246,27 @@ The trip registry (`src/config/trips/index.ts`) merges two sources:
 
 Call `clearTripCache()` before `getAllTrips()` in server components to ensure fresh data.
 
+## Restaurant CRUD API
+
+Dynamic (AI-created) trips support restaurant management. Static trips (e.g. `andalusia-2026`) return 403.
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/trips/{slug}/restaurants` | Batch save `restaurants.json` (used during trip creation) |
+| PUT | `/api/trips/{slug}/restaurants` | Add a single restaurant (checks duplicate IDs) |
+| DELETE | `/api/trips/{slug}/restaurants` | Remove a restaurant by ID (body: `{ "id": "..." }`) |
+
+### Restaurant Search API
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/ai/search-restaurants` | Search for restaurants via Gemini + Google Search |
+
+**Request body:** `{ "query": "tapas", "city": "seville", "tripSlug": "andalusia-2026" }`
+**Response:** `{ "restaurants": [Restaurant, ...] }` (Zod-validated, invalid entries filtered out)
+
+**Important:** The Gemini `responseMimeType: 'application/json'` option cannot be combined with `tools: [{ googleSearch: {} }]`. The search endpoint relies on the system prompt to produce JSON output.
+
 ## Architecture Notes
 
 ### URL Structure
@@ -244,7 +275,7 @@ Call `clearTripCache()` before `getAllTrips()` in server components to ensure fr
 /{locale}/{tripSlug}/planner             Unified planner (map + itinerary split view)
 /{locale}/{tripSlug}/attractions         Attraction list
 /{locale}/{tripSlug}/attractions/{id}    Attraction detail
-/{locale}/{tripSlug}/restaurants          Restaurant tips
+/{locale}/{tripSlug}/restaurants          Restaurant tips (+ search/add/remove for dynamic trips)
 /{locale}/{tripSlug}/budget              Budget calculator
 ```
 

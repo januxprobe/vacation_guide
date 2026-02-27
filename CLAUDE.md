@@ -16,6 +16,8 @@ A reusable Next.js web application for planning multi-city trips. Users can brow
 ### Key Features
 - **Trip Selector Homepage** - Browse existing trips, create new ones, delete user-created trips
 - **AI Trip Builder** - Conversational chat with Gemini AI to plan trips, suggest attractions with real data from Google Search
+- **Auto-generated restaurants & itinerary** - Trip creation automatically generates restaurant recommendations and day-by-day itineraries via Gemini
+- **Restaurant search & CRUD** - Search for restaurants via AI on dynamic trips, add/remove with two-step confirmation
 - Attraction details with photos, prices, opening hours
 - Budget calculator with configurable student discounts and day-by-day breakdown
 - Bilingual: Dutch (NL) and English (EN)
@@ -57,11 +59,16 @@ vacation_guide/
 │   │   │   │   ├── route.ts            # GET/POST - List/create trips
 │   │   │   │   └── [slug]/
 │   │   │   │       ├── route.ts        # GET/DELETE - Get/delete trip
-│   │   │   │       └── attractions/
-│   │   │   │           └── route.ts    # POST - Add attraction to trip
+│   │   │   │       ├── attractions/
+│   │   │   │       │   └── route.ts    # POST - Add attraction to trip
+│   │   │   │       ├── restaurants/
+│   │   │   │       │   └── route.ts    # POST/PUT/DELETE - Restaurant CRUD
+│   │   │   │       └── itinerary/
+│   │   │   │           └── route.ts    # POST - Save itinerary
 │   │   │   └── ai/
 │   │   │       ├── chat/route.ts       # POST - Streaming Gemini chat (SSE)
-│   │   │       └── finalize-trip/route.ts # POST - Extract structured trip data
+│   │   │       ├── finalize-trip/route.ts # POST - Extract structured trip data
+│   │   │       └── search-restaurants/route.ts # POST - Gemini restaurant search
 │   │   └── [locale]/                    # i18n routing (nl/en)
 │   │       ├── layout.tsx               # Locale layout (NextIntlClientProvider + skip link)
 │   │       ├── loading.tsx              # Skeleton loader for locale pages
@@ -121,9 +128,10 @@ vacation_guide/
 │   │   │   ├── PlannerActivityCard.tsx  # Activity card with time, duration, booking tip
 │   │   │   └── DayTabBar.tsx            # Horizontal day tabs with city colors
 │   │   ├── restaurants/
-│   │   │   ├── RestaurantCard.tsx       # Card with city color bar, price badge, cuisine tags
+│   │   │   ├── RestaurantCard.tsx       # Card with city color bar, price badge, optional remove
 │   │   │   ├── RestaurantFilter.tsx     # City + price range filter buttons
-│   │   │   └── RestaurantsList.tsx      # Filter state management + grid of cards
+│   │   │   ├── RestaurantSearch.tsx     # AI-powered restaurant search with add buttons
+│   │   │   └── RestaurantsList.tsx      # Stateful list with search/remove (dynamic trips)
 │   │   ├── budget/
 │   │   │   ├── BudgetCalculator.tsx     # Main wrapper managing state + calculation
 │   │   │   ├── BudgetSummaryCard.tsx    # Highlighted total + per-person display
@@ -146,7 +154,7 @@ vacation_guide/
 │   │   └── useOsrmRoute.ts             # Valhalla pedestrian walking route hook with cache
 │   ├── lib/
 │   │   ├── utils.ts                     # cn() helper from shadcn
-│   │   ├── data-loaders.ts             # Config-driven fs.readFileSync + Zod validation + cache
+│   │   ├── data-loaders.ts             # Config-driven fs.readFileSync + Zod validation + cache (clearable)
 │   │   ├── schemas.ts                   # Zod schemas (attraction, tripConfig, itinerary, restaurant)
 │   │   ├── budget-calculator.ts        # Pure utility: calculateBudget() from itinerary + attractions
 │   │   └── city-colors.ts              # Color utilities (hex->rgba, badge/gradient styles)
@@ -246,10 +254,14 @@ Colors are applied via inline styles using `src/lib/city-colors.ts` utilities (n
 
 ### AI Trip Builder Architecture
 - **Chat API** (`/api/ai/chat`): Streaming SSE with Gemini + Google Search grounding
-- **Finalize API** (`/api/ai/finalize-trip`): Non-streaming JSON extraction from conversation
+- **Finalize API** (`/api/ai/finalize-trip`): Non-streaming JSON extraction from conversation. Returns `{ tripConfig, attractions, restaurants, itinerary }`. Restaurants and itinerary are validated with Zod; graceful fallback to `[]`/`null` on validation failure.
+- **Restaurant Search API** (`/api/ai/search-restaurants`): Gemini + Google Search for finding real restaurants. Returns validated `Restaurant[]`. Note: `responseMimeType` cannot be combined with `tools: [{ googleSearch }]` — rely on prompt instructions for JSON output.
 - **Trip CRUD** (`/api/trips`): Creates trip directory + `trip-config.json`, manages attractions
-- **Flow:** Chat → Accept suggestions → Click "Create Trip" → Finalize → Save → Redirect
+- **Restaurant CRUD** (`/api/trips/[slug]/restaurants`): POST (batch save), PUT (add single), DELETE (remove by ID). Static trips are protected (403).
+- **Itinerary API** (`/api/trips/[slug]/itinerary`): POST to save `itinerary.json`.
+- **Flow:** Chat → Accept suggestions → Click "Create Trip" → Finalize → Save config + attractions + restaurants + itinerary → Redirect
 - **Gemini model:** `gemini-2.5-flash` with `tools: [{ googleSearch: {} }]` for grounding
+- **Attraction normalization:** AI-generated enum values (e.g. `"square"`, `"important"`) are mapped to valid schema values before Zod validation. See `CATEGORY_MAP` and `PRIORITY_MAP` in attractions endpoint.
 
 ### Planner Map Architecture
 - **Photo markers:** `createPhotoMarkerIcon()` in `map-utils.ts` renders attraction thumbnails as 44px square markers with city-colored borders and number badges. Highlighted markers scale to 56px.
@@ -289,7 +301,7 @@ npx playwright test --headed --grep "X"   # Run specific test
 - **23 tests total:**
   - 5 core: NL navigation, language switching, mobile, HTML structure, trip selector
   - 4 attractions: list/filters, detail page, English mode, category filter
-  - 1 E2E: AI trip creation + verification + deletion (uses live Gemini API)
+  - 1 E2E: AI trip creation + verify restaurants/itinerary/budget generated + search UI visible + deletion (uses live Gemini API)
   - 3 planner: split-view load, day sync, mobile toggle
   - 4 phase 3: planner panel (NL + EN), restaurant filters, budget calculator
   - 3 phase 4: planner map markers + day switching, route polyline toggle, restaurant toggle
@@ -345,13 +357,21 @@ npx shadcn@latest add card      # Example: add card component
 - [x] Streaming SSE chat responses
 - [x] Structured JSON output parsing (attraction suggestions, trip configs)
 - [x] Accept/reject attraction suggestions with rich cards
-- [x] Trip finalization: extract structured data from conversation
+- [x] Trip finalization: extract structured data from conversation (tripConfig + attractions + restaurants + itinerary)
+- [x] Auto-generate restaurants (3-4 per city) and day-by-day itinerary during finalization
+- [x] Restaurant CRUD API: batch save, add single, remove by ID (dynamic trips only)
+- [x] Itinerary save API for generated itineraries
+- [x] AI-powered restaurant search endpoint (Gemini + Google Search)
+- [x] RestaurantSearch component with city filter pills and add buttons
+- [x] Two-step remove confirmation on RestaurantCard (matching TripCard delete pattern)
+- [x] Stateful RestaurantsList with local state for add/remove operations
+- [x] Attraction enum normalization (AI values like "square"→"monument", "important"→"essential")
 - [x] Trip CRUD API: create trip + attractions as JSON files on disk
-- [x] Trip deletion with two-step confirmation (user-created trips only)
+- [x] Trip deletion with two-step confirmation (user-created trips only), clears all caches
 - [x] Hybrid trip registry: static TS configs + dynamic JSON configs
 - [x] GenericHeader for non-trip pages
-- [x] Cache invalidation for fresh trip data
-- [x] E2E Playwright test: full create -> verify -> delete flow
+- [x] Cache invalidation for fresh trip data (attraction, restaurant, itinerary caches)
+- [x] E2E Playwright test: full create → verify restaurants + planner + budget → delete flow
 - [x] All 10 Playwright tests passing
 
 ### Phase 3: Itinerary, Restaurants & Budget [COMPLETED]
