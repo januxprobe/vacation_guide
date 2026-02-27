@@ -9,79 +9,58 @@ test.describe('Phase 3: Itinerary, Restaurants & Budget', () => {
     actionTimeout: 5000,
   });
 
-  test('should display itinerary with 7 day cards and expandable activities', async ({ page }) => {
-    await page.goto(`${BASE_URL}/nl/${TRIP_SLUG}/itinerary`);
-    await page.waitForTimeout(1500);
+  test('should display planner panel with activities and meals', async ({ page }) => {
+    await page.goto(`${BASE_URL}/nl/${TRIP_SLUG}/planner`);
+    await page.waitForSelector('.leaflet-container', { timeout: 15000 });
+    console.log('✓ Planner loaded');
 
-    // Check page title
-    await expect(page.locator('h1')).toContainText('Dagplanning');
-    console.log('✓ Itinerary page loaded');
-
-    // Check all 7 day cards are present
-    for (let i = 1; i <= 7; i++) {
-      await expect(page.getByText(`Dag ${i}:`, { exact: false })).toBeVisible();
-    }
-    console.log('✓ All 7 day cards visible');
-
-    // Day 1 should already be expanded (default)
+    // Day 1 panel should show Seville activities by default
     await expect(page.getByText('Real Alcázar', { exact: false })).toBeVisible();
-    console.log('✓ Day 1 is expanded by default');
+    console.log('✓ Day 1 shows Real Alcázar activity');
 
-    // Check that attraction links exist in expanded day
-    const attractionLinks = page.locator(`a[href*="/${TRIP_SLUG}/attractions/"]`);
-    const linkCount = await attractionLinks.count();
-    expect(linkCount).toBeGreaterThanOrEqual(1);
-    console.log(`✓ Found ${linkCount} attraction links in expanded day`);
+    // Check meal entries are visible in panel
+    await expect(page.getByText('Ontbijt', { exact: false }).first()).toBeVisible();
+    await expect(page.getByText('Lunch', { exact: false }).first()).toBeVisible();
+    await expect(page.getByText('Diner', { exact: false }).first()).toBeVisible();
+    console.log('✓ Meal entries visible in panel');
 
-    // Check meal entries are visible
-    await expect(page.getByText('Ontbijt', { exact: true }).first()).toBeVisible();
-    await expect(page.getByText('Lunch', { exact: true }).first()).toBeVisible();
-    await expect(page.getByText('Diner', { exact: true }).first()).toBeVisible();
-    console.log('✓ Meal entries visible');
+    // Switch to Day 4 (Córdoba)
+    await page.click('[role="tab"]:has-text("Dag 4")');
+    await page.waitForTimeout(800);
 
-    // Expand day 4 (Córdoba) by clicking on it
-    console.log('✓ Expanding day 4 (Córdoba)...');
-    await page.click('text=Dag 4:');
-    await page.waitForTimeout(500);
-
-    // Check Córdoba attractions appear
+    // Panel should show Córdoba content
     await expect(page.getByText('Mezquita', { exact: false })).toBeVisible();
-    console.log('✓ Day 4 expanded with Mezquita visible');
+    console.log('✓ Day 4 panel shows Mezquita');
 
-    // Test expand all / collapse all
-    console.log('✓ Testing expand/collapse all...');
-    await page.click('text=Alles uitklappen');
-    await page.waitForTimeout(500);
+    // Switch back to Day 1
+    await page.click('[role="tab"]:has-text("Dag 1")');
+    await page.waitForTimeout(800);
 
-    // Verify all days expanded by checking day 7
-    await expect(page.getByText('Vrije Dag', { exact: false })).toBeVisible();
-    console.log('✓ All days expanded');
+    await expect(page.getByText('Real Alcázar', { exact: false })).toBeVisible();
+    console.log('✓ Day 1 panel restored');
 
-    await page.click('text=Alles inklappen');
-    await page.waitForTimeout(500);
-    console.log('✓ All days collapsed');
-
-    console.log('✅ Itinerary page works correctly!');
+    console.log('✅ Planner panel with activities and meals works correctly!');
   });
 
-  test('should display itinerary in English', async ({ page }) => {
-    await page.goto(`${BASE_URL}/en/${TRIP_SLUG}/itinerary`);
-    await page.waitForTimeout(1500);
+  test('should display planner in English', async ({ page }) => {
+    await page.goto(`${BASE_URL}/en/${TRIP_SLUG}/planner`);
+    await page.waitForSelector('.leaflet-container', { timeout: 15000 });
+    console.log('✓ English planner loaded');
 
-    // Check English title
-    await expect(page.locator('h1')).toContainText('Itinerary');
-    console.log('✓ English itinerary page loaded');
+    // Check English day tabs
+    await expect(page.locator('[role="tab"]').first()).toContainText('Day 1');
+    console.log('✓ English day tabs visible');
 
-    // Check English day titles
-    await expect(page.getByText('Day 1:', { exact: false })).toBeVisible();
+    // Check panel shows English content
     await expect(page.getByText('Arrival', { exact: false })).toBeVisible();
-    console.log('✓ English day titles visible');
+    console.log('✓ English day title visible');
 
-    // Expand/collapse text should be in English
-    await expect(page.getByText('Expand all')).toBeVisible();
-    console.log('✓ English expand/collapse text visible');
+    // Check English route/restaurant labels
+    await expect(page.getByText('Show Route')).toBeVisible();
+    await expect(page.getByText('Show Restaurants')).toBeVisible();
+    console.log('✓ English toggle labels visible');
 
-    console.log('✅ English itinerary works correctly!');
+    console.log('✅ English planner works correctly!');
   });
 
   test('should display restaurants with city and price filters', async ({ page }) => {

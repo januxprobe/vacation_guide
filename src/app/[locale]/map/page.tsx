@@ -8,5 +8,5 @@ type Props = {
 export default async function MapRedirect({ params }: Props) {
   const { locale } = await params;
   const trip = getDefaultTrip();
-  redirect(`/${locale}/${trip.slug}/map`);
+  redirect(`/${locale}/${trip.slug}/planner`);
 }

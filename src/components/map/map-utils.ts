@@ -20,6 +20,25 @@ export function createCityMarkerIcon(color: string): L.DivIcon {
 }
 
 /**
+ * Create a colored SVG teardrop marker icon with a number inside.
+ * Used by the planner view for sequential activity markers.
+ */
+export function createNumberedMarkerIcon(color: string, number: number): L.DivIcon {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="40" viewBox="0 0 28 40">
+    <path d="M14 0C6.268 0 0 6.268 0 14c0 10.5 14 26 14 26s14-15.5 14-26C28 6.268 21.732 0 14 0z" fill="${color}" stroke="white" stroke-width="2"/>
+    <text x="14" y="18" text-anchor="middle" fill="white" font-size="13" font-weight="bold" font-family="Arial, sans-serif">${number}</text>
+  </svg>`;
+
+  return L.divIcon({
+    html: svg,
+    className: '',
+    iconSize: [28, 40],
+    iconAnchor: [14, 40],
+    popupAnchor: [0, -40],
+  });
+}
+
+/**
  * Create a smaller colored circle marker icon for restaurants.
  */
 export function createRestaurantMarkerIcon(color: string): L.DivIcon {

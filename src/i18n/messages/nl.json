@@ -21,9 +21,11 @@
     "home": "Home",
     "itinerary": "Dagplanning",
     "attractions": "Bezienswaardigheden",
+    "planner": "Planner",
     "map": "Kaart",
     "restaurants": "Restaurants",
-    "budget": "Budget"
+    "budget": "Budget",
+    "backToTrips": "Reizen"
   },
   "cities": {
     "seville": "Sevilla",
@@ -96,7 +98,8 @@
     "sections": {
       "itineraryDesc": "Bekijk het volledige 7-daagse reisplan met activiteiten en tijden",
       "attractionsDesc": "Ontdek 25+ must-see bezienswaardigheden in alle drie de steden",
-      "mapDesc": "Interactieve kaart met routes tussen bezienswaardigheden"
+      "mapDesc": "Interactieve kaart met routes tussen bezienswaardigheden",
+      "restaurantsDesc": "Restauranttips per stad en prijsklasse"
     }
   },
   "itinerary": {
@@ -197,6 +200,16 @@
     "title": "Pagina niet gevonden",
     "description": "De pagina die je zoekt bestaat niet of is verplaatst.",
     "backToTrips": "Terug naar reizen"
+  },
+  "planner": {
+    "morning": "Ochtend",
+    "afternoon": "Middag",
+    "evening": "Avond",
+    "openRoute": "Open route",
+    "bookingTip": "Boek vooraf",
+    "mapView": "Kaart",
+    "listView": "Dagplanning",
+    "noItinerary": "Geen reisplanning beschikbaar voor deze reis"
   },
   "budget": {
     "title": "Budget Calculator",

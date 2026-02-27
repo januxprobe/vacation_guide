@@ -217,7 +217,7 @@ export default function AttractionDetail({
               </a>
             )}
             <Link
-              href={`${prefix}/map`}
+              href={`${prefix}/planner`}
               className="inline-flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
             >
               <Map className="h-4 w-4" />

@@ -82,7 +82,7 @@ export default async function TripHomePage({ params }: Props) {
                 {t('home.hero.subtitle')}
               </p>
               <Link
-                href={`${prefix}/itinerary`}
+                href={`${prefix}/planner`}
                 className="inline-block text-white px-8 py-3 rounded-lg font-semibold transition-opacity hover:opacity-90 shadow-lg"
                 style={{ backgroundColor: primaryColor }}
               >
@@ -99,7 +99,7 @@ export default async function TripHomePage({ params }: Props) {
               {t('home.hero.subtitle')}
             </p>
             <Link
-              href={`${prefix}/itinerary`}
+              href={`${prefix}/planner`}
               className="inline-block text-white px-8 py-3 rounded-lg font-semibold transition-opacity hover:opacity-90"
               style={{ backgroundColor: primaryColor }}
             >
@@ -135,16 +135,16 @@ export default async function TripHomePage({ params }: Props) {
         {/* Quick Links - one per city using config colors */}
         <div className="grid md:grid-cols-3 gap-4 sm:gap-6">
           {trip.cities.map((city, index) => {
-            const links = [`${prefix}/itinerary`, `${prefix}/attractions`, `${prefix}/map`];
+            const links = [`${prefix}/planner`, `${prefix}/attractions`, `${prefix}/restaurants`];
             const linkLabels = [
-              t('navigation.itinerary'),
+              t('navigation.planner'),
               t('navigation.attractions'),
-              t('navigation.map'),
+              t('navigation.restaurants'),
             ];
             const descKeys = [
               'home.sections.itineraryDesc',
               'home.sections.attractionsDesc',
-              'home.sections.mapDesc',
+              'home.sections.restaurantsDesc',
             ] as const;
 
             return (

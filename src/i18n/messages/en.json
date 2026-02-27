@@ -21,9 +21,11 @@
     "home": "Home",
     "itinerary": "Itinerary",
     "attractions": "Attractions",
+    "planner": "Planner",
     "map": "Map",
     "restaurants": "Restaurants",
-    "budget": "Budget"
+    "budget": "Budget",
+    "backToTrips": "Trips"
   },
   "cities": {
     "seville": "Seville",
@@ -96,7 +98,8 @@
     "sections": {
       "itineraryDesc": "View the complete 7-day travel plan with activities and timings",
       "attractionsDesc": "Explore 25+ must-see attractions across all three cities",
-      "mapDesc": "Interactive map with routes between attractions"
+      "mapDesc": "Interactive map with routes between attractions",
+      "restaurantsDesc": "Restaurant tips by city and price range"
     }
   },
   "itinerary": {
@@ -197,6 +200,16 @@
     "title": "Page not found",
     "description": "The page you are looking for does not exist or has been moved.",
     "backToTrips": "Back to trips"
+  },
+  "planner": {
+    "morning": "Morning",
+    "afternoon": "Afternoon",
+    "evening": "Evening",
+    "openRoute": "Open route",
+    "bookingTip": "Book in advance",
+    "mapView": "Map",
+    "listView": "Itinerary",
+    "noItinerary": "No itinerary available for this trip"
   },
   "budget": {
     "title": "Budget Calculator",

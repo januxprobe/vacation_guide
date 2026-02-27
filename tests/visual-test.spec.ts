@@ -21,11 +21,11 @@ test.describe('Vacation Guide Visual Tests', () => {
     // Check for hero section
     await expect(page.locator('h1')).toContainText('Andalusië');
 
-    // Test navigation - Itinerary
-    console.log('✓ Clicking Dagplanning (Itinerary)...');
-    await page.click('text=Dagplanning');
-    await page.waitForURL(`**/${TRIP_SLUG}/itinerary`);
-    await expect(page.locator('h1')).toContainText('Dagplanning');
+    // Test navigation - Planner (replaces Itinerary + Map)
+    console.log('✓ Clicking Planner...');
+    await page.click('text=Planner');
+    await page.waitForURL(`**/${TRIP_SLUG}/planner`);
+    await page.waitForSelector('[role="tab"]', { timeout: 10000 });
     await page.waitForTimeout(1500);
 
     // Test navigation - Attractions
@@ -33,13 +33,6 @@ test.describe('Vacation Guide Visual Tests', () => {
     await page.click('text=Bezienswaardigheden');
     await page.waitForURL(`**/${TRIP_SLUG}/attractions`);
     await expect(page.locator('h1')).toContainText('Bezienswaardigheden');
-    await page.waitForTimeout(1500);
-
-    // Test navigation - Map
-    console.log('✓ Clicking Kaart (Map)...');
-    await page.click('text=Kaart');
-    await page.waitForURL(`**/${TRIP_SLUG}/map`);
-    await expect(page.locator('h1')).toContainText('Kaart');
     await page.waitForTimeout(1500);
 
     // Test navigation - Restaurants
@@ -118,8 +111,8 @@ test.describe('Vacation Guide Visual Tests', () => {
 
     // Click on a menu item - specifically in the mobile nav
     console.log('✓ Clicking menu item in mobile menu...');
-    await page.locator('nav.md\\:hidden a:has-text("Dagplanning")').click();
-    await page.waitForURL(`**/${TRIP_SLUG}/itinerary`);
+    await page.locator('nav.md\\:hidden a:has-text("Planner")').click();
+    await page.waitForURL(`**/${TRIP_SLUG}/planner`);
     await page.waitForTimeout(2000);
 
     console.log('✅ Mobile navigation works!');

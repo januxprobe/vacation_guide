@@ -219,7 +219,7 @@ export default function TripChat() {
   const hasEnoughContext = messages.length >= 4 || acceptedAttractions.length > 0;
 
   return (
-    <div className="flex h-[calc(100vh-4rem)]">
+    <div className="flex h-[calc(100vh-3rem)]">
       {/* Chat area */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Messages */}

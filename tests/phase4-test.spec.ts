@@ -3,105 +3,81 @@ import { test, expect } from '@playwright/test';
 const BASE_URL = 'http://localhost:3000';
 const TRIP_SLUG = 'andalusia-2026';
 
-test.describe('Phase 4: Interactive Map', () => {
+test.describe('Phase 4: Planner Map Features', () => {
   test.use({
     viewport: { width: 1280, height: 720 },
     actionTimeout: 10000,
   });
 
-  test('should display map with markers and city filter works', async ({ page }) => {
-    await page.goto(`${BASE_URL}/nl/${TRIP_SLUG}/map`);
-
-    // Wait for map tiles to load
+  test('should display map with markers and switch days changes markers', async ({ page }) => {
+    await page.goto(`${BASE_URL}/nl/${TRIP_SLUG}/planner`);
     await page.waitForSelector('.leaflet-container', { timeout: 15000 });
     console.log('✓ Map container loaded');
 
-    // Check page title
-    await expect(page.locator('h1')).toContainText('Interactieve Kaart');
-    console.log('✓ Map page title visible');
-
-    // Check that markers are present (attraction markers are inside cluster group)
+    // Check that numbered markers are present for Day 1
     await page.waitForSelector('.leaflet-marker-icon', { timeout: 10000 });
-    const markerCount = await page.locator('.leaflet-marker-icon').count();
-    expect(markerCount).toBeGreaterThan(0);
-    console.log(`✓ ${markerCount} markers visible on map`);
+    const day1Markers = await page.locator('.leaflet-marker-icon').count();
+    expect(day1Markers).toBeGreaterThan(0);
+    console.log(`✓ Day 1: ${day1Markers} markers visible`);
 
-    // Check filter buttons are present
-    await expect(page.getByText('Alle Steden')).toBeVisible();
-    await expect(page.getByText('Alle Dagen')).toBeVisible();
-    console.log('✓ Filter buttons visible');
+    // Switch to Day 4 (Córdoba) — marker count should change
+    await page.click('[role="tab"]:has-text("Dag 4")');
+    await page.waitForTimeout(800);
 
-    // Click Sevilla city filter
-    await page.click('button:has-text("Sevilla")');
-    await page.waitForTimeout(500);
+    const day4Markers = await page.locator('.leaflet-marker-icon').count();
+    expect(day4Markers).toBeGreaterThan(0);
+    console.log(`✓ Day 4: ${day4Markers} markers visible`);
 
-    // Markers should now be fewer (only Seville attractions)
-    const sevilleMarkerCount = await page.locator('.leaflet-marker-icon').count();
-    console.log(`✓ After Sevilla filter: ${sevilleMarkerCount} markers`);
+    // Switch back to Day 1
+    await page.click('[role="tab"]:has-text("Dag 1")');
+    await page.waitForTimeout(800);
 
-    // Click back to all cities
-    await page.click('button:has-text("Alle Steden")');
-    await page.waitForTimeout(500);
-
-    const allMarkersAgain = await page.locator('.leaflet-marker-icon').count();
-    expect(allMarkersAgain).toBeGreaterThanOrEqual(markerCount);
-    console.log(`✓ All cities restored: ${allMarkersAgain} markers`);
+    const backToDay1 = await page.locator('.leaflet-marker-icon').count();
+    expect(backToDay1).toBe(day1Markers);
+    console.log(`✓ Day 1 restored: ${backToDay1} markers`);
 
     // Verify legend is visible
     await expect(page.getByText('Legenda')).toBeVisible();
     console.log('✓ Map legend visible');
 
-    console.log('✅ Map markers and city filter work correctly!');
+    console.log('✅ Map markers and day switching work correctly!');
   });
 
-  test('should filter by day and show route polyline', async ({ page }) => {
-    await page.goto(`${BASE_URL}/nl/${TRIP_SLUG}/map`);
+  test('should show and toggle route polyline', async ({ page }) => {
+    await page.goto(`${BASE_URL}/nl/${TRIP_SLUG}/planner`);
     await page.waitForSelector('.leaflet-container', { timeout: 15000 });
     console.log('✓ Map loaded');
 
-    // Select Day 1
-    await page.click('button:has-text("Dag 1")');
-    await page.waitForTimeout(500);
+    // Route checkbox should be visible and checked by default
+    const routeCheckbox = page.locator('input[type="checkbox"]').first();
+    await expect(routeCheckbox).toBeChecked();
+    console.log('✓ Route checkbox checked by default');
 
-    // Route toggle should appear
-    await expect(page.getByTestId('route-toggle')).toBeVisible();
-    console.log('✓ Route toggle visible after selecting a day');
-
-    // Route should be drawn (polyline = SVG path inside leaflet-overlay-pane)
+    // Route polyline should be visible (SVG path in leaflet-overlay-pane)
     const polyline = page.locator('.leaflet-overlay-pane path');
     await expect(polyline.first()).toBeVisible({ timeout: 5000 });
-    console.log('✓ Route polyline visible for Day 1');
+    console.log('✓ Route polyline visible');
 
-    // Markers should be filtered to Day 1 attractions only
-    const dayMarkers = await page.locator('.leaflet-marker-icon').count();
-    console.log(`✓ Day 1 shows ${dayMarkers} markers`);
-
-    // Toggle route off
-    await page.getByTestId('route-toggle').click();
-    await page.waitForTimeout(300);
-
-    // Toggle route back on
-    await page.getByTestId('route-toggle').click();
-    await page.waitForTimeout(300);
-    console.log('✓ Route toggle works');
-
-    // Switch to another day
-    await page.click('button:has-text("Dag 4")');
+    // Uncheck route — polyline should disappear
+    await routeCheckbox.click();
     await page.waitForTimeout(500);
 
-    // Should auto-switch to Córdoba
-    console.log('✓ Day 4 selected (Córdoba)');
+    const polylineCount = await page.locator('.leaflet-overlay-pane path').count();
+    expect(polylineCount).toBe(0);
+    console.log('✓ Route polyline hidden after unchecking');
 
-    // Go back to all days
-    await page.click('button:has-text("Alle Dagen")');
+    // Re-check route
+    await routeCheckbox.click();
     await page.waitForTimeout(500);
-    console.log('✓ All days restored');
 
-    console.log('✅ Day filter and route work correctly!');
+    await expect(page.locator('.leaflet-overlay-pane path').first()).toBeVisible();
+    console.log('✓ Route polyline restored');
+
+    console.log('✅ Route polyline toggle works correctly!');
   });
 
   test('should toggle restaurant markers on and off', async ({ page }) => {
-    await page.goto(`${BASE_URL}/nl/${TRIP_SLUG}/map`);
+    await page.goto(`${BASE_URL}/nl/${TRIP_SLUG}/planner`);
     await page.waitForSelector('.leaflet-container', { timeout: 15000 });
     console.log('✓ Map loaded');
 
@@ -109,27 +85,23 @@ test.describe('Phase 4: Interactive Map', () => {
     const initialMarkers = await page.locator('.leaflet-marker-icon').count();
     console.log(`✓ Initial markers (attractions only): ${initialMarkers}`);
 
-    // Toggle restaurants on
-    await page.getByTestId('restaurant-toggle').click();
+    // Restaurant checkbox should exist and be unchecked
+    const restaurantCheckbox = page.locator('label:has-text("Toon Restaurants") input[type="checkbox"]');
+    await expect(restaurantCheckbox).not.toBeChecked();
+    console.log('✓ Restaurant checkbox unchecked by default');
+
+    // Check restaurant toggle — should add more markers
+    await restaurantCheckbox.click();
     await page.waitForTimeout(500);
 
-    // Button text should change
-    await expect(page.getByTestId('restaurant-toggle')).toContainText('Verberg Restaurants');
-    console.log('✓ Restaurant toggle text updated');
-
-    // Should have more markers now
     const withRestaurants = await page.locator('.leaflet-marker-icon').count();
     expect(withRestaurants).toBeGreaterThan(initialMarkers);
     console.log(`✓ With restaurants: ${withRestaurants} markers (was ${initialMarkers})`);
 
-    // Toggle restaurants off
-    await page.getByTestId('restaurant-toggle').click();
+    // Uncheck — markers should return to original count
+    await restaurantCheckbox.click();
     await page.waitForTimeout(500);
 
-    // Button text should change back
-    await expect(page.getByTestId('restaurant-toggle')).toContainText('Toon Restaurants');
-
-    // Markers should return to initial count
     const afterHide = await page.locator('.leaflet-marker-icon').count();
     expect(afterHide).toBeLessThanOrEqual(initialMarkers);
     console.log(`✓ After hiding: ${afterHide} markers`);
