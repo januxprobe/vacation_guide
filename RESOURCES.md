@@ -214,8 +214,8 @@ See `src/config/trips/andalusia-2026.ts` for a complete static example, or `src/
 2. Register in `src/config/trips/index.ts`
 3. Create data directory: `src/data/trips/{trip-slug}/attractions/{city}/`
 4. Add attraction JSON files (one per attraction, validated by Zod schema)
-5. Add `itinerary.json` to `src/data/trips/{trip-slug}/` (optional, enables itinerary + budget pages)
-6. Add `restaurants.json` to `src/data/trips/{trip-slug}/` (optional, enables restaurant page)
+5. Add `itinerary.json` to `src/data/trips/{trip-slug}/` (optional, enables planner + budget pages)
+6. Add `restaurants.json` to `src/data/trips/{trip-slug}/` (optional, enables restaurant page + planner restaurant markers)
 7. Add images to `public/images/attractions/{city}/`
 8. Update translation files if new categories or UI terms are needed
 9. Build and test: `npm run build && npx playwright test --headed`
@@ -241,13 +241,16 @@ Call `clearTripCache()` before `getAllTrips()` in server components to ensure fr
 ### URL Structure
 ```
 /{locale}/{tripSlug}/                    Trip homepage
+/{locale}/{tripSlug}/planner             Unified planner (map + itinerary split view)
 /{locale}/{tripSlug}/attractions         Attraction list
 /{locale}/{tripSlug}/attractions/{id}    Attraction detail
-/{locale}/{tripSlug}/itinerary           Day planning
-/{locale}/{tripSlug}/map                 Interactive map
 /{locale}/{tripSlug}/restaurants          Restaurant tips
 /{locale}/{tripSlug}/budget              Budget calculator
 ```
+
+**Removed routes** (redirected to `/planner` via backward-compat pages):
+- `/{locale}/{tripSlug}/itinerary` → merged into planner
+- `/{locale}/{tripSlug}/map` → merged into planner
 
 ### Color System
 - Each city in a trip has a hex color defined in TripConfig

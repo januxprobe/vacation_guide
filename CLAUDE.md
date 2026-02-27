@@ -19,7 +19,7 @@ A reusable Next.js web application for planning multi-city trips. Users can brow
 - Attraction details with photos, prices, opening hours
 - Budget calculator with configurable student discounts
 - Bilingual: Dutch (NL) and English (EN)
-- Interactive daily itinerary with timeline
+- Unified planner with split-view map + itinerary panel
 - Interactive map with OpenStreetMap (Leaflet)
 - Restaurant tips by neighborhood
 - Hero imagery with gradient overlay per trip
@@ -76,13 +76,12 @@ vacation_guide/
 │   │       │   ├── attractions/
 │   │       │   │   ├── page.tsx         # Attractions list with filters
 │   │       │   │   └── [id]/page.tsx    # Attraction detail (static gen)
-│   │       │   ├── itinerary/page.tsx   # Expandable 7-day itinerary with timeline
-│   │       │   ├── map/page.tsx         # Interactive map
+│   │       │   ├── planner/page.tsx     # Unified planner (map + itinerary split view)
 │   │       │   ├── restaurants/page.tsx # Filterable restaurant list (city + price)
 │   │       │   └── budget/page.tsx      # Interactive budget calculator
 │   │       ├── attractions/page.tsx     # Backward-compat redirect
-│   │       ├── itinerary/page.tsx       # Backward-compat redirect
-│   │       ├── map/page.tsx             # Backward-compat redirect
+│   │       ├── itinerary/page.tsx       # Backward-compat redirect → planner
+│   │       ├── map/page.tsx             # Backward-compat redirect → planner
 │   │       ├── restaurants/page.tsx     # Backward-compat redirect
 │   │       └── budget/page.tsx          # Backward-compat redirect
 │   ├── config/
@@ -93,8 +92,10 @@ vacation_guide/
 │   │       └── andalusia-2026.ts        # Andalusia trip config instance
 │   ├── components/
 │   │   ├── layout/
-│   │   │   ├── Header.tsx               # Trip-scoped navigation + language switcher
-│   │   │   ├── GenericHeader.tsx         # Generic header for non-trip pages
+│   │   │   ├── GlobalBar.tsx            # Row 1: logo + language switcher (always visible)
+│   │   │   ├── TripContextBar.tsx       # Row 2: back link + trip name + nav tabs (trip pages only)
+│   │   │   ├── Header.tsx               # Composes GlobalBar + TripContextBar (trip pages)
+│   │   │   ├── GenericHeader.tsx         # GlobalBar only (non-trip pages)
 │   │   │   └── LanguageSwitcher.tsx      # NL/EN toggle
 │   │   ├── ui/                          # shadcn/ui components
 │   │   ├── attractions/
@@ -110,10 +111,14 @@ vacation_guide/
 │   │   │   ├── TripCard.tsx             # Trip card with optional delete (two-step confirm)
 │   │   │   ├── CreateTripCard.tsx       # Dashed-border "+" card to create trip
 │   │   │   └── TripGrid.tsx            # Client wrapper managing trip list + deletion
-│   │   ├── itinerary/
-│   │   │   ├── DayCard.tsx              # Expandable day card (city badge, activity count)
-│   │   │   ├── ActivityTimeline.tsx     # Vertical timeline (activities + meals + transport)
-│   │   │   └── ItineraryList.tsx        # Expand/collapse all + list of DayCards
+│   │   ├── planner/
+│   │   │   ├── PlannerView.tsx          # Main split-view container (map + panel + day tabs)
+│   │   │   ├── PlannerWrapper.tsx       # Client wrapper for dynamic import (ssr: false)
+│   │   │   ├── PlannerMap.tsx           # Map with numbered markers, routes, restaurants
+│   │   │   ├── PlannerPanel.tsx         # Day header + scrollable timeline
+│   │   │   ├── PlannerTimeline.tsx      # Activity cards + meals in time order
+│   │   │   ├── PlannerActivityCard.tsx  # Activity card with time, duration, booking tip
+│   │   │   └── DayTabBar.tsx            # Horizontal day tabs with city colors
 │   │   ├── restaurants/
 │   │   │   ├── RestaurantCard.tsx       # Card with city color bar, price badge, cuisine tags
 │   │   │   ├── RestaurantFilter.tsx     # City + price range filter buttons
@@ -123,10 +128,7 @@ vacation_guide/
 │   │   │   ├── BudgetSummaryCard.tsx    # Highlighted total + per-person display
 │   │   │   ├── CategoryBreakdown.tsx    # Category bars with amounts + percentages
 │   │   │   └── TravelerCountSelector.tsx # +/- steppers for each traveler group
-│   │   ├── map/
-│   │   │   ├── InteractiveMap.tsx       # Main map with markers, clustering, filtering
-│   │   │   ├── MapWrapper.tsx           # Client wrapper for dynamic import (ssr: false)
-│   │   │   ├── MapFilters.tsx           # City/day filter pills, restaurant/route toggles
+│   │   ├── map/                          # Shared map utilities (used by planner)
 │   │   │   ├── MapLegend.tsx            # Overlay legend with city colors
 │   │   │   ├── MapPopup.tsx             # HTML popup content for markers
 │   │   │   ├── MapRoute.tsx             # Dashed polyline for day routes
@@ -168,8 +170,9 @@ vacation_guide/
 │   ├── visual-test.spec.ts             # Core visual tests (navigation, i18n, mobile, trip selector)
 │   ├── attractions-test.spec.ts        # Attractions feature tests (list, detail, filters)
 │   ├── create-trip-test.spec.ts        # AI trip builder E2E test (create + delete)
-│   ├── phase3-test.spec.ts            # Phase 3 tests (itinerary, restaurants, budget)
-│   ├── phase4-test.spec.ts            # Phase 4 tests (map markers, filters, routes, restaurants)
+│   ├── planner-test.spec.ts           # Planner split-view tests (load, day sync, mobile toggle)
+│   ├── phase3-test.spec.ts            # Planner panel + restaurants + budget tests
+│   ├── phase4-test.spec.ts            # Planner map tests (markers, route, restaurants)
 │   └── phase5-test.spec.ts            # Phase 5 tests (hero section, navigation, 404 page)
 ├── .env.example                         # Environment variable template
 ├── middleware.ts                        # next-intl locale detection
@@ -206,13 +209,19 @@ const t = useTranslations();
 
 - **Pages** (`page.tsx`) are server components - use `getTranslations` from `next-intl/server`
 - **Interactive components** (Header, LanguageSwitcher) use `'use client'` directive - use `useTranslations` from `next-intl`
-- **Map components** must use `'use client'` and dynamic import with `ssr: false` via a client MapWrapper (Next.js 16 disallows `ssr: false` in server components)
+- **Map/Planner components** must use `'use client'` and dynamic import with `ssr: false` via a client wrapper (Next.js 16 disallows `ssr: false` in server components)
 
 ### Header Architecture
 
-Two header variants:
-- **`Header.tsx`** - Trip-scoped, uses `useTripConfig()`. Rendered inside `[tripSlug]/layout.tsx`.
-- **`GenericHeader.tsx`** - For non-trip pages (trip selector, create-trip). Shows generic branding + language switcher only.
+Two-row header split into composable components:
+
+**Row 1 - `GlobalBar.tsx`** (48px, always visible): Logo link to trip selector + `LanguageSwitcher`. No trip context dependency.
+
+**Row 2 - `TripContextBar.tsx`** (44px, trip pages only): Back arrow (`← Reizen/Trips`), trip name in primary color, desktop nav tabs, mobile hamburger. Uses `useTripConfig()`.
+
+Composed into two header variants:
+- **`Header.tsx`** - `<GlobalBar />` + `<TripContextBar />` inside sticky `<header>` (92px total). Rendered inside `[tripSlug]/layout.tsx`.
+- **`GenericHeader.tsx`** - `<GlobalBar />` only inside sticky `<header>` (48px). For non-trip pages (trip selector, create-trip).
 
 ### City Color Scheme
 City colors are defined in trip config (`src/config/trips/andalusia-2026.ts`), not hardcoded:
@@ -265,12 +274,13 @@ npx playwright test --headed --grep "X"   # Run specific test
 ### Testing Strategy
 - Playwright tests in headed mode (visible Chrome browser)
 - After any changes, run `npx playwright test --headed` to verify
-- **20 tests total:**
+- **23 tests total:**
   - 5 core: NL navigation, language switching, mobile, HTML structure, trip selector
   - 4 attractions: list/filters, detail page, English mode, category filter
   - 1 E2E: AI trip creation + verification + deletion (uses live Gemini API)
-  - 4 phase 3: itinerary (NL + EN), restaurant filters, budget calculator
-  - 3 phase 4: map markers + city filter, day filter + route, restaurant toggle
+  - 3 planner: split-view load, day sync, mobile toggle
+  - 4 phase 3: planner panel (NL + EN), restaurant filters, budget calculator
+  - 3 phase 4: planner map markers + day switching, route polyline toggle, restaurant toggle
   - 3 phase 5: hero section with image, navigation/loading, 404 not-found page
 
 ### Adding shadcn/ui Components
