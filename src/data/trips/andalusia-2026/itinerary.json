@@ -190,6 +190,24 @@
               "en": "Bus M-172A from Plaza de Armas"
             }
           }
+        },
+        {
+          "time": "16:00",
+          "attractionId": "seville-jerez",
+          "duration": 240,
+          "notes": {
+            "nl": "Daguitstap naar Jerez - bezoek een sherrybodega",
+            "en": "Day trip to Jerez - visit a sherry bodega"
+          },
+          "transport": {
+            "method": "train",
+            "duration": 60,
+            "cost": 15,
+            "notes": {
+              "nl": "Trein Sevilla → Jerez de la Frontera",
+              "en": "Train Seville → Jerez de la Frontera"
+            }
+          }
         }
       ],
       "meals": [
@@ -269,21 +287,51 @@
           }
         },
         {
-          "time": "16:30",
+          "time": "16:15",
+          "attractionId": "cordoba-templo-romano",
+          "duration": 30,
+          "transport": {
+            "method": "walk",
+            "duration": 10
+          },
+          "notes": {
+            "nl": "Gratis te bezoeken - indrukwekkende Romeinse ruïne",
+            "en": "Free to visit - impressive Roman ruin"
+          }
+        },
+        {
+          "time": "17:00",
+          "attractionId": "cordoba-palacio-viana",
+          "duration": 75,
+          "transport": {
+            "method": "walk",
+            "duration": 15
+          },
+          "notes": {
+            "nl": "Paleis met 12 patio's - sluit om 19:00",
+            "en": "Palace with 12 patios - closes at 19:00"
+          }
+        },
+        {
+          "time": "18:30",
           "attractionId": "cordoba-roman-bridge",
           "duration": 45,
           "transport": {
             "method": "walk",
-            "duration": 10
+            "duration": 15
+          },
+          "notes": {
+            "nl": "Mooi bij zonsondergang",
+            "en": "Beautiful at sunset"
           }
         },
         {
-          "time": "17:30",
+          "time": "19:30",
           "attractionId": "cordoba-plaza-corredera",
           "duration": 30,
           "transport": {
             "method": "walk",
-            "duration": 15
+            "duration": 10
           }
         }
       ],
@@ -481,17 +529,42 @@
       "dayNumber": 7,
       "city": "granada",
       "title": {
-        "nl": "Vrije Dag & Vertrek",
-        "en": "Free Day & Departure"
+        "nl": "Las Alpujarras & Costa Tropical",
+        "en": "Las Alpujarras & Costa Tropical"
       },
       "activities": [
         {
-          "time": "10:00",
-          "attractionId": "granada-albaicin",
-          "duration": 90,
+          "time": "09:00",
+          "attractionId": "granada-alpujarras",
+          "duration": 180,
           "notes": {
-            "nl": "Vrije wandeling door smalle straatjes en souvenirs kopen",
-            "en": "Free walk through narrow streets and souvenir shopping"
+            "nl": "Bergdorpen bezoeken: Pampaneira, Bubión en Capileira",
+            "en": "Visit mountain villages: Pampaneira, Bubión and Capileira"
+          },
+          "transport": {
+            "method": "car",
+            "duration": 75,
+            "notes": {
+              "nl": "Circa 1u15 rijden vanuit Granada",
+              "en": "About 1h15 drive from Granada"
+            }
+          }
+        },
+        {
+          "time": "14:00",
+          "attractionId": "granada-costa-tropical",
+          "duration": 180,
+          "notes": {
+            "nl": "Strand en wandeling in Salobreña en/of Almuñécar",
+            "en": "Beach and stroll in Salobreña and/or Almuñécar"
+          },
+          "transport": {
+            "method": "car",
+            "duration": 60,
+            "notes": {
+              "nl": "Circa 1u rijden van de Alpujarras naar de kust",
+              "en": "About 1h drive from the Alpujarras to the coast"
+            }
           }
         }
       ],

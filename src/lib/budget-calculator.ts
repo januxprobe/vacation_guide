@@ -53,10 +53,10 @@ export function calculateBudget(input: BudgetInput): BudgetSummary {
     let transportCost = 0;
     let mealsCost = 0;
 
-    // Attraction costs
+    // Attraction costs (include free attractions so every activity appears in the breakdown)
     for (const activity of day.activities) {
       const attraction = attractionMap[activity.attractionId];
-      if (!attraction || attraction.pricing.adult === 0) continue;
+      if (!attraction) continue;
 
       const adultPrice = attraction.pricing.adult;
       const studentPrice =
