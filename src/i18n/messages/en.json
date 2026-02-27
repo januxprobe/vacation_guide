@@ -187,6 +187,17 @@
     "noResults": "No restaurants found with these filters",
     "visitWebsite": "Visit website"
   },
+  "error": {
+    "title": "Something went wrong",
+    "description": "An unexpected error occurred. Please try again.",
+    "tryAgain": "Try again",
+    "backHome": "Back to overview"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you are looking for does not exist or has been moved.",
+    "backToTrips": "Back to trips"
+  },
   "budget": {
     "title": "Budget Calculator",
     "subtitle": "Calculate the estimated costs for your trip",

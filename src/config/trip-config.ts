@@ -34,5 +34,6 @@ export interface TripConfig {
     primaryColor: string; // hex color for header/CTA
   };
   highlights: string[]; // attraction IDs for homepage
+  heroImage?: string; // path to hero background image (e.g. '/images/attractions/...')
   dataDirectory: string; // folder name under src/data/trips/
 }

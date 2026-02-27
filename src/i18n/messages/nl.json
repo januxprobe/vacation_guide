@@ -187,6 +187,17 @@
     "noResults": "Geen restaurants gevonden met deze filters",
     "visitWebsite": "Bezoek website"
   },
+  "error": {
+    "title": "Er ging iets mis",
+    "description": "Er is een onverwachte fout opgetreden. Probeer het opnieuw.",
+    "tryAgain": "Opnieuw proberen",
+    "backHome": "Terug naar overzicht"
+  },
+  "notFound": {
+    "title": "Pagina niet gevonden",
+    "description": "De pagina die je zoekt bestaat niet of is verplaatst.",
+    "backToTrips": "Terug naar reizen"
+  },
   "budget": {
     "title": "Budget Calculator",
     "subtitle": "Bereken de geschatte kosten voor je reis",

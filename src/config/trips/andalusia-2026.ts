@@ -75,5 +75,6 @@ export const andalusia2026: TripConfig = {
     'cordoba-mezquita',
     'seville-real-alcazar',
   ],
+  heroImage: '/images/attractions/seville-plaza-espana-bridge.jpg',
   dataDirectory: 'andalusia-2026',
 };

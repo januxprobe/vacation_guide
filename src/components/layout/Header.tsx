@@ -43,7 +43,7 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-1">
+          <nav className="hidden md:flex items-center space-x-1" aria-label="Main navigation">
             {navItems.map((item) => (
               <Link
                 key={item.href}
@@ -74,7 +74,9 @@ export default function Header() {
             {/* Mobile menu button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-md text-gray-700 hover:bg-gray-100"
+              className="md:hidden p-2 rounded-md text-gray-700 hover:bg-gray-100 min-h-[44px] min-w-[44px] flex items-center justify-center"
+              aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={mobileMenuOpen}
             >
               {mobileMenuOpen ? (
                 <X className="h-6 w-6" />
@@ -86,34 +88,37 @@ export default function Header() {
         </div>
 
         {/* Mobile Navigation */}
-        {mobileMenuOpen && (
-          <nav className="md:hidden py-4 border-t border-gray-200">
-            <div className="flex flex-col space-y-2">
-              {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`px-3 py-2 rounded-md text-base font-medium transition-colors ${
-                    isActive(item.href)
-                      ? ''
-                      : 'text-gray-700 hover:bg-gray-100'
-                  }`}
-                  style={
-                    isActive(item.href)
-                      ? {
-                          backgroundColor: hexToRgba(primaryColor, 0.1),
-                          color: primaryColor,
-                        }
-                      : undefined
-                  }
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </div>
-          </nav>
-        )}
+        <nav
+          className={`md:hidden overflow-hidden transition-all duration-200 ease-in-out ${
+            mobileMenuOpen ? 'max-h-96 py-4 border-t border-gray-200' : 'max-h-0'
+          }`}
+          aria-label="Mobile navigation"
+        >
+          <div className="flex flex-col space-y-1">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`px-3 py-3 rounded-md text-base font-medium transition-colors min-h-[44px] flex items-center ${
+                  isActive(item.href)
+                    ? ''
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+                style={
+                  isActive(item.href)
+                    ? {
+                        backgroundColor: hexToRgba(primaryColor, 0.1),
+                        color: primaryColor,
+                      }
+                    : undefined
+                }
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+        </nav>
       </div>
     </header>
   );

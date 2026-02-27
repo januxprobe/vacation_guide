@@ -22,6 +22,9 @@ A reusable Next.js web application for planning multi-city trips. Users can brow
 - Interactive daily itinerary with timeline
 - Interactive map with OpenStreetMap (Leaflet)
 - Restaurant tips by neighborhood
+- Hero imagery with gradient overlay per trip
+- Loading skeletons, error boundaries, custom 404 page
+- Accessibility: skip-to-content, focus-visible, reduced-motion
 - Deployable to Google Cloud Run
 
 ## Tech Stack
@@ -59,12 +62,17 @@ vacation_guide/
 │   │   │       ├── chat/route.ts       # POST - Streaming Gemini chat (SSE)
 │   │   │       └── finalize-trip/route.ts # POST - Extract structured trip data
 │   │   └── [locale]/                    # i18n routing (nl/en)
-│   │       ├── layout.tsx               # Locale layout (NextIntlClientProvider)
+│   │       ├── layout.tsx               # Locale layout (NextIntlClientProvider + skip link)
+│   │       ├── loading.tsx              # Skeleton loader for locale pages
+│   │       ├── error.tsx                # Error boundary for locale pages
+│   │       ├── not-found.tsx            # Custom 404 page
 │   │       ├── page.tsx                 # Trip selector homepage
 │   │       ├── create-trip/page.tsx     # AI-powered trip builder
 │   │       ├── [tripSlug]/              # Trip-scoped routes
 │   │       │   ├── layout.tsx           # Trip layout (TripConfigProvider + Header)
-│   │       │   ├── page.tsx             # Trip homepage (hero, stats, quick links)
+│   │       │   ├── loading.tsx          # Skeleton loader for trip pages
+│   │       │   ├── error.tsx            # Error boundary for trip pages
+│   │       │   ├── page.tsx             # Trip homepage (hero image, stats, quick links)
 │   │       │   ├── attractions/
 │   │       │   │   ├── page.tsx         # Attractions list with filters
 │   │       │   │   └── [id]/page.tsx    # Attraction detail (static gen)
@@ -161,7 +169,8 @@ vacation_guide/
 │   ├── attractions-test.spec.ts        # Attractions feature tests (list, detail, filters)
 │   ├── create-trip-test.spec.ts        # AI trip builder E2E test (create + delete)
 │   ├── phase3-test.spec.ts            # Phase 3 tests (itinerary, restaurants, budget)
-│   └── phase4-test.spec.ts            # Phase 4 tests (map markers, filters, routes, restaurants)
+│   ├── phase4-test.spec.ts            # Phase 4 tests (map markers, filters, routes, restaurants)
+│   └── phase5-test.spec.ts            # Phase 5 tests (hero section, navigation, 404 page)
 ├── .env.example                         # Environment variable template
 ├── middleware.ts                        # next-intl locale detection
 ├── next.config.ts                       # Next.js config (standalone + i18n)
@@ -256,12 +265,13 @@ npx playwright test --headed --grep "X"   # Run specific test
 ### Testing Strategy
 - Playwright tests in headed mode (visible Chrome browser)
 - After any changes, run `npx playwright test --headed` to verify
-- **17 tests total:**
+- **20 tests total:**
   - 5 core: NL navigation, language switching, mobile, HTML structure, trip selector
   - 4 attractions: list/filters, detail page, English mode, category filter
   - 1 E2E: AI trip creation + verification + deletion (uses live Gemini API)
   - 4 phase 3: itinerary (NL + EN), restaurant filters, budget calculator
   - 3 phase 4: map markers + city filter, day filter + route, restaurant toggle
+  - 3 phase 5: hero section with image, navigation/loading, 404 not-found page
 
 ### Adding shadcn/ui Components
 ```bash
@@ -348,11 +358,16 @@ npx shadcn@latest add card      # Example: add card component
 - [x] Responsive map height (500px → 600px → 70vh)
 - [x] 3 Playwright tests (17 total, all passing)
 
-### Phase 5: Homepage & Polish [PENDING]
-- [ ] Hero section with trip imagery
-- [ ] Loading skeletons and error boundaries
-- [ ] Mobile optimizations
-- [ ] Lighthouse audit (target: >90 performance, >95 accessibility)
+### Phase 5: Homepage & Polish [COMPLETED]
+- [x] Hero section with full-width background image + gradient overlay (heroImage in TripConfig)
+- [x] Loading skeletons (loading.tsx at locale + trip level, automatic Suspense)
+- [x] Error boundaries (error.tsx at locale + trip level with "Try again" button)
+- [x] Custom 404 not-found page at locale level
+- [x] Accessibility: focus-visible outlines, skip-to-content link, reduced-motion media query
+- [x] Accessibility: aria-labels on nav elements, aria-expanded on mobile menu
+- [x] Mobile polish: 44px min touch targets, animated menu open/close, responsive hero/stats
+- [x] Translation keys for error + notFound messages (NL + EN)
+- [x] 3 Playwright tests (20 total, all passing)
 
 ### Phase 6: Deployment to GCP [PENDING]
 - [ ] Multi-stage Dockerfile
