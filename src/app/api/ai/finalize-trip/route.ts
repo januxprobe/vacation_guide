@@ -1,6 +1,7 @@
 import { GoogleGenAI } from '@google/genai';
+import { restaurantsFileSchema, itinerarySchema } from '@/lib/schemas';
 
-const FINALIZE_PROMPT = `Based on the conversation so far, generate the COMPLETE trip configuration and ALL attraction data as a single JSON object.
+const FINALIZE_PROMPT = `Based on the conversation so far, generate the COMPLETE trip configuration, ALL attraction data, restaurant recommendations, and a day-by-day itinerary as a single JSON object.
 
 The output must be valid JSON with this exact structure:
 {
@@ -55,7 +56,60 @@ The output must be valid JSON with this exact structure:
       "website": "https://...",
       "tips": { "nl": "...", "en": "..." }
     }
-  ]
+  ],
+  "restaurants": [
+    {
+      "id": "city-restaurant-name",
+      "name": "Restaurant Name",
+      "city": "city-id",
+      "neighborhood": "Neighborhood Name",
+      "coordinates": { "lat": 0.0, "lng": 0.0 },
+      "cuisine": ["Spanish", "Tapas"],
+      "priceRange": "€€",
+      "specialties": { "nl": "...", "en": "..." },
+      "description": { "nl": "...", "en": "..." },
+      "website": "https://..."
+    }
+  ],
+  "itinerary": {
+    "trip": {
+      "title": { "nl": "...", "en": "..." },
+      "startDate": "YYYY-MM-DD",
+      "endDate": "YYYY-MM-DD"
+    },
+    "days": [
+      {
+        "date": "YYYY-MM-DD",
+        "dayNumber": 1,
+        "city": "city-id",
+        "title": { "nl": "Dag 1: ...", "en": "Day 1: ..." },
+        "activities": [
+          {
+            "time": "10:00",
+            "attractionId": "city-attraction-name",
+            "duration": 120,
+            "notes": { "nl": "...", "en": "..." },
+            "transport": {
+              "method": "walk",
+              "duration": 15,
+              "cost": 0
+            }
+          }
+        ],
+        "meals": [
+          {
+            "type": "breakfast",
+            "time": "08:30",
+            "neighborhood": "Neighborhood",
+            "estimatedCost": 10,
+            "notes": { "nl": "...", "en": "..." },
+            "coordinates": { "lat": 0.0, "lng": 0.0 },
+            "restaurantName": "Cafe Name"
+          }
+        ]
+      }
+    ]
+  }
 }
 
 RULES:
@@ -65,6 +119,24 @@ RULES:
 - Each city must have a unique color
 - The highlights array should contain the 3 most important attraction IDs
 - stats.totalAttractions must match the actual number of attractions
+
+RESTAURANTS:
+- Include 3-4 restaurants per city (mix of price ranges: €, €€, €€€)
+- Use real restaurant names, real GPS coordinates, real cuisine types
+- Search for currently open, well-reviewed restaurants
+- Each restaurant needs bilingual descriptions (nl/en)
+- priceRange must be one of: "€", "€€", "€€€", "€€€€"
+
+ITINERARY:
+- Cover all trip dates (one day entry per date)
+- Reference attraction IDs from the attractions array in activities
+- Include breakfast, lunch, and dinner meals each day with estimated costs
+- Order activities geographically to minimize travel time
+- Include transport between activities (method: "walk", "bus", "train", or "car")
+- Meal coordinates and restaurantName are optional but preferred
+- transport.method must be one of: "walk", "bus", "train", "car"
+- meal.type must be one of: "breakfast", "lunch", "dinner", "snack"
+
 - Output ONLY valid JSON, no markdown or explanation`;
 
 export async function POST(request: Request) {
@@ -132,6 +204,28 @@ export async function POST(request: Request) {
     // Normalize: ensure tripConfig has dataDirectory matching slug
     if (data.tripConfig && !data.tripConfig.dataDirectory) {
       data.tripConfig.dataDirectory = data.tripConfig.slug;
+    }
+
+    // Validate restaurants (graceful fallback to empty array)
+    if (data.restaurants && Array.isArray(data.restaurants)) {
+      const restaurantsParsed = restaurantsFileSchema.safeParse({ restaurants: data.restaurants });
+      if (!restaurantsParsed.success) {
+        console.warn('Restaurants validation failed, falling back to empty:', restaurantsParsed.error.format());
+        data.restaurants = [];
+      }
+    } else {
+      data.restaurants = [];
+    }
+
+    // Validate itinerary (graceful fallback to null)
+    if (data.itinerary) {
+      const itineraryParsed = itinerarySchema.safeParse(data.itinerary);
+      if (!itineraryParsed.success) {
+        console.warn('Itinerary validation failed, falling back to null:', itineraryParsed.error.format());
+        data.itinerary = null;
+      }
+    } else {
+      data.itinerary = null;
     }
 
     return new Response(JSON.stringify(data), {

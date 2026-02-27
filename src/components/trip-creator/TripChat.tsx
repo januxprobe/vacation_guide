@@ -170,7 +170,7 @@ export default function TripChat() {
       }
 
       const finalData = await finalizeRes.json();
-      const { tripConfig, attractions } = finalData;
+      const { tripConfig, attractions, restaurants, itinerary } = finalData;
 
       if (!tripConfig || !attractions) {
         throw new Error('Invalid finalized data');
@@ -197,7 +197,33 @@ export default function TripChat() {
         });
       }
 
-      // Step 4: Redirect to the new trip
+      // Step 4: Save restaurants (non-blocking)
+      if (restaurants && Array.isArray(restaurants) && restaurants.length > 0) {
+        try {
+          await fetch(`/api/trips/${tripConfig.slug}/restaurants`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ restaurants }),
+          });
+        } catch (err) {
+          console.error('Failed to save restaurants:', err);
+        }
+      }
+
+      // Step 5: Save itinerary (non-blocking)
+      if (itinerary) {
+        try {
+          await fetch(`/api/trips/${tripConfig.slug}/itinerary`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(itinerary),
+          });
+        } catch (err) {
+          console.error('Failed to save itinerary:', err);
+        }
+      }
+
+      // Step 6: Redirect to the new trip
       // Use window.location for full reload so the server picks up new files
       const locale = window.location.pathname.split('/')[1] || 'nl';
       window.location.href = `/${locale}/${tripConfig.slug}`;

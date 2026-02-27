@@ -190,7 +190,20 @@
     "allRestaurants": "All Restaurants",
     "allPrices": "All prices",
     "noResults": "No restaurants found with these filters",
-    "visitWebsite": "Visit website"
+    "visitWebsite": "Visit website",
+    "searchTitle": "Search Restaurants",
+    "searchPlaceholder": "Search for restaurants (e.g., tapas, seafood, vegetarian...)",
+    "searchButton": "Search",
+    "searching": "Searching...",
+    "searchResults": "Search Results",
+    "noSearchResults": "No restaurants found. Try a different search.",
+    "addRestaurant": "Add",
+    "added": "Added!",
+    "addError": "Failed to add restaurant",
+    "removeRestaurant": "Remove",
+    "confirmRemove": "Confirm?",
+    "removed": "Removed",
+    "removeError": "Failed to remove restaurant"
   },
   "error": {
     "title": "Something went wrong",

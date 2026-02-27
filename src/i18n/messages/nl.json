@@ -190,7 +190,20 @@
     "allRestaurants": "Alle Restaurants",
     "allPrices": "Alle prijzen",
     "noResults": "Geen restaurants gevonden met deze filters",
-    "visitWebsite": "Bezoek website"
+    "visitWebsite": "Bezoek website",
+    "searchTitle": "Restaurants Zoeken",
+    "searchPlaceholder": "Zoek naar restaurants (bijv. tapas, vis, vegetarisch...)",
+    "searchButton": "Zoeken",
+    "searching": "Zoeken...",
+    "searchResults": "Zoekresultaten",
+    "noSearchResults": "Geen restaurants gevonden. Probeer een andere zoekopdracht.",
+    "addRestaurant": "Toevoegen",
+    "added": "Toegevoegd!",
+    "addError": "Toevoegen mislukt",
+    "removeRestaurant": "Verwijderen",
+    "confirmRemove": "Bevestigen?",
+    "removed": "Verwijderd",
+    "removeError": "Verwijderen mislukt"
   },
   "error": {
     "title": "Er ging iets mis",

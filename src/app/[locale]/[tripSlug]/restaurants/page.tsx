@@ -1,6 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { getTripBySlug } from '@/config/trips';
+import { getTripBySlug, isStaticTrip } from '@/config/trips';
 import { getRestaurantsForTrip } from '@/lib/data-loaders';
 import RestaurantsList from '@/components/restaurants/RestaurantsList';
 
@@ -26,7 +26,11 @@ export default async function RestaurantsPage({ params }: Props) {
         {t('restaurants.subtitle')}
       </p>
 
-      <RestaurantsList restaurants={restaurants} />
+      <RestaurantsList
+        restaurants={restaurants}
+        tripSlug={tripSlug}
+        isDynamic={!isStaticTrip(tripSlug)}
+      />
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { getTripBySlug, getAllTripSlugs } from '@/config/trips';
+import { getTripBySlug, getAllTripSlugs, clearTripCache } from '@/config/trips';
 import { TripConfigProvider } from '@/config/trip-context';
 import Header from '@/components/layout/Header';
 
@@ -18,6 +18,8 @@ export default async function TripLayout({
   params: Promise<{ locale: string; tripSlug: string }>;
 }) {
   const { tripSlug } = await params;
+  // Clear cache to pick up dynamically created trips
+  clearTripCache();
   const trip = getTripBySlug(tripSlug);
 
   if (!trip) {

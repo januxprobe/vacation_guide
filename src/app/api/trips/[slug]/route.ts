@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import { getTripBySlug, clearTripCache, isStaticTrip } from '@/config/trips';
-import { clearAttractionCache } from '@/lib/data-loaders';
+import { clearAttractionCache, clearRestaurantCache, clearItineraryCache } from '@/lib/data-loaders';
 
 export async function GET(
   _request: Request,
@@ -55,6 +55,8 @@ export async function DELETE(
 
     // Clear all caches
     clearAttractionCache(trip.id);
+    clearRestaurantCache(trip.id);
+    clearItineraryCache(trip.id);
     clearTripCache();
 
     return NextResponse.json({ success: true });

@@ -5,6 +5,39 @@ import { getTripBySlug, clearTripCache } from '@/config/trips';
 import { attractionSchema } from '@/lib/schemas';
 import { clearAttractionCache } from '@/lib/data-loaders';
 
+// Normalize AI-generated values to match our Zod enums
+const CATEGORY_MAP: Record<string, string> = {
+  square: 'monument', plaza: 'monument', piazza: 'monument',
+  ruins: 'monument', bridge: 'monument', tower: 'monument', gate: 'monument',
+  fountain: 'monument', statue: 'monument', landmark: 'monument',
+  temple: 'church', basilica: 'church', cathedral: 'church', chapel: 'church',
+  fortress: 'palace', castle: 'palace', alcazar: 'palace',
+  gallery: 'museum', exhibition: 'museum',
+  park: 'nature', garden: 'nature', beach: 'nature', coast: 'nature', mountain: 'nature',
+  district: 'neighborhood', quarter: 'neighborhood', area: 'neighborhood', street: 'neighborhood',
+};
+
+const PRIORITY_MAP: Record<string, string> = {
+  important: 'essential', 'must-see': 'essential', 'must see': 'essential',
+  'must-visit': 'essential', highlight: 'essential', top: 'essential',
+  suggested: 'recommended', notable: 'recommended', worthwhile: 'recommended',
+  'nice-to-have': 'optional', minor: 'optional', extra: 'optional',
+};
+
+const VALID_CATEGORIES = new Set(['monument', 'church', 'palace', 'museum', 'neighborhood', 'nature']);
+const VALID_PRIORITIES = new Set(['essential', 'recommended', 'optional']);
+
+function normalizeAttraction(body: Record<string, unknown>): void {
+  if (typeof body.category === 'string' && !VALID_CATEGORIES.has(body.category)) {
+    const lower = body.category.toLowerCase();
+    body.category = CATEGORY_MAP[lower] ?? 'monument';
+  }
+  if (typeof body.priority === 'string' && !VALID_PRIORITIES.has(body.priority)) {
+    const lower = body.priority.toLowerCase();
+    body.priority = PRIORITY_MAP[lower] ?? 'recommended';
+  }
+}
+
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ slug: string }> }
@@ -24,6 +57,9 @@ export async function POST(
     if (!body.images) body.images = [];
     if (!body.thumbnail) body.thumbnail = '';
     if (body.bookingRequired === undefined) body.bookingRequired = false;
+
+    // Normalize AI-generated enum values to match our schema
+    normalizeAttraction(body);
 
     const parsed = attractionSchema.safeParse(body);
 

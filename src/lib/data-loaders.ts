@@ -123,6 +123,24 @@ export function clearAttractionCache(tripId?: string): void {
   }
 }
 
+/** Clear cached restaurants for a specific trip (e.g. after adding/removing) */
+export function clearRestaurantCache(tripId?: string): void {
+  if (tripId) {
+    restaurantCache.delete(tripId);
+  } else {
+    restaurantCache.clear();
+  }
+}
+
+/** Clear cached itinerary for a specific trip (e.g. after saving new one) */
+export function clearItineraryCache(tripId?: string): void {
+  if (tripId) {
+    itineraryCache.delete(tripId);
+  } else {
+    itineraryCache.clear();
+  }
+}
+
 // ---------- Itinerary ----------
 
 const itineraryCache = new Map<string, Itinerary | null>();
