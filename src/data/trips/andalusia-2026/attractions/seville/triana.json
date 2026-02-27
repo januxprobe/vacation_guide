@@ -1,0 +1,52 @@
+{
+  "id": "seville-triana",
+  "name": "Triana",
+  "city": "seville",
+  "category": "neighborhood",
+  "description": {
+    "nl": "Triana is de authentieke volksbuurt van Sevilla aan de westoever van de Guadalquivir. Historisch bekend als de wijk van zeelieden, keramiekmakers en flamencokunstenaar. Steek de iconische Puente de Isabel II (Puente de Triana) over en ontdek de Mercado de Triana, een levendige overdekte markt gebouwd op de ruines van het Castillo de San Jorge (een voormalige inquisitiegevangenis). Calle Betis langs de rivier is de perfecte plek voor tapas en een drankje bij zonsondergang met uitzicht op de skyline van Sevilla.",
+    "en": "Triana is the authentic working-class neighborhood of Seville on the west bank of the Guadalquivir. Historically known as the quarter of sailors, ceramic makers, and flamenco artists. Cross the iconic Puente de Isabel II (Puente de Triana) and discover the Mercado de Triana, a lively covered market built on the ruins of the Castillo de San Jorge (a former Inquisition prison). Calle Betis along the river is the perfect spot for tapas and drinks at sunset with views of the Seville skyline."
+  },
+  "coordinates": {
+    "lat": 37.3833,
+    "lng": -6.0036
+  },
+  "pricing": {
+    "adult": 0,
+    "notes": {
+      "nl": "Gratis om te verkennen. Reken op €15-25 per persoon voor tapas en drankjes.",
+      "en": "Free to explore. Budget approx. €15-25 per person for tapas and drinks."
+    }
+  },
+  "duration": 120,
+  "priority": "recommended",
+  "images": [
+    "seville-triana-bridge-1",
+    "seville-triana-market-1",
+    "seville-triana-calle-betis-sunset-1",
+    "seville-triana-ceramics-1"
+  ],
+  "thumbnail": "/images/attractions/seville-triana.jpg",
+  "media": [
+    {
+      "type": "image",
+      "src": "/images/attractions/seville-triana-bridge.jpg",
+      "alt": { "nl": "Puente de Isabel II (Triana-brug)", "en": "Puente de Isabel II (Triana Bridge)" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/seville-triana-market.jpg",
+      "alt": { "nl": "Mercado de Triana", "en": "Mercado de Triana" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/seville-triana-ceramics.jpg",
+      "alt": { "nl": "Keramiek in Triana", "en": "Ceramics in Triana" }
+    }
+  ],
+  "bookingRequired": false,
+  "tips": {
+    "nl": "Plan je bezoek aan Triana in de late namiddag en blijf voor zonsondergang op Calle Betis. De Mercado de Triana is ideaal voor een late lunch met verse tapas. Bezoek het gratis Centro Cerámica Triana om de keramiekgeschiedenis van de wijk te ontdekken. Bar Casa Cuesta en La Primera del Puente zijn goede lokale tapasbarren. Loop ook even door de Calle San Jacinto voor minder toeristische winkels en bars.",
+    "en": "Plan your visit to Triana in the late afternoon and stay for sunset on Calle Betis. The Mercado de Triana is ideal for a late lunch with fresh tapas. Visit the free Centro Cerámica Triana to learn about the neighborhood's ceramic history. Bar Casa Cuesta and La Primera del Puente are good local tapas bars. Also walk through Calle San Jacinto for less touristy shops and bars."
+  }
+}

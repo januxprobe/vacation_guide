@@ -102,7 +102,17 @@
     "openingHours": "Openingstijden",
     "website": "Website",
     "tips": "Tips",
-    "photos": "Foto's"
+    "photos": "Foto's",
+    "bookingAdvice": "Reserveer van tevoren om teleurstelling te voorkomen",
+    "subtitle": "Ontdek bezienswaardigheden in Sevilla, Córdoba en Granada",
+    "gallery": "Galerij",
+    "viewAllPhotos": "Bekijk alle foto's",
+    "morePhotos": "+{count} meer",
+    "playVideo": "Video afspelen",
+    "closeGallery": "Galerij sluiten",
+    "previousPhoto": "Vorige foto",
+    "nextPhoto": "Volgende foto",
+    "photoCounter": "{current} / {total}"
   },
   "map": {
     "title": "Interactieve Kaart",

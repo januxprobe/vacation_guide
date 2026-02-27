@@ -1,0 +1,71 @@
+{
+  "id": "cordoba-mezquita",
+  "name": "Mezquita-Catedral de Córdoba",
+  "city": "cordoba",
+  "category": "church",
+  "description": {
+    "nl": "De Mezquita-Catedral is een van de meest bijzondere monumenten ter wereld: een 8e-eeuwse moskee waarin later een renaissance-kathedraal werd gebouwd. Het interieur is adembenemend met meer dan 850 zuilen van jaspis, onyx, marmer en graniet, verbonden door de iconische rood-witte dubbele bogen. Het gebouw weerspiegelt eeuwen van religieuze en culturele wisselingen tussen islam en christendom. De Patio de los Naranjos (sinaasappelboomhof) vormt de serene ingang tot dit meesterwerk van Moorse architectuur.",
+    "en": "The Mezquita-Catedral is one of the most extraordinary monuments in the world: an 8th-century mosque within which a Renaissance cathedral was later built. The interior is breathtaking with over 850 columns of jasper, onyx, marble, and granite, connected by the iconic red-and-white double arches. The building reflects centuries of religious and cultural shifts between Islam and Christianity. The Patio de los Naranjos (orange tree courtyard) provides a serene entrance to this masterpiece of Moorish architecture."
+  },
+  "coordinates": {
+    "lat": 37.8789,
+    "lng": -4.7794
+  },
+  "pricing": {
+    "adult": 15,
+    "student": 8,
+    "child": 0,
+    "guidedTour": 25,
+    "notes": {
+      "nl": "Kinderen onder 10 jaar gratis. Maandag t/m zaterdag gratis toegang van 08:30-09:30 (beperkte capaciteit). Nachtbezoeken beschikbaar in bepaalde periodes tegen meerprijs.",
+      "en": "Children under 10 free. Free entry Monday to Saturday from 08:30-09:30 (limited capacity). Night visits available in certain periods at an extra charge."
+    }
+  },
+  "duration": 120,
+  "priority": "essential",
+  "images": [
+    "cordoba-mezquita-arches-1",
+    "cordoba-mezquita-arches-2",
+    "cordoba-mezquita-mihrab",
+    "cordoba-mezquita-cathedral-dome",
+    "cordoba-mezquita-patio-naranjos"
+  ],
+  "thumbnail": "/images/attractions/cordoba-mezquita.jpg",
+  "media": [
+    {
+      "type": "image",
+      "src": "/images/attractions/cordoba-mezquita-arches.jpg",
+      "alt": { "nl": "Rood-witte dubbele bogen van de Mezquita", "en": "Red-and-white double arches of the Mezquita" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/cordoba-mezquita-mihrab.jpg",
+      "alt": { "nl": "De Mihrab van de Mezquita", "en": "The Mihrab of the Mezquita" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/cordoba-mezquita-patio.jpg",
+      "alt": { "nl": "Patio de los Naranjos", "en": "Patio de los Naranjos" }
+    },
+    {
+      "type": "video",
+      "src": "7YvNMDy_h3g",
+      "alt": { "nl": "Mezquita-Catedral - Rick Steves", "en": "Magnificent Mezquita - Rick Steves" }
+    }
+  ],
+  "bookingRequired": true,
+  "openingHours": {
+    "monday": "10:00-19:00",
+    "tuesday": "10:00-19:00",
+    "wednesday": "10:00-19:00",
+    "thursday": "10:00-19:00",
+    "friday": "10:00-19:00",
+    "saturday": "10:00-19:00",
+    "sunday": "08:30-11:30, 15:00-19:00"
+  },
+  "website": "https://mezquita-catedraldecordoba.es",
+  "tips": {
+    "nl": "Maak gebruik van het gratis ochtenduur (08:30-09:30, ma-za) maar kom vroeg want het is populair. De mihrab (gebedsnis) achterin de moskee is het absolute hoogtepunt — neem de tijd om de mozaïeken te bewonderen. Ga ook naar boven in de klokkentoren (Torre Campanario) voor een panoramisch uitzicht over Córdoba. Zondag is het drukst vanwege kerkdiensten in de ochtend.",
+    "en": "Take advantage of the free morning hour (08:30-09:30, Mon-Sat) but arrive early as it's popular. The mihrab (prayer niche) at the back of the mosque is the absolute highlight — take your time admiring the mosaics. Also climb the bell tower (Torre Campanario) for a panoramic view over Córdoba. Sundays are busiest due to morning church services."
+  }
+}

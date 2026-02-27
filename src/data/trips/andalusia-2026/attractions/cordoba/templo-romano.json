@@ -1,0 +1,48 @@
+{
+  "id": "cordoba-templo-romano",
+  "name": "Templo Romano",
+  "city": "cordoba",
+  "category": "monument",
+  "description": {
+    "nl": "De Templo Romano is een gereconstrueerde Romeinse tempel aan de Calle Capitulares, pal naast het stadhuis van Córdoba. De tempel werd ontdekt in de jaren 1950 tijdens de uitbreiding van het stadhuis en dateert uit de 1e eeuw na Christus. De indrukwekkende Korinthische zuilen zijn gedeeltelijk gereconstrueerd en geven een goed beeld van de grootsheid van het Romeinse Córdoba (Colonia Patricia). Het is een van de best bewaarde Romeinse tempels op het Iberisch Schiereiland en vrij toegankelijk vanaf de straat.",
+    "en": "The Templo Romano is a reconstructed Roman temple on Calle Capitulares, right next to Córdoba's city hall. The temple was discovered in the 1950s during the expansion of city hall and dates from the 1st century AD. The impressive Corinthian columns have been partially reconstructed and give a good sense of the grandeur of Roman Córdoba (Colonia Patricia). It is one of the best-preserved Roman temples on the Iberian Peninsula and freely accessible from the street."
+  },
+  "coordinates": {
+    "lat": 37.8841,
+    "lng": -4.7791
+  },
+  "pricing": {
+    "adult": 0,
+    "child": 0,
+    "notes": {
+      "nl": "Volledig gratis — de tempel is een openluchtmonument dat altijd toegankelijk is vanaf de straat.",
+      "en": "Completely free — the temple is an open-air monument always accessible from the street."
+    }
+  },
+  "duration": 30,
+  "priority": "optional",
+  "images": [
+    "cordoba-templo-romano-columns",
+    "cordoba-templo-romano-night",
+    "cordoba-templo-romano-overview"
+  ],
+  "thumbnail": "/images/attractions/cordoba-templo-romano.jpg",
+  "media": [
+    {
+      "type": "image",
+      "src": "/images/attractions/cordoba-templo-romano-columns.jpg",
+      "alt": { "nl": "Korinthische zuilen van de Romeinse tempel", "en": "Corinthian columns of the Roman temple" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/cordoba-templo-romano-night.jpg",
+      "alt": { "nl": "Templo Romano verlicht bij nacht", "en": "Templo Romano illuminated at night" }
+    }
+  ],
+  "bookingRequired": false,
+  "website": "https://www.turismodecordoba.org",
+  "tips": {
+    "nl": "De tempel is 's avonds prachtig verlicht en dan bijzonder fotogeniek. Het bezoek kost maar een paar minuten, dus combineer het met een wandeling naar de Plaza de las Tendillas of de Plaza de la Corredera. Let op de informatiebordens die de oorspronkelijke omvang van de tempel uitleggen — het complex was veel groter dan wat je nu ziet.",
+    "en": "The temple is beautifully illuminated at night and particularly photogenic then. The visit only takes a few minutes, so combine it with a walk to the Plaza de las Tendillas or the Plaza de la Corredera. Look for the information boards explaining the original size of the temple — the complex was much larger than what you see now."
+  }
+}

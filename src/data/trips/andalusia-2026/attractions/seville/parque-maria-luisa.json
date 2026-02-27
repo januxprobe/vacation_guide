@@ -1,0 +1,60 @@
+{
+  "id": "seville-parque-maria-luisa",
+  "name": "Parque de María Luisa",
+  "city": "seville",
+  "category": "nature",
+  "description": {
+    "nl": "Het Parque de María Luisa is het beroemdste park van Sevilla en strekt zich uit langs de Guadalquivir-rivier. Oorspronkelijk waren het de tuinen van het Palacio de San Telmo, die in 1893 aan de stad werden geschonken. Het park werd herontworpen voor de wereldtentoonstelling van 1929 in romantische landschapsstijl met vijvers, fonteinen, betegelde bankjes, pergola's en schaduwrijke lanen onder oude bomen. Hier vind je ook de Plaza de América met het Archeologisch Museum en het Museum voor Volkskunst.",
+    "en": "The Parque de María Luisa is Seville's most famous park, stretching along the Guadalquivir River. Originally the gardens of the Palacio de San Telmo, they were donated to the city in 1893. The park was redesigned for the 1929 World's Fair in romantic landscape style with ponds, fountains, tiled benches, pergolas, and shaded avenues under old trees. Here you will also find the Plaza de América with the Archaeological Museum and the Museum of Folk Arts."
+  },
+  "coordinates": {
+    "lat": 37.3738,
+    "lng": -5.9872
+  },
+  "pricing": {
+    "adult": 0,
+    "notes": {
+      "nl": "Gratis toegankelijk. Paard-en-koetsritten door het park kosten ca. €45 per rit.",
+      "en": "Free to enter. Horse-and-carriage rides through the park cost approx. €45 per ride."
+    }
+  },
+  "duration": 60,
+  "priority": "recommended",
+  "images": [
+    "seville-parque-maria-luisa-path-1",
+    "seville-parque-maria-luisa-fountain-1",
+    "seville-parque-maria-luisa-plaza-america-1"
+  ],
+  "thumbnail": "/images/attractions/seville-parque-maria-luisa.jpg",
+  "media": [
+    {
+      "type": "image",
+      "src": "/images/attractions/seville-parque-maria-luisa-fountain.jpg",
+      "alt": { "nl": "Fontein in Parque María Luisa", "en": "Fountain in Parque María Luisa" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/seville-parque-maria-luisa-path.jpg",
+      "alt": { "nl": "Schaduwrijk pad in het park", "en": "Shaded path in the park" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/seville-parque-maria-luisa-plaza-america.jpg",
+      "alt": { "nl": "Plaza de América", "en": "Plaza de América" }
+    }
+  ],
+  "bookingRequired": false,
+  "openingHours": {
+    "monday": "08:00-22:00",
+    "tuesday": "08:00-22:00",
+    "wednesday": "08:00-22:00",
+    "thursday": "08:00-22:00",
+    "friday": "08:00-22:00",
+    "saturday": "08:00-22:00",
+    "sunday": "08:00-22:00"
+  },
+  "tips": {
+    "nl": "Combineer het parkbezoek met de Plaza de España die aan de noordkant van het park ligt. De Plaza de América aan de zuidkant is veel rustiger en minstens zo mooi. Ideaal als rustpunt tijdens een warme middag dankzij de schaduwrijke paden. Neem water mee, er zijn weinig verkooppunten in het park.",
+    "en": "Combine the park visit with the Plaza de España on the north side of the park. The Plaza de América on the south side is much quieter and just as beautiful. Ideal as a resting point during a hot afternoon thanks to the shaded paths. Bring water, there are few vendors in the park."
+  }
+}

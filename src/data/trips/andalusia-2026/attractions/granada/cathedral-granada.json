@@ -1,0 +1,65 @@
+{
+  "id": "granada-cathedral",
+  "name": "Catedral de Granada",
+  "city": "granada",
+  "category": "church",
+  "description": {
+    "nl": "De Kathedraal van Granada is een imposant renaissancebouwwerk en een van de grootste kathedralen van Spanje. Gebouwd op de plek van de voormalige grote moskee na de Reconquista, werd het ontwerp begonnen door Diego de Siloe in 1528. De lichtdoorlatende witte interieurs, de enorme ronde kapel (Capilla Mayor) en het indrukwekkende hoofdaltaar zijn bijzonder. De kathedraal grenst aan de Capilla Real maar heeft een aparte ingang. De gevel aan de Gran Via is een icoon van het stadsbeeld.",
+    "en": "Granada Cathedral is an imposing Renaissance structure and one of the largest cathedrals in Spain. Built on the site of the former great mosque after the Reconquista, its design was begun by Diego de Siloe in 1528. The light-filled white interiors, the enormous round chapel (Capilla Mayor), and the impressive main altarpiece are highlights. The cathedral is adjacent to the Capilla Real but has a separate entrance. The facade on the Gran Via is an icon of the cityscape."
+  },
+  "coordinates": {
+    "lat": 37.1764,
+    "lng": -3.5994
+  },
+  "pricing": {
+    "adult": 10,
+    "student": 7,
+    "child": 0,
+    "guidedTour": 26,
+    "notes": {
+      "nl": "Kinderen onder 12 gratis. De guided tour van €26 omvat de kathedraal met een deskundige gids (ca. 1 uur). Gecombineerde ticket met Capilla Real en gids beschikbaar voor €36. Audioguide inbegrepen bij de standaard entree.",
+      "en": "Children under 12 free. The €26 guided tour includes the cathedral with an expert guide (approx. 1 hour). Combined ticket with Capilla Real and guide available for €36. Audio guide included with standard entry."
+    }
+  },
+  "duration": 60,
+  "priority": "recommended",
+  "images": [
+    "granada-cathedral-facade",
+    "granada-cathedral-interior",
+    "granada-cathedral-capilla-mayor",
+    "granada-cathedral-altar"
+  ],
+  "thumbnail": "/images/attractions/granada-cathedral.jpg",
+  "media": [
+    {
+      "type": "image",
+      "src": "/images/attractions/granada-cathedral-interior.jpg",
+      "alt": { "nl": "Interieur van de Kathedraal van Granada", "en": "Interior of Granada Cathedral" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/granada-cathedral-facade.jpg",
+      "alt": { "nl": "Gevel van de Kathedraal", "en": "Cathedral facade" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/granada-cathedral-dome.jpg",
+      "alt": { "nl": "Koepel van de Kathedraal", "en": "Cathedral dome" }
+    }
+  ],
+  "bookingRequired": false,
+  "openingHours": {
+    "monday": "10:00-18:30",
+    "tuesday": "10:00-18:30",
+    "wednesday": "10:00-18:30",
+    "thursday": "10:00-18:30",
+    "friday": "10:00-18:30",
+    "saturday": "10:00-18:30",
+    "sunday": "15:00-18:00"
+  },
+  "website": "https://www.catedraldegranada.com",
+  "tips": {
+    "nl": "Koop een gecombineerde ticket met de Capilla Real voor de beste waarde. De kathedraal is minder druk dan de Capilla Real en het Alhambra, dus je kunt hier vaak rustig rondlopen. Let op de kortere openingstijden op zondag (alleen namiddag). De kerk is gebouwd in een mix van gotische en renaissancestijl — let op het contrast tussen de oudere en nieuwere delen. De ingang is aan de zijkant, niet via de hoofdgevel.",
+    "en": "Buy a combined ticket with the Capilla Real for best value. The cathedral is less crowded than the Capilla Real and the Alhambra, so you can often walk around peacefully. Note the shorter opening hours on Sunday (afternoon only). The church is built in a mix of Gothic and Renaissance styles — notice the contrast between older and newer sections. The entrance is on the side, not through the main facade."
+  }
+}

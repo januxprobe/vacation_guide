@@ -1,0 +1,52 @@
+{
+  "id": "seville-plaza-de-espana",
+  "name": "Plaza de España",
+  "city": "seville",
+  "category": "monument",
+  "description": {
+    "nl": "De Plaza de España is een van de meest indrukwekkende pleinen van Spanje, gebouwd voor de Ibero-Amerikaanse Tentoonstelling van 1929. Het halfronde plein met een kanaal, bruggen en een monumentaal gebouw in neo-Moorse en neo-Renaissance stijl bevat 48 betegelde alkoven die de Spaanse provincies voorstellen. De kleurrijke keramische tegels, de imposante fontein en de elegante bruggen maken het tot een onvergetelijke plek. Het plein diende ook als filmlocatie voor Star Wars en Lawrence of Arabia.",
+    "en": "The Plaza de España is one of the most impressive squares in Spain, built for the Ibero-American Exposition of 1929. The semicircular plaza with a canal, bridges, and a monumental building in neo-Moorish and neo-Renaissance style features 48 tiled alcoves representing the Spanish provinces. The colorful ceramic tiles, the imposing fountain, and the elegant bridges make it an unforgettable place. The square also served as a filming location for Star Wars and Lawrence of Arabia."
+  },
+  "coordinates": {
+    "lat": 37.3772,
+    "lng": -5.9869
+  },
+  "pricing": {
+    "adult": 0,
+    "notes": {
+      "nl": "Volledig gratis toegankelijk. Roeiboten op het kanaal kosten ca. €6 voor 30 minuten.",
+      "en": "Completely free to visit. Rowing boats on the canal cost approx. €6 for 30 minutes."
+    }
+  },
+  "duration": 60,
+  "priority": "essential",
+  "images": [
+    "seville-plaza-espana-panoramic-1",
+    "seville-plaza-espana-tiles-1",
+    "seville-plaza-espana-bridge-1",
+    "seville-plaza-espana-canal-1"
+  ],
+  "thumbnail": "/images/attractions/seville-plaza-de-espana.jpg",
+  "media": [
+    {
+      "type": "image",
+      "src": "/images/attractions/seville-plaza-espana-panorama.jpg",
+      "alt": { "nl": "Panorama van Plaza de España", "en": "Panorama of Plaza de España" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/seville-plaza-espana-bridge.jpg",
+      "alt": { "nl": "Brug over het kanaal", "en": "Bridge over the canal" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/seville-plaza-espana-tiles.jpg",
+      "alt": { "nl": "Keramische tegels van de provincies", "en": "Ceramic tiles of the provinces" }
+    }
+  ],
+  "bookingRequired": false,
+  "tips": {
+    "nl": "Kom vroeg in de ochtend (voor 09:00) of bij zonsondergang om de mensenmassa's te vermijden en het mooiste licht te hebben. Zoek de tegel-alkoof van je favoriete Spaanse provincie op. Een bootje huren op het kanaal is leuk maar niet essentieel. Combineer het bezoek met een wandeling door het aangrenzende Parque de María Luisa. Let op je spullen, zakkenrollers zijn hier actief.",
+    "en": "Come early in the morning (before 09:00) or at sunset to avoid crowds and have the best light. Look for the tile alcove of your favorite Spanish province. Renting a boat on the canal is fun but not essential. Combine the visit with a walk through the adjacent Parque de María Luisa. Watch your belongings, pickpockets are active here."
+  }
+}

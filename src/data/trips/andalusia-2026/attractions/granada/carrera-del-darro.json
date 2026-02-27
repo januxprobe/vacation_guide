@@ -1,0 +1,53 @@
+{
+  "id": "granada-carrera-del-darro",
+  "name": "Carrera del Darro",
+  "city": "granada",
+  "category": "neighborhood",
+  "description": {
+    "nl": "De Carrera del Darro is een van de mooiste en meest romantische straten van Spanje. Deze historische promenade loopt langs de rivier de Darro, aan de voet van het Alhambra. Onderweg passeer je middeleeuwse bruggen, Arabische badhuizen (El Banuelo) en eeuwenoude gebouwen met balkons vol bloemen. De straat verbindt het centrum met het Albaicin en biedt prachtige doorkijkjes naar het Alhambra dat hoog op de heuvel troont.",
+    "en": "The Carrera del Darro is one of the most beautiful and romantic streets in Spain. This historic promenade runs along the Darro River at the foot of the Alhambra. Along the way you pass medieval bridges, Arab baths (El Banuelo), and centuries-old buildings with flower-filled balconies. The street connects the city center to the Albaicin and offers stunning views up to the Alhambra perched high on the hill above."
+  },
+  "coordinates": {
+    "lat": 37.1774,
+    "lng": -3.5908
+  },
+  "pricing": {
+    "adult": 0,
+    "notes": {
+      "nl": "De wandeling is gratis. El Banuelo (Arabisch badhuis) kost €5 entree, of gratis op zondag. Diverse cafes en restaurants langs de route.",
+      "en": "The walk is free. El Banuelo (Arab baths) costs €5 entry, or free on Sundays. Various cafes and restaurants along the route."
+    }
+  },
+  "duration": 60,
+  "priority": "recommended",
+  "images": [
+    "granada-carrera-del-darro-river",
+    "granada-carrera-del-darro-bridge",
+    "granada-carrera-del-darro-alhambra-view",
+    "granada-carrera-del-darro-banuelo"
+  ],
+  "thumbnail": "/images/attractions/granada-carrera-del-darro.jpg",
+  "media": [
+    {
+      "type": "image",
+      "src": "/images/attractions/granada-carrera-darro-river.jpg",
+      "alt": { "nl": "Rivier de Darro langs de Carrera", "en": "Darro River along the Carrera" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/granada-carrera-darro-bridge.jpg",
+      "alt": { "nl": "Middeleeuwse brug over de Darro", "en": "Medieval bridge over the Darro" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/granada-carrera-darro-view.jpg",
+      "alt": { "nl": "Paseo de los Tristes", "en": "Paseo de los Tristes" }
+    }
+  ],
+  "bookingRequired": false,
+  "website": "https://www.granadatur.com",
+  "tips": {
+    "nl": "Combineer deze wandeling met een bezoek aan het Albaicin — loop de Carrera del Darro helemaal uit en ga dan omhoog richting de Mirador de San Nicolas. In de late namiddag is het licht het mooist voor foto's met het Alhambra op de achtergrond. Stop bij een van de terrasjes voor een drankje aan de rivier. Bezoek El Banuelo, een van de best bewaarde Arabische badhuizen van Spanje.",
+    "en": "Combine this walk with a visit to the Albaicin — walk the full length of Carrera del Darro and then head uphill towards Mirador de San Nicolas. Late afternoon light is best for photos with the Alhambra in the background. Stop at one of the riverside terraces for a drink. Visit El Banuelo, one of the best-preserved Arab baths in Spain."
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "id": "granada-alhambra",
+  "name": "Alhambra & Generalife",
+  "city": "granada",
+  "category": "palace",
+  "description": {
+    "nl": "Het Alhambra is het meest bezochte monument van Spanje en een meesterwerk van Moorse architectuur. Het complex omvat de Nasridenpaleizen met hun betoverende stucwerk en waterpartijen, het Alcazaba-fort met panoramisch uitzicht over Granada, en de prachtige tuinen van het Generalife — het zomerpaleis van de sultans. De Leeuwenhof met zijn iconische fontein is het absolute hoogtepunt. Reserveer ruim van tevoren, want de dagelijkse capaciteit is beperkt.",
+    "en": "The Alhambra is the most visited monument in Spain and a masterpiece of Moorish architecture. The complex includes the Nasrid Palaces with their mesmerizing stucco work and water features, the Alcazaba fortress with panoramic views over Granada, and the stunning Generalife gardens — the summer palace of the sultans. The Court of the Lions with its iconic fountain is the absolute highlight. Book well in advance as daily capacity is limited."
+  },
+  "coordinates": {
+    "lat": 37.1761,
+    "lng": -3.5881
+  },
+  "pricing": {
+    "adult": 22,
+    "student": 16,
+    "child": 0,
+    "guidedTour": 49,
+    "notes": {
+      "nl": "Kinderen onder 12 gratis. Nachtbezoek Nasridenpaleizen beschikbaar op vrijdag en zaterdag (€10). Guided tour van €49 omvat alle paleizen, Generalife en Alcazaba met Engelstalige gids. Tickets tot 3 maanden vooruit te boeken via de officiele website.",
+      "en": "Children under 12 free. Night visit to Nasrid Palaces available on Friday and Saturday (€10). The €49 guided tour includes all palaces, Generalife and Alcazaba with an English-speaking guide. Tickets can be booked up to 3 months in advance via the official website."
+    }
+  },
+  "duration": 210,
+  "priority": "essential",
+  "images": [
+    "granada-alhambra-court-of-lions",
+    "granada-alhambra-nasrid-palaces",
+    "granada-alhambra-generalife-gardens",
+    "granada-alhambra-alcazaba-view",
+    "granada-alhambra-comares-hall"
+  ],
+  "thumbnail": "/images/attractions/granada-alhambra.jpg",
+  "media": [
+    {
+      "type": "image",
+      "src": "/images/attractions/granada-alhambra-lions.jpg",
+      "alt": { "nl": "Leeuwenhof van het Alhambra", "en": "Court of the Lions at the Alhambra" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/granada-alhambra-nasrid.jpg",
+      "alt": { "nl": "Nasridenpaleizen - Patio de los Arrayanes", "en": "Nasrid Palaces - Court of the Myrtles" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/granada-alhambra-generalife.jpg",
+      "alt": { "nl": "Generalife tuinen", "en": "Generalife gardens" }
+    },
+    {
+      "type": "video",
+      "src": "iEseJViidy8",
+      "alt": { "nl": "Het Alhambra - Rick Steves", "en": "The Exquisite Alhambra - Rick Steves" }
+    }
+  ],
+  "bookingRequired": true,
+  "openingHours": {
+    "monday": "08:30-20:00",
+    "tuesday": "08:30-20:00",
+    "wednesday": "08:30-20:00",
+    "thursday": "08:30-20:00",
+    "friday": "08:30-20:00",
+    "saturday": "08:30-20:00",
+    "sunday": "08:30-20:00"
+  },
+  "website": "https://www.alhambra-patronato.es",
+  "tips": {
+    "nl": "Boek minimaal 2 maanden van tevoren — tickets zijn snel uitverkocht, vooral in het voorjaar en de zomer. Je krijgt een tijdslot voor de Nasridenpaleizen: wees er op tijd, want als je het mist kun je niet meer naar binnen. Ga 's ochtends vroeg om de drukte te vermijden. Neem water en comfortabele schoenen mee, het terrein is groot en heuvelachtig. De tuinen van het Generalife zijn het mooist in het late namiddaglicht.",
+    "en": "Book at least 2 months ahead — tickets sell out fast, especially in spring and summer. You will be assigned a time slot for the Nasrid Palaces: arrive on time as late entry is not allowed. Go early in the morning to avoid crowds. Bring water and comfortable shoes as the grounds are large and hilly. The Generalife gardens are most beautiful in late afternoon light."
+  }
+}

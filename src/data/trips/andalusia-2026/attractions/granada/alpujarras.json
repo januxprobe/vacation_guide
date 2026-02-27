@@ -1,0 +1,54 @@
+{
+  "id": "granada-alpujarras",
+  "name": "Las Alpujarras",
+  "city": "granada",
+  "category": "nature",
+  "description": {
+    "nl": "Las Alpujarras is een spectaculair berggebied op de zuidelijke hellingen van de Sierra Nevada. De witgekalkte dorpjes — zoals Pampaneira, Bubion en Capileira in de Poqueira-kloof — lijken aan de bergwanden te kleven en hebben hun Moorse karakter door de eeuwen heen bewaard. Lanjaron, het toegangspoort tot de regio, is beroemd om zijn bronwater. De regio biedt prachtige wandelingen, ambachtelijke markten, lokale ham en wijn, en een vredige ontsnapping aan de stad.",
+    "en": "Las Alpujarras is a spectacular mountain region on the southern slopes of the Sierra Nevada. The whitewashed villages — such as Pampaneira, Bubion, and Capileira in the Poqueira Gorge — seem to cling to the mountainsides and have preserved their Moorish character through the centuries. Lanjaron, the gateway to the region, is famous for its spring water. The area offers beautiful hikes, artisan markets, local ham and wine, and a peaceful escape from the city."
+  },
+  "coordinates": {
+    "lat": 36.9444,
+    "lng": -3.3553
+  },
+  "pricing": {
+    "adult": 0,
+    "notes": {
+      "nl": "Gratis toegang. Rijd zelf (ca. 1,5 uur vanaf Granada) of neem de Alsa-bus naar Lanjaron/Pampaneira (ca. €7 enkele reis). Huurauto aanbevolen voor flexibiliteit. Parkeren in de dorpjes is gratis maar beperkt. Reken op kosten voor eten en eventuele activiteiten.",
+      "en": "Free access. Drive yourself (approx. 1.5 hours from Granada) or take the Alsa bus to Lanjaron/Pampaneira (approx. €7 one way). Rental car recommended for flexibility. Parking in the villages is free but limited. Budget for food and any activities."
+    }
+  },
+  "duration": 300,
+  "priority": "optional",
+  "images": [
+    "granada-alpujarras-pampaneira",
+    "granada-alpujarras-poqueira-gorge",
+    "granada-alpujarras-capileira",
+    "granada-alpujarras-sierra-nevada",
+    "granada-alpujarras-lanjaron"
+  ],
+  "thumbnail": "/images/attractions/granada-alpujarras.png",
+  "media": [
+    {
+      "type": "image",
+      "src": "/images/attractions/granada-alpujarras-village.jpg",
+      "alt": { "nl": "Capileira in de Alpujarras", "en": "Capileira in the Alpujarras" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/granada-alpujarras-landscape.jpg",
+      "alt": { "nl": "Pampaneira in de Poqueira-kloof", "en": "Pampaneira in the Poqueira Gorge" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/granada-alpujarras-pampaneira.jpg",
+      "alt": { "nl": "Dorpsgezicht Pampaneira", "en": "Village view of Pampaneira" }
+    }
+  ],
+  "bookingRequired": false,
+  "website": "https://www.alpujarras.org",
+  "tips": {
+    "nl": "Plan een volledige dag voor dit uitje. Begin vroeg en rijd via Lanjaron naar Pampaneira, het eerste dorp in de Poqueira-kloof. Wandel tussen de drie dorpjes (Pampaneira, Bubion, Capileira) of neem de auto. Lunch in Capileira met uitzicht op de bergen — probeer de lokale plato alpujarreno (gerecht met ham, bloedworst, ei en aardappelen). Koop lokale ambachten zoals jarapas (gekleurde kleden). De bergwegen zijn kronkelig maar goed onderhouden.",
+    "en": "Plan a full day for this trip. Start early and drive via Lanjaron to Pampaneira, the first village in the Poqueira Gorge. Walk between the three villages (Pampaneira, Bubion, Capileira) or drive. Lunch in Capileira with mountain views — try the local plato alpujarreno (a dish with ham, blood sausage, egg, and potatoes). Buy local crafts like jarapas (colorful rugs). The mountain roads are winding but well-maintained."
+  }
+}

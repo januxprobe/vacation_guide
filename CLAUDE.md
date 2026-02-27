@@ -1,8 +1,8 @@
-# Andalusia Vacation Guide - Project Documentation
+# Vacation Guide - Trip Planning Platform
 
 ## Project Overview
 
-A Next.js web application for planning a family trip to Andalusia (Seville, Cordoba, Granada) in September 2026. Built for 5 people: 2 adults (50+) and 3 young adults (~20 years).
+A reusable Next.js web application for planning multi-city trips. Currently configured with an Andalusia trip (Seville, Cordoba, Granada, September 2026) for 5 people: 2 adults (50+) and 3 young adults (~20 years). The platform supports multiple trips via URL routing (`/[locale]/[tripSlug]/...`).
 
 ### Key Features
 - Interactive daily itinerary with timeline
@@ -37,23 +37,43 @@ vacation_guide/
 │   │   ├── layout.tsx                   # Root layout (passthrough)
 │   │   ├── globals.css                  # Global styles + Tailwind
 │   │   └── [locale]/                    # i18n routing (nl/en)
-│   │       ├── layout.tsx               # Locale layout with NextIntlClientProvider
-│   │       ├── page.tsx                 # Homepage
-│   │       ├── itinerary/
-│   │       │   ├── page.tsx             # Day overview
-│   │       │   └── [day]/              # Day detail (TODO)
-│   │       ├── attractions/
-│   │       │   ├── page.tsx             # All attractions
-│   │       │   └── [id]/               # Attraction detail (TODO)
-│   │       ├── map/page.tsx             # Interactive map
-│   │       ├── restaurants/page.tsx     # Restaurant tips
-│   │       └── budget/page.tsx          # Budget calculator
+│   │       ├── layout.tsx               # Locale layout (NextIntlClientProvider + default TripConfigProvider)
+│   │       ├── page.tsx                 # Redirect to default trip
+│   │       ├── [tripSlug]/              # Trip-scoped routes
+│   │       │   ├── layout.tsx           # Trip layout (resolves TripConfig, provides context)
+│   │       │   ├── page.tsx             # Trip homepage (hero, stats, quick links)
+│   │       │   ├── attractions/
+│   │       │   │   ├── page.tsx         # Attractions list with filters
+│   │       │   │   └── [id]/page.tsx    # Attraction detail (static gen)
+│   │       │   ├── itinerary/page.tsx   # Day overview
+│   │       │   ├── map/page.tsx         # Interactive map
+│   │       │   ├── restaurants/page.tsx # Restaurant tips
+│   │       │   └── budget/page.tsx      # Budget calculator
+│   │       ├── attractions/page.tsx     # Backward-compat redirect
+│   │       ├── itinerary/page.tsx       # Backward-compat redirect
+│   │       ├── map/page.tsx             # Backward-compat redirect
+│   │       ├── restaurants/page.tsx     # Backward-compat redirect
+│   │       └── budget/page.tsx          # Backward-compat redirect
+│   ├── config/
+│   │   ├── trip-config.ts               # TripConfig, CityConfig, TravelerGroup interfaces
+│   │   ├── trip-context.tsx             # React context + useTripConfig() hook
+│   │   └── trips/
+│   │       ├── index.ts                 # Trip registry (getTripBySlug, getAllTrips)
+│   │       └── andalusia-2026.ts        # Andalusia trip config instance
 │   ├── components/
 │   │   ├── layout/
-│   │   │   ├── Header.tsx               # Navigation + language switcher
+│   │   │   ├── Header.tsx               # Navigation + language switcher (config-driven colors)
 │   │   │   └── LanguageSwitcher.tsx      # NL/EN toggle
 │   │   ├── ui/                          # shadcn/ui (empty, add as needed)
-│   │   ├── attractions/                 # TODO: Phase 2
+│   │   ├── attractions/
+│   │   │   ├── AttractionCard.tsx       # Card with config-driven color bar, badges, pricing
+│   │   │   ├── AttractionDetail.tsx     # Full detail view (config-driven colors)
+│   │   │   ├── AttractionFilter.tsx     # City/category/priority filters (cities from config)
+│   │   │   ├── AttractionsList.tsx      # List with filtering and sorting
+│   │   │   ├── MediaGallery.tsx         # Image/video gallery with carousel
+│   │   │   ├── FullscreenCarousel.tsx   # Fullscreen image viewer
+│   │   │   ├── VideoEmbed.tsx           # YouTube embed component
+│   │   │   └── PriceInfo.tsx            # Price breakdown display
 │   │   ├── itinerary/                   # TODO: Phase 3
 │   │   ├── budget/                      # TODO: Phase 3
 │   │   ├── restaurants/                 # TODO: Phase 3
@@ -61,29 +81,35 @@ vacation_guide/
 │   │   ├── home/                        # TODO: Phase 5
 │   │   └── shared/                      # TODO: Phase 5
 │   ├── lib/
-│   │   └── utils.ts                     # cn() helper from shadcn
+│   │   ├── utils.ts                     # cn() helper from shadcn
+│   │   ├── data-loaders.ts             # Config-driven fs.readFileSync + Zod validation
+│   │   ├── schemas.ts                   # Zod schemas for attraction data validation
+│   │   └── city-colors.ts              # Color utilities (hex->rgba, badge/gradient styles)
 │   ├── types/
-│   │   └── index.ts                     # All TypeScript interfaces
-│   ├── data/                            # Static JSON data (TODO: Phase 2-3)
-│   │   ├── attractions/{seville,cordoba,granada}/
-│   │   ├── restaurants/
-│   │   ├── itinerary/
-│   │   └── cities/
+│   │   └── index.ts                     # All TypeScript interfaces (City = string)
+│   ├── data/
+│   │   └── trips/
+│   │       └── andalusia-2026/
+│   │           └── attractions/
+│   │               ├── seville/         # 10 JSON files
+│   │               ├── cordoba/         # 7 JSON files
+│   │               └── granada/         # 8 JSON files
 │   └── i18n/
 │       ├── routing.ts                   # Locale config + navigation wrappers
 │       ├── request.ts                   # Server-side locale resolution
 │       └── messages/
-│           ├── nl.json                  # Dutch translations
-│           └── en.json                  # English translations
+│           ├── nl.json                  # Dutch translations (generic UI)
+│           └── en.json                  # English translations (generic UI)
 ├── public/
 │   ├── images/{cities,attractions}/     # Static images
 │   └── icons/markers/                   # Custom map markers
 ├── tests/
-│   └── visual-test.spec.ts             # Playwright visual tests
+│   ├── visual-test.spec.ts             # Core visual tests (navigation, i18n, mobile)
+│   └── attractions-test.spec.ts        # Attractions feature tests (list, detail, filters)
 ├── middleware.ts                        # next-intl locale detection
 ├── next.config.ts                       # Next.js config (standalone + i18n)
 ├── playwright.config.ts                 # Playwright config (headed mode)
-├── tailwind.config.ts                   # (managed by Tailwind v4)
+├── RESOURCES.md                         # Reusable patterns for trip creation
 └── package.json
 ```
 
@@ -117,9 +143,20 @@ const t = useTranslations();
 - **Map components** must use `'use client'` and dynamic import with `ssr: false`
 
 ### City Color Scheme
-- Seville: Orange (`#f97316` / orange-600)
-- Cordoba: Red (`#dc2626` / red-600)
-- Granada: Green (`#16a34a` / green-600)
+City colors are defined in trip config (`src/config/trips/andalusia-2026.ts`), not hardcoded:
+- Seville: Orange (`#f97316`)
+- Cordoba: Red (`#dc2626`)
+- Granada: Green (`#16a34a`)
+
+Colors are applied via inline styles using `src/lib/city-colors.ts` utilities (not Tailwind classes, because Tailwind v4 JIT can't handle runtime-interpolated classes).
+
+### Multi-Trip Architecture
+- Trip configs: `src/config/trips/*.ts` (implement TripConfig interface)
+- Trip registry: `src/config/trips/index.ts` (maps slugs to configs)
+- Trip context: `src/config/trip-context.tsx` (React context for client components)
+- URL structure: `/{locale}/{tripSlug}/attractions/...`
+- Old URLs (without tripSlug) redirect to the default trip
+- Adding a new trip = new config file + new data directory + register in index.ts
 
 ## Development
 
@@ -138,7 +175,7 @@ npx playwright test --headed --grep "X"   # Run specific test
 - Playwright visual tests in `tests/visual-test.spec.ts`
 - Tests run in headed mode (visible Chrome browser) so progress can be observed
 - After any changes, run `npx playwright test --headed` to verify
-- 4 core tests: NL navigation, language switching, mobile viewport, HTML structure
+- 8 tests total: 4 core (NL navigation, language switching, mobile, HTML structure) + 4 attractions (list/filters, detail page, English mode, category filter)
 
 ### Adding shadcn/ui Components
 ```bash
@@ -157,17 +194,36 @@ npx shadcn@latest add card      # Example: add card component
 - [x] All route pages created with translations
 - [x] Playwright visual testing setup (4 tests passing)
 
-### Phase 2: Data Entry & Attractions [PENDING]
-- [ ] Extract all attraction data from `vakantie 2026.docx` into JSON files
-- [ ] **Seville** (10+ attractions): Real Alcazar, Cathedral/Giralda, Barrio Santa Cruz, Setas de Sevilla, Plaza de Espana, Parque Maria Luisa, Torre del Oro, Triana, Italica, Jerez
-- [ ] **Cordoba** (7+ attractions): Mezquita, Alcazar de los Reyes Cristianos, Roman Bridge, Torre de la Calahorra, La Juderia, Palacio de Viana, Templo Romano, Plaza de la Corredera
-- [ ] **Granada** (8+ attractions): Alhambra, Generalife, Carrera del Darro, Albaicin, Capilla Real, Sacromonte, Las Alpujarras, Costa Tropical
-- [ ] Look up GPS coordinates for each attraction
-- [ ] AttractionCard, AttractionDetail, PriceInfo, PhotoGallery components
-- [ ] Attractions list page with city/category filters
-- [ ] Attraction detail page (`/attractions/[id]`)
-- [ ] Unsplash API proxy route for images
-- [ ] Add Playwright tests for attractions
+### Phase 2: Data Entry & Attractions [COMPLETED]
+- [x] Extract all attraction data into JSON files (25 attractions)
+- [x] **Seville** (10 attractions): Real Alcazar, Cathedral/Giralda, Barrio Santa Cruz, Setas de Sevilla, Plaza de Espana, Parque Maria Luisa, Torre del Oro, Triana, Italica, Jerez
+- [x] **Cordoba** (7 attractions): Mezquita, Alcazar de los Reyes Cristianos, Roman Bridge, La Juderia, Palacio de Viana, Templo Romano, Plaza de la Corredera
+- [x] **Granada** (8 attractions): Alhambra, Carrera del Darro, Albaicin, Capilla Real, Cathedral, Sacromonte, Las Alpujarras, Costa Tropical
+- [x] GPS coordinates for each attraction
+- [x] AttractionCard, AttractionDetail, PriceInfo components
+- [x] AttractionFilter with city/category/priority filter buttons
+- [x] AttractionsList with sorting (essential first)
+- [x] Attractions list page with filters (`/attractions`)
+- [x] Attraction detail page (`/attractions/[id]`) with static generation
+- [x] Data loader (`src/lib/data-loaders.ts`) with query functions
+- [x] Playwright tests for attractions (4 tests passing)
+- [ ] Unsplash API proxy route for images (deferred - using placeholders)
+- [ ] PhotoGallery component (deferred - needs images)
+
+### Phase 2.5: Platform Generalization [COMPLETED]
+- [x] TripConfig interface + andalusia-2026 config instance
+- [x] React context (TripConfigProvider + useTripConfig hook)
+- [x] Dynamic data loading (fs.readFileSync + directory scanning, replaces 25 static imports)
+- [x] Zod validation schemas for attraction data
+- [x] City color utilities (inline styles replacing hardcoded Tailwind classes)
+- [x] All components use config context (AttractionCard, AttractionDetail, AttractionFilter, Header, homepage)
+- [x] Multi-trip URL routing: /[locale]/[tripSlug]/...
+- [x] Trip registry with getTripBySlug/getAllTrips
+- [x] Backward-compatible redirects (old URLs -> default trip)
+- [x] RESOURCES.md documentation for future trip creation
+- [x] All 8 Playwright tests passing
+- [x] City type generalized from union to string
+- [x] BudgetConfig generalized to use travelerCounts Record
 
 ### Phase 3: Itinerary & Budget [PENDING]
 - [ ] Complete itinerary JSON (`september-2026.json`) with all 7 days

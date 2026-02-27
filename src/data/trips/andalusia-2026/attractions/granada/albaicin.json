@@ -1,0 +1,55 @@
+{
+  "id": "granada-albaicin",
+  "name": "Albaicin",
+  "city": "granada",
+  "category": "neighborhood",
+  "description": {
+    "nl": "Het Albaicin is de oude Moorse wijk van Granada en staat op de UNESCO Werelderfgoedlijst. Dit betoverende doolhof van smalle straatjes, witgekalkte huizen en verborgen tuinen (carmenes) ademt eeuwen geschiedenis. Het absolute hoogtepunt is de Mirador de San Nicolas, dat het meest iconische uitzicht van Spanje biedt: het Alhambra verlicht door de ondergaande zon met de Sierra Nevada op de achtergrond. Verlies je in de steegjes, ontdek Arabische theehuizen en geniet van de authentieke sfeer.",
+    "en": "The Albaicin is the old Moorish quarter of Granada and a UNESCO World Heritage Site. This enchanting maze of narrow streets, whitewashed houses, and hidden gardens (carmenes) breathes centuries of history. The absolute highlight is the Mirador de San Nicolas, offering what many consider the most iconic view in Spain: the Alhambra illuminated by the setting sun with the Sierra Nevada mountains as backdrop. Lose yourself in the alleyways, discover Arab teahouses, and soak in the authentic atmosphere."
+  },
+  "coordinates": {
+    "lat": 37.1813,
+    "lng": -3.5928
+  },
+  "pricing": {
+    "adult": 0,
+    "guidedTour": 25,
+    "notes": {
+      "nl": "Het wandelen door de wijk is gratis. Een begeleide rondleiding kost ongeveer €25 per persoon en duurt 1,5 tot 2 uur. Er zijn ook gratis wandelroutes beschikbaar via de toeristeninfo.",
+      "en": "Walking through the quarter is free. A guided walking tour costs approximately €25 per person and lasts 1.5 to 2 hours. Free self-guided route maps are also available at the tourist office."
+    }
+  },
+  "duration": 90,
+  "priority": "essential",
+  "images": [
+    "granada-albaicin-mirador-san-nicolas",
+    "granada-albaicin-streets",
+    "granada-albaicin-alhambra-sunset",
+    "granada-albaicin-carmen-garden",
+    "granada-albaicin-teahouse"
+  ],
+  "thumbnail": "/images/attractions/granada-albaicin.jpg",
+  "media": [
+    {
+      "type": "image",
+      "src": "/images/attractions/granada-albaicin-mirador.jpg",
+      "alt": { "nl": "Mirador de San Nicolás", "en": "Mirador de San Nicolás" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/granada-albaicin-street.jpg",
+      "alt": { "nl": "Straatje in het Albaicín", "en": "Street in the Albaicín" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/granada-albaicin-sunset.jpg",
+      "alt": { "nl": "Alhambra bij zonsondergang vanuit het Albaicín", "en": "Alhambra at sunset from the Albaicín" }
+    }
+  ],
+  "bookingRequired": false,
+  "website": "https://www.albaicingranada.com",
+  "tips": {
+    "nl": "Ga rond 18:00-19:00 naar de Mirador de San Nicolas voor de mooiste zonsondergang (tijden varieren per seizoen). Het plein wordt druk, dus kom een half uur eerder voor een goede plek. Draag comfortabele schoenen — de stenen straatjes zijn steil en glad. Bezoek een Arabisch theehuis in de Calle Caldereria Nueva voor verse munthee. Let op je bezittingen op drukke plekken.",
+    "en": "Head to Mirador de San Nicolas around 18:00-19:00 for the most beautiful sunset (times vary by season). The square gets crowded, so arrive half an hour early for a good spot. Wear comfortable shoes — the cobbled streets are steep and slippery. Visit an Arab teahouse on Calle Caldereria Nueva for fresh mint tea. Watch your belongings in crowded areas."
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "id": "seville-real-alcazar",
+  "name": "Real Alcázar de Sevilla",
+  "city": "seville",
+  "category": "palace",
+  "description": {
+    "nl": "Het Real Alcázar is een schitterend koninklijk paleis dat oorspronkelijk werd gebouwd als Moors fort in de 10e eeuw. Het complex combineert Moorse, Mudéjar, Gotische en Renaissance-architectuur en is nog steeds in gebruik door de Spaanse koninklijke familie. De uitgestrekte tuinen met fonteinen, paviljoens en sinaasappelbomen zijn minstens zo indrukwekkend als het paleis zelf. Het Alcázar diende ook als filmlocatie voor Game of Thrones (Dorne).",
+    "en": "The Real Alcázar is a stunning royal palace originally built as a Moorish fort in the 10th century. The complex blends Moorish, Mudéjar, Gothic, and Renaissance architecture and is still used by the Spanish royal family. The expansive gardens with fountains, pavilions, and orange trees are just as impressive as the palace itself. The Alcázar also served as a filming location for Game of Thrones (Dorne)."
+  },
+  "coordinates": {
+    "lat": 37.3826,
+    "lng": -5.9911
+  },
+  "pricing": {
+    "adult": 21,
+    "student": 13.5,
+    "guidedTour": 32,
+    "notes": {
+      "nl": "Gratis op maandag van 18:00-19:00 (beperkte capaciteit, reservering verplicht). Cuarto Real Alto kost extra.",
+      "en": "Free on Mondays from 18:00-19:00 (limited capacity, reservation required). Cuarto Real Alto costs extra."
+    }
+  },
+  "duration": 150,
+  "priority": "essential",
+  "images": [
+    "seville-alcazar-1",
+    "seville-alcazar-2",
+    "seville-alcazar-gardens-1",
+    "seville-alcazar-patio-doncellas"
+  ],
+  "thumbnail": "/images/attractions/seville-real-alcazar.jpg",
+  "media": [
+    {
+      "type": "image",
+      "src": "/images/attractions/seville-real-alcazar-patio-doncellas.jpg",
+      "alt": { "nl": "Patio de las Doncellas in het Alcázar", "en": "Patio de las Doncellas in the Alcázar" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/seville-real-alcazar-gardens.jpg",
+      "alt": { "nl": "Tuinen van het Real Alcázar", "en": "Gardens of the Real Alcázar" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/seville-real-alcazar-ambassadors.jpg",
+      "alt": { "nl": "Salon de Embajadores", "en": "Hall of Ambassadors" }
+    },
+    {
+      "type": "video",
+      "src": "8FOx1c1cZgs",
+      "alt": { "nl": "Sevilla en het Alcázar - Rick Steves", "en": "Sevilla and Its Alcázar - Rick Steves" }
+    }
+  ],
+  "bookingRequired": true,
+  "openingHours": {
+    "monday": "09:30-19:00",
+    "tuesday": "09:30-19:00",
+    "wednesday": "09:30-19:00",
+    "thursday": "09:30-19:00",
+    "friday": "09:30-19:00",
+    "saturday": "09:30-19:00",
+    "sunday": "09:30-19:00"
+  },
+  "website": "https://www.alcazarsevilla.org",
+  "tips": {
+    "nl": "Boek online minstens een week van tevoren, vooral in het hoogseizoen. Ga als eerste bezoekers om 09:30 naar binnen om de Patio de las Doncellas zonder mensenmassa's te zien. Neem de tijd voor de tuinen, die zijn enorm. De Cuarto Real Alto (bovenverdieping) is een apart ticket waard.",
+    "en": "Book online at least a week in advance, especially in peak season. Enter right at 09:30 opening to see the Patio de las Doncellas without crowds. Take your time in the gardens, they are enormous. The Cuarto Real Alto (upper floor) is worth the separate ticket."
+  }
+}

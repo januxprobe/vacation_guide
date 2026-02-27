@@ -1,4 +1,12 @@
-export type City = 'seville' | 'cordoba' | 'granada';
+export type MediaType = 'image' | 'video';
+
+export interface MediaItem {
+  type: MediaType;
+  src: string;              // Local path for images, YouTube ID for videos
+  alt: LocalizedString;
+}
+
+export type City = string;
 
 export type AttractionCategory =
   | 'monument'
@@ -53,6 +61,8 @@ export interface Attraction {
   duration: number; // minutes
   priority: Priority;
   images: string[];
+  thumbnail?: string;
+  media?: MediaItem[];
   bookingRequired: boolean;
   openingHours?: OpeningHours;
   website?: string;
@@ -114,8 +124,7 @@ export interface Restaurant {
 }
 
 export interface BudgetConfig {
-  adults50Plus: number;
-  youngAdults20: number;
+  travelerCounts: Record<string, number>;
   applyStudentDiscount: boolean;
 }
 

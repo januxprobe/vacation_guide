@@ -1,0 +1,62 @@
+{
+  "id": "seville-italica",
+  "name": "Itálica (Santiponce)",
+  "city": "seville",
+  "category": "monument",
+  "description": {
+    "nl": "Itálica is een Romeinse ruïnestad in Santiponce, zo'n 9 km ten noordwesten van Sevilla. Gesticht in 206 v.Chr. door generaal Scipio Africanus, was het de geboorteplaats van de Romeinse keizers Trajanus en Hadrianus. Het indrukwekkendste overblijfsel is het amfitheater, een van de grootste van het Romeinse Rijk met plaats voor 25.000 toeschouwers. Je kunt ook prachtig bewaarde mozaïekvloeren, Romeinse straten en de resten van herenhuizen bewonderen. Het amfitheater werd gebruikt als filmlocatie voor de Dragonpit-scènes in Game of Thrones.",
+    "en": "Itálica is a Roman ruin city in Santiponce, about 9 km northwest of Seville. Founded in 206 BC by general Scipio Africanus, it was the birthplace of Roman emperors Trajan and Hadrian. The most impressive remains are the amphitheater, one of the largest in the Roman Empire with seating for 25,000 spectators. You can also admire beautifully preserved mosaic floors, Roman streets, and the remains of mansions. The amphitheater was used as a filming location for the Dragonpit scenes in Game of Thrones."
+  },
+  "coordinates": {
+    "lat": 37.444,
+    "lng": -6.0456
+  },
+  "pricing": {
+    "adult": 3,
+    "notes": {
+      "nl": "Gratis voor EU-burgers. Busrit met lijn M-172 vanaf Plaza de Armas kost ca. €1,65 enkele reis. De bus rijdt elke 30 minuten.",
+      "en": "Free for EU citizens. Bus ride with line M-172 from Plaza de Armas costs approx. €1.65 one way. The bus runs every 30 minutes."
+    }
+  },
+  "duration": 150,
+  "priority": "recommended",
+  "images": [
+    "seville-italica-amphitheater-1",
+    "seville-italica-amphitheater-aerial-1",
+    "seville-italica-mosaics-1",
+    "seville-italica-roman-street-1"
+  ],
+  "thumbnail": "/images/attractions/seville-italica.jpg",
+  "media": [
+    {
+      "type": "image",
+      "src": "/images/attractions/seville-italica-amphitheater.jpg",
+      "alt": { "nl": "Amfitheater van Itálica", "en": "Amphitheater of Itálica" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/seville-italica-mosaics.jpg",
+      "alt": { "nl": "Romeinse mozaïeken", "en": "Roman mosaics" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/seville-italica-ruins.jpg",
+      "alt": { "nl": "Ruïnes van Itálica", "en": "Ruins of Itálica" }
+    }
+  ],
+  "bookingRequired": false,
+  "openingHours": {
+    "monday": "Gesloten / Closed",
+    "tuesday": "09:00-18:00",
+    "wednesday": "09:00-18:00",
+    "thursday": "09:00-18:00",
+    "friday": "09:00-18:00",
+    "saturday": "09:00-18:00",
+    "sunday": "09:00-15:00"
+  },
+  "website": "https://www.museosdeandalucia.es/web/conjuntoarqueologicodeitalica",
+  "tips": {
+    "nl": "Neem bus M-172 vanaf het busstation Plaza de Armas (niet te verwarren met Prado de San Sebastián). De rit duurt circa 20 minuten. Neem zonnebrandcrème en water mee, want er is nauwelijks schaduw op de site. Ga 's ochtends vroeg, zeker in de zomer. De mozaïekvloeren in het Casa de los Pájaros en de Casa del Planetario zijn bijzonder indrukwekkend. Gesloten op maandag.",
+    "en": "Take bus M-172 from the Plaza de Armas bus station (not to be confused with Prado de San Sebastián). The ride takes about 20 minutes. Bring sunscreen and water as there is hardly any shade on site. Go early in the morning, especially in summer. The mosaic floors in the Casa de los Pájaros and the Casa del Planetario are particularly impressive. Closed on Mondays."
+  }
+}

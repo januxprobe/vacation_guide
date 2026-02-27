@@ -1,0 +1,61 @@
+{
+  "id": "seville-setas-de-sevilla",
+  "name": "Setas de Sevilla (Metropol Parasol)",
+  "city": "seville",
+  "category": "monument",
+  "description": {
+    "nl": "De Setas de Sevilla, officieel Metropol Parasol, is 's werelds grootste houten constructie. Dit futuristische paddenstoelvormige bouwwerk op de Plaza de la Encarnación werd ontworpen door de Duitse architect Jürgen Mayer en voltooid in 2011. De bovenkant biedt een panoramische wandeling met spectaculair uitzicht over Sevilla. In de kelder bevindt zich het Antiquarium met Romeinse en Moorse archeologische resten.",
+    "en": "Las Setas de Sevilla, officially Metropol Parasol, is the world's largest wooden structure. This futuristic mushroom-shaped building on the Plaza de la Encarnación was designed by German architect Jürgen Mayer and completed in 2011. The top offers a panoramic walkway with spectacular views over Seville. The basement houses the Antiquarium with Roman and Moorish archaeological remains."
+  },
+  "coordinates": {
+    "lat": 37.3935,
+    "lng": -5.9918
+  },
+  "pricing": {
+    "adult": 5,
+    "notes": {
+      "nl": "Ticket voor de panoramische wandeling bovenop. Het Antiquarium in de kelder is gratis.",
+      "en": "Ticket for the panoramic walkway on top. The Antiquarium in the basement is free."
+    }
+  },
+  "duration": 45,
+  "priority": "recommended",
+  "images": [
+    "seville-setas-sunset-1",
+    "seville-setas-panoramic-1",
+    "seville-setas-detail-wood-1"
+  ],
+  "thumbnail": "/images/attractions/seville-setas-de-sevilla.jpg",
+  "media": [
+    {
+      "type": "image",
+      "src": "/images/attractions/seville-setas-night.jpg",
+      "alt": { "nl": "Metropol Parasol bij nacht", "en": "Metropol Parasol at night" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/seville-setas-walkway.jpg",
+      "alt": { "nl": "Panoramische wandelpad bovenop", "en": "Panoramic walkway on top" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/seville-setas-below.jpg",
+      "alt": { "nl": "Antiquarium onder de Setas", "en": "Antiquarium beneath the Setas" }
+    }
+  ],
+  "bookingRequired": false,
+  "openingHours": {
+    "monday": "09:30-23:30",
+    "tuesday": "09:30-23:30",
+    "wednesday": "09:30-23:30",
+    "thursday": "09:30-23:30",
+    "friday": "09:30-00:00",
+    "saturday": "09:30-00:00",
+    "sunday": "09:30-23:30"
+  },
+  "website": "https://www.setasdesevilla.com",
+  "tips": {
+    "nl": "Ga bij zonsondergang voor het mooiste uitzicht en licht. Het ticket bevat een consumptie op het terras bovenaan. Vergeet niet het gratis Antiquarium in de kelder te bezoeken met Romeinse opgravingen. De markt op de begane grond is leuk voor verse producten.",
+    "en": "Go at sunset for the most beautiful views and light. The ticket includes a drink at the terrace on top. Do not forget to visit the free Antiquarium in the basement with Roman excavations. The market on the ground floor is nice for fresh produce."
+  }
+}

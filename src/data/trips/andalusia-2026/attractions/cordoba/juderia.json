@@ -1,0 +1,63 @@
+{
+  "id": "cordoba-juderia",
+  "name": "La Judería (Jewish Quarter)",
+  "city": "cordoba",
+  "category": "neighborhood",
+  "description": {
+    "nl": "La Judería is de historische Joodse wijk van Córdoba en een UNESCO-werelderfgoed. Het doolhof van smalle, kronkelende straatjes met witgekalkte huizen, bloemrijke patio's en gezellige pleintjes is de ziel van de stad. Hoogtepunten zijn de Sinagoga de Córdoba (een van de slechts drie overgebleven middeleeuwse synagogen in Spanje), de Calleja de las Flores (een fotogeniek steegje met uitzicht op de Mezquita-toren), en het standbeeld van Maimonides. De wijk is ook vol met ambachtelijke winkeltjes, tapasbarretjes en verborgen patio's.",
+    "en": "La Judería is the historic Jewish Quarter of Córdoba and a UNESCO World Heritage Site. The maze of narrow, winding streets with whitewashed houses, flower-filled patios, and charming small squares is the soul of the city. Highlights include the Sinagoga de Córdoba (one of only three remaining medieval synagogues in Spain), the Calleja de las Flores (a photogenic alley with views of the Mezquita tower), and the statue of Maimonides. The quarter is also full of artisan shops, tapas bars, and hidden patios."
+  },
+  "coordinates": {
+    "lat": 37.8797,
+    "lng": -4.7816
+  },
+  "pricing": {
+    "adult": 0,
+    "child": 0,
+    "notes": {
+      "nl": "De wijk zelf is gratis te bezoeken. De Synagoge kost €0,30 (gratis voor EU-burgers). Sommige patio's hebben een kleine toegangsprijs tijdens het Patiosfestival in mei.",
+      "en": "The quarter itself is free to explore. The Synagogue costs €0.30 (free for EU citizens). Some patios have a small entry fee during the Patios Festival in May."
+    }
+  },
+  "duration": 60,
+  "priority": "recommended",
+  "images": [
+    "cordoba-juderia-calleja-flores",
+    "cordoba-juderia-streets",
+    "cordoba-juderia-synagogue",
+    "cordoba-juderia-maimonides"
+  ],
+  "thumbnail": "/images/attractions/cordoba-juderia.jpg",
+  "media": [
+    {
+      "type": "image",
+      "src": "/images/attractions/cordoba-juderia-street.jpg",
+      "alt": { "nl": "Calleja de las Flores", "en": "Calleja de las Flores" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/cordoba-juderia-flowers.jpg",
+      "alt": { "nl": "Bloemen in de Judería", "en": "Flowers in the Judería" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/cordoba-juderia-synagogue.jpg",
+      "alt": { "nl": "Synagoge van Córdoba", "en": "Córdoba Synagogue" }
+    }
+  ],
+  "bookingRequired": false,
+  "openingHours": {
+    "monday": "24h (buitenwijk / outdoor quarter)",
+    "tuesday": "24h (buitenwijk / outdoor quarter)",
+    "wednesday": "24h (buitenwijk / outdoor quarter)",
+    "thursday": "24h (buitenwijk / outdoor quarter)",
+    "friday": "24h (buitenwijk / outdoor quarter)",
+    "saturday": "24h (buitenwijk / outdoor quarter)",
+    "sunday": "24h (buitenwijk / outdoor quarter)"
+  },
+  "website": "https://www.turismodecordoba.org",
+  "tips": {
+    "nl": "Bezoek de Judería vroeg in de ochtend of laat in de middag om de ergste drukte te vermijden. De Calleja de las Flores is het fotogeniekste steegje — loop helemaal door voor het uitzicht op de Mezquita-toren. Als je in mei komt, mis dan absoluut niet het Festival de los Patios, wanneer bewoners hun patio's openen voor publiek. Probeer salmorejo (koude tomatensoep) in een van de lokale barretjes — het is een typisch Córdobees gerecht.",
+    "en": "Visit the Judería early morning or late afternoon to avoid the worst crowds. The Calleja de las Flores is the most photogenic alley — walk all the way through for the view of the Mezquita tower. If visiting in May, absolutely do not miss the Festival de los Patios, when residents open their patios to the public. Try salmorejo (cold tomato soup) at one of the local bars — it's a typical Córdoban dish."
+  }
+}

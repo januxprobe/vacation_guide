@@ -1,0 +1,60 @@
+{
+  "id": "granada-sacromonte",
+  "name": "Sacromonte",
+  "city": "granada",
+  "category": "neighborhood",
+  "description": {
+    "nl": "Sacromonte is de legendarische zigeunerwijk van Granada, beroemd om zijn grotwoningen (cuevas) die in de heuvels zijn uitgehouwen en om zijn authentieke flamencoshows. De wijk ligt boven het Albaicin en biedt spectaculaire uitzichten op het Alhambra. Het Museo Cuevas del Sacromonte toont het traditionele leven in de grotten. 's Avonds komen de cuevas tot leven met intieme flamencovoorstellingen — de zambra — die hier al eeuwenlang worden opgevoerd.",
+    "en": "Sacromonte is Granada's legendary Roma quarter, famous for its cave dwellings (cuevas) carved into the hillsides and its authentic flamenco shows. The neighborhood sits above the Albaicin and offers spectacular views of the Alhambra. The Museo Cuevas del Sacromonte showcases traditional cave life. In the evenings, the cuevas come alive with intimate flamenco performances — the zambra — that have been performed here for centuries."
+  },
+  "coordinates": {
+    "lat": 37.1808,
+    "lng": -3.583
+  },
+  "pricing": {
+    "adult": 5,
+    "student": 3,
+    "child": 0,
+    "notes": {
+      "nl": "Museumtoegang €5 voor volwassenen, €3 studenten, kinderen onder 10 gratis. Flamencoshows in de grotten kosten €20-35 per persoon, vaak inclusief een drankje. De wandeling door de wijk zelf is gratis. Boek flamencoshows bij voorkeur online.",
+      "en": "Museum entry €5 for adults, €3 students, children under 10 free. Flamenco shows in the caves cost €20-35 per person, often including a drink. Walking through the neighborhood itself is free. Book flamenco shows online in advance when possible."
+    }
+  },
+  "duration": 90,
+  "priority": "recommended",
+  "images": [
+    "granada-sacromonte-caves",
+    "granada-sacromonte-flamenco",
+    "granada-sacromonte-museum",
+    "granada-sacromonte-alhambra-view",
+    "granada-sacromonte-hillside"
+  ],
+  "thumbnail": "/images/attractions/granada-sacromonte.jpg",
+  "media": [
+    {
+      "type": "image",
+      "src": "/images/attractions/granada-sacromonte-caves.jpg",
+      "alt": { "nl": "Grotwoningen van Sacromonte", "en": "Cave dwellings of Sacromonte" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/granada-sacromonte-abbey.jpg",
+      "alt": { "nl": "Abdij van Sacromonte", "en": "Sacromonte Abbey" }
+    }
+  ],
+  "bookingRequired": false,
+  "openingHours": {
+    "monday": "10:00-18:00",
+    "tuesday": "10:00-18:00",
+    "wednesday": "10:00-18:00",
+    "thursday": "10:00-18:00",
+    "friday": "10:00-18:00",
+    "saturday": "10:00-18:00",
+    "sunday": "10:00-18:00"
+  },
+  "website": "https://www.sacromontegranada.com",
+  "tips": {
+    "nl": "Bezoek het museum overdag en kom 's avonds terug voor een flamencoshow in een grot — dit is de meest authentieke flamencobeleving van heel Andalusie. De wandeling omhoog is steil, dus draag goede schoenen. Kies een kleinere, minder toeristische cueva voor de beste show. Vraag bij je accommodatie naar aanbevelingen. Combineer met een bezoek aan de Abadia del Sacromonte bovenaan de heuvel.",
+    "en": "Visit the museum during the day and come back in the evening for a flamenco show in a cave — this is the most authentic flamenco experience in all of Andalusia. The walk up is steep, so wear good shoes. Choose a smaller, less touristy cueva for the best show. Ask your accommodation for recommendations. Combine with a visit to the Abadia del Sacromonte at the top of the hill."
+  }
+}

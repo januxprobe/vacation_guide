@@ -1,0 +1,62 @@
+{
+  "id": "seville-torre-del-oro",
+  "name": "Torre del Oro",
+  "city": "seville",
+  "category": "museum",
+  "description": {
+    "nl": "De Torre del Oro (Toren van Goud) is een 13e-eeuwse dodecagonale militaire wachttoren aan de oevers van de Guadalquivir. Gebouwd door de Almohaden in 1220-1221, maakte de toren deel uit van de stadsverdediging en werd later gebruikt als gevangenis en opslagplaats voor goud en zilver uit de Amerika's. Vandaag herbergt de toren het Museo Naval met scheepsmodellen, historische kaarten en navigatie-instrumenten. Vanaf het dakterras heb je een mooi uitzicht over de rivier en de stad.",
+    "en": "The Torre del Oro (Tower of Gold) is a 13th-century dodecagonal military watchtower on the banks of the Guadalquivir. Built by the Almohads in 1220-1221, the tower was part of the city's defenses and was later used as a prison and storage for gold and silver from the Americas. Today the tower houses the Museo Naval with ship models, historical maps, and navigation instruments. From the rooftop terrace you have a nice view over the river and the city."
+  },
+  "coordinates": {
+    "lat": 37.3824,
+    "lng": -5.9963
+  },
+  "pricing": {
+    "adult": 3,
+    "child": 0,
+    "notes": {
+      "nl": "Gratis op maandag. Kinderen onder 6 jaar gratis.",
+      "en": "Free on Mondays. Children under 6 free."
+    }
+  },
+  "duration": 30,
+  "priority": "optional",
+  "images": [
+    "seville-torre-del-oro-river-1",
+    "seville-torre-del-oro-sunset-1",
+    "seville-torre-del-oro-interior-1"
+  ],
+  "thumbnail": "/images/attractions/seville-torre-del-oro.jpg",
+  "media": [
+    {
+      "type": "image",
+      "src": "/images/attractions/seville-torre-del-oro-river.jpg",
+      "alt": { "nl": "Torre del Oro aan de Guadalquivir", "en": "Torre del Oro on the Guadalquivir" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/seville-torre-del-oro-detail.jpg",
+      "alt": { "nl": "Detail van de Torre del Oro", "en": "Detail of the Torre del Oro" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/seville-torre-del-oro-night.jpg",
+      "alt": { "nl": "Torre del Oro bij nacht", "en": "Torre del Oro at night" }
+    }
+  ],
+  "bookingRequired": false,
+  "openingHours": {
+    "monday": "09:30-18:45",
+    "tuesday": "09:30-18:45",
+    "wednesday": "09:30-18:45",
+    "thursday": "09:30-18:45",
+    "friday": "09:30-18:45",
+    "saturday": "10:30-18:45",
+    "sunday": "10:30-14:45"
+  },
+  "website": "https://www.visitasevilla.es/en/torre-del-oro",
+  "tips": {
+    "nl": "Een kort maar leuk bezoek dat je makkelijk combineert met een wandeling langs de rivier. Het dakterras biedt het leukste uitzicht. Op maandag is de toegang gratis. Het museum zelf is klein, maar de toren en het uitzicht maken het de moeite waard. Loop daarna langs de rivier richting de Triana-brug.",
+    "en": "A short but enjoyable visit that easily combines with a walk along the river. The rooftop terrace offers the nicest views. On Mondays admission is free. The museum itself is small, but the tower and the view make it worthwhile. Afterwards walk along the river towards the Triana bridge."
+  }
+}

@@ -5,6 +5,8 @@ import { routing } from '@/i18n/routing';
 import { Geist, Geist_Mono } from 'next/font/google';
 import '../globals.css';
 import Header from '@/components/layout/Header';
+import { TripConfigProvider } from '@/config/trip-context';
+import { getDefaultTrip } from '@/config/trips';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -26,13 +28,12 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const trip = getDefaultTrip();
+  const loc = locale as 'nl' | 'en';
 
   return {
-    title: locale === 'nl' ? 'Andalusië Vakantiegids' : 'Andalusia Travel Guide',
-    description:
-      locale === 'nl'
-        ? 'Een complete gids voor een familiereis door Sevilla, Córdoba en Granada'
-        : 'A complete guide for a family trip through Seville, Córdoba and Granada',
+    title: trip.name[loc],
+    description: trip.description[loc],
   };
 }
 
@@ -53,6 +54,7 @@ export default async function LocaleLayout({
   // Providing all messages to the client
   // side is the easiest way to get started
   const messages = await getMessages({ locale });
+  const trip = getDefaultTrip();
 
   return (
     <html lang={locale}>
@@ -64,10 +66,12 @@ export default async function LocaleLayout({
           locale={locale}
           key={locale}
         >
-          <div className="min-h-screen flex flex-col">
-            <Header />
-            <main className="flex-1">{children}</main>
-          </div>
+          <TripConfigProvider config={trip}>
+            <div className="min-h-screen flex flex-col">
+              <Header />
+              <main className="flex-1">{children}</main>
+            </div>
+          </TripConfigProvider>
         </NextIntlClientProvider>
       </body>
     </html>

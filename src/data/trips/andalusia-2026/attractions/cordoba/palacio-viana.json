@@ -1,0 +1,64 @@
+{
+  "id": "cordoba-palacio-viana",
+  "name": "Palacio de Viana",
+  "city": "cordoba",
+  "category": "palace",
+  "description": {
+    "nl": "Het Palacio de Viana, ook bekend als het 'Museum van de Patio's', is een prachtig 15e-eeuws adellijk paleis in het hart van Córdoba. Het paleis is beroemd om zijn 12 unieke patio's en een grote tuin, elk met een eigen karakter en stijl — van intieme bloementuin tot statig Renaissance-binnenplein. De interieurs bevatten een rijke collectie van wandtapijten, schilderijen, porselein, wapens en lederen kunstwerken. Het paleis biedt een uniek kijkje in de Andalusische patio-cultuur die Córdoba wereldberoemd heeft gemaakt.",
+    "en": "The Palacio de Viana, also known as the 'Museum of the Patios', is a beautiful 15th-century noble palace in the heart of Córdoba. The palace is famous for its 12 unique patios and a large garden, each with its own character and style — from intimate flower gardens to stately Renaissance courtyards. The interiors contain a rich collection of tapestries, paintings, porcelain, weapons, and leather artworks. The palace offers a unique glimpse into the Andalusian patio culture that has made Córdoba world-famous."
+  },
+  "coordinates": {
+    "lat": 37.8878,
+    "lng": -4.7748
+  },
+  "pricing": {
+    "adult": 12,
+    "student": 6,
+    "child": 0,
+    "notes": {
+      "nl": "Alleen patio's bezoeken kost €7. Volledig bezoek (patio's + paleis-interieur) kost €12. Kinderen onder 6 jaar gratis. Gratis op woensdag van 14:00-17:00.",
+      "en": "Patios-only visit costs €7. Full visit (patios + palace interior) costs €12. Children under 6 free. Free on Wednesdays from 14:00-17:00."
+    }
+  },
+  "duration": 90,
+  "priority": "optional",
+  "images": [
+    "cordoba-viana-patio-principal",
+    "cordoba-viana-patio-flowers",
+    "cordoba-viana-garden",
+    "cordoba-viana-interior"
+  ],
+  "thumbnail": "/images/attractions/cordoba-palacio-viana.jpg",
+  "media": [
+    {
+      "type": "image",
+      "src": "/images/attractions/cordoba-palacio-viana-patio.jpg",
+      "alt": { "nl": "Patio de las Columnas", "en": "Patio de las Columnas" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/cordoba-palacio-viana-garden.jpg",
+      "alt": { "nl": "Tuin van Palacio de Viana", "en": "Garden of Palacio de Viana" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/cordoba-palacio-viana-facade.jpg",
+      "alt": { "nl": "Gevel van het Palacio de Viana", "en": "Facade of the Palacio de Viana" }
+    }
+  ],
+  "bookingRequired": false,
+  "openingHours": {
+    "monday": "Gesloten / Closed",
+    "tuesday": "10:00-19:00",
+    "wednesday": "10:00-19:00",
+    "thursday": "10:00-19:00",
+    "friday": "10:00-19:00",
+    "saturday": "10:00-19:00",
+    "sunday": "10:00-15:00"
+  },
+  "website": "https://palaciodeviana.com",
+  "tips": {
+    "nl": "Als je weinig tijd hebt, kies dan voor het patio's-only ticket (€7) — de patio's zijn het echte hoogtepunt. Bezoek bij voorkeur in het voorjaar wanneer de bloemen op hun mooist zijn. Het paleis ligt buiten het toeristische centrum, dus het is rustiger dan de bezienswaardigheden rond de Mezquita. Combineer het bezoek met een wandeling door de authentieke wijk Santa Marina.",
+    "en": "If you're short on time, choose the patios-only ticket (€7) — the patios are the real highlight. Best visited in spring when the flowers are at their most beautiful. The palace is outside the tourist center, so it's quieter than the sights around the Mezquita. Combine the visit with a walk through the authentic Santa Marina neighborhood."
+  }
+}

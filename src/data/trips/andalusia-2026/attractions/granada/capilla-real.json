@@ -1,0 +1,65 @@
+{
+  "id": "granada-capilla-real",
+  "name": "Capilla Real (Royal Chapel)",
+  "city": "granada",
+  "category": "church",
+  "description": {
+    "nl": "De Capilla Real is de koninklijke grafkapel van de Katholieke Koningen Ferdinand en Isabella, die hier in 1521 werden bijgezet. De kapel is een meesterwerk van gotische architectuur en herbergt de prachtig uitgehouwen marmeren grafmonumenten, een indrukwekkend smeedijzeren hekwerk van Bartolome de Jaen, en een kleine maar uitzonderlijke kunstcollectie met werken van Memling, Botticelli en Van der Weyden. De kapel grenst aan de Kathedraal van Granada.",
+    "en": "The Capilla Real is the royal funerary chapel of the Catholic Monarchs Ferdinand and Isabella, who were interred here in 1521. The chapel is a masterpiece of Gothic architecture and houses beautifully carved marble tombs, an impressive wrought-iron screen by Bartolome de Jaen, and a small but exceptional art collection featuring works by Memling, Botticelli, and Van der Weyden. The chapel is adjacent to Granada Cathedral."
+  },
+  "coordinates": {
+    "lat": 37.1762,
+    "lng": -3.5985
+  },
+  "pricing": {
+    "adult": 7,
+    "student": 4,
+    "child": 0,
+    "guidedTour": 36,
+    "notes": {
+      "nl": "Kinderen onder 12 gratis. De gecombineerde ticket van €36 omvat de Capilla Real, de Kathedraal en een Engelstalige gids. Gratis entree op bepaalde feestdagen — raadpleeg de website. Audioguide beschikbaar voor €3.",
+      "en": "Children under 12 free. The €36 combined ticket includes the Royal Chapel, the Cathedral, and an English-speaking guide. Free entry on certain public holidays — check the website. Audio guide available for €3."
+    }
+  },
+  "duration": 60,
+  "priority": "recommended",
+  "images": [
+    "granada-capilla-real-tombs",
+    "granada-capilla-real-interior",
+    "granada-capilla-real-altarpiece",
+    "granada-capilla-real-iron-screen"
+  ],
+  "thumbnail": "/images/attractions/granada-capilla-real.jpg",
+  "media": [
+    {
+      "type": "image",
+      "src": "/images/attractions/granada-capilla-real-interior.jpg",
+      "alt": { "nl": "Interieur van de Capilla Real", "en": "Interior of the Royal Chapel" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/granada-capilla-real-tombs.jpg",
+      "alt": { "nl": "Grafmonumenten van Ferdinand en Isabella", "en": "Tombs of Ferdinand and Isabella" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/granada-capilla-real-facade.jpg",
+      "alt": { "nl": "Gevel van de Capilla Real", "en": "Facade of the Royal Chapel" }
+    }
+  ],
+  "bookingRequired": false,
+  "openingHours": {
+    "monday": "10:15-18:30",
+    "tuesday": "10:15-18:30",
+    "wednesday": "10:15-18:30",
+    "thursday": "10:15-18:30",
+    "friday": "10:15-18:30",
+    "saturday": "10:15-18:30",
+    "sunday": "11:00-18:00"
+  },
+  "website": "https://www.capillarealgranada.com",
+  "tips": {
+    "nl": "Combineer je bezoek met de naastgelegen Kathedraal — de gecombineerde ticket is voordeliger. Fotografie is niet toegestaan binnen de kapel. Neem de tijd om de kunstcollectie op de bovenverdieping te bekijken, die vaak over het hoofd wordt gezien. De crypte onder de grafmonumenten bevat de eenvoudige loden kisten van Ferdinand en Isabella — een ontroerend contrast met de pracht erboven.",
+    "en": "Combine your visit with the adjacent Cathedral — the combined ticket is better value. Photography is not allowed inside the chapel. Take time to view the art collection upstairs, which is often overlooked. The crypt beneath the tombs contains the simple lead coffins of Ferdinand and Isabella — a moving contrast to the grandeur above."
+  }
+}

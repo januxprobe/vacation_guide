@@ -1,0 +1,58 @@
+{
+  "id": "cordoba-plaza-corredera",
+  "name": "Plaza de la Corredera",
+  "city": "cordoba",
+  "category": "neighborhood",
+  "description": {
+    "nl": "De Plaza de la Corredera is het grootste en enige volledig rechthoekige plein in Andalusië, geïnspireerd op de Castiliaanse plaza mayor-traditie. Het 17e-eeuwse plein met zijn kenmerkende drielaagse galerijen heeft een rijke geschiedenis als arena voor stierengevechten, markt en openbare evenementen. Vandaag de dag is het een levendig plein omringd door terrassen, tapasbarretjes en kleine winkeltjes. Op zaterdagochtend wordt er een gezellige rommelmarkt gehouden. Het plein ligt iets buiten de meest toeristische zone, waardoor het een authentieke sfeer behoudt.",
+    "en": "The Plaza de la Corredera is the largest and only fully rectangular square in Andalusia, inspired by the Castilian plaza mayor tradition. The 17th-century square with its distinctive three-story galleries has a rich history as a venue for bullfights, markets, and public events. Today it is a lively square surrounded by terraces, tapas bars, and small shops. On Saturday mornings, a charming flea market is held. The square is slightly outside the most touristy zone, which helps it maintain an authentic atmosphere."
+  },
+  "coordinates": {
+    "lat": 37.8847,
+    "lng": -4.7759
+  },
+  "pricing": {
+    "adult": 0,
+    "child": 0,
+    "notes": {
+      "nl": "Volledig gratis toegankelijk. Budget alleen voor drankjes en tapas op de terrassen.",
+      "en": "Completely free to access. Only budget for drinks and tapas at the terraces."
+    }
+  },
+  "duration": 30,
+  "priority": "recommended",
+  "images": [
+    "cordoba-plaza-corredera-panorama",
+    "cordoba-plaza-corredera-terraces",
+    "cordoba-plaza-corredera-evening",
+    "cordoba-plaza-corredera-market"
+  ],
+  "thumbnail": "/images/attractions/cordoba-plaza-corredera.jpg",
+  "media": [
+    {
+      "type": "image",
+      "src": "/images/attractions/cordoba-plaza-corredera-aerial.jpg",
+      "alt": { "nl": "Luchtfoto van Plaza de la Corredera", "en": "Aerial view of Plaza de la Corredera" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/cordoba-plaza-corredera-evening.jpg",
+      "alt": { "nl": "Plaza de la Corredera in de avond", "en": "Plaza de la Corredera in the evening" }
+    }
+  ],
+  "bookingRequired": false,
+  "openingHours": {
+    "monday": "24h (openbaar plein / public square)",
+    "tuesday": "24h (openbaar plein / public square)",
+    "wednesday": "24h (openbaar plein / public square)",
+    "thursday": "24h (openbaar plein / public square)",
+    "friday": "24h (openbaar plein / public square)",
+    "saturday": "24h (openbaar plein / public square)",
+    "sunday": "24h (openbaar plein / public square)"
+  },
+  "website": "https://www.turismodecordoba.org",
+  "tips": {
+    "nl": "Het plein is perfect voor een late-afternoon drankje of een avond tapas. Probeer de terrassen aan de zonkant voor de beste sfeer. Kom op zaterdagochtend voor de rommelmarkt waar je vintage spullen en curiosa kunt vinden. Onder het plein zijn resten van een Romeinse markt gevonden — kijk naar de glazen panelen in de grond. De barretjes hier zijn goedkoper dan die rond de Mezquita.",
+    "en": "The square is perfect for a late-afternoon drink or evening tapas. Try the terraces on the sunny side for the best atmosphere. Come on Saturday morning for the flea market where you can find vintage items and curiosities. Remains of a Roman market were found beneath the square — look for the glass panels in the ground. The bars here are cheaper than those around the Mezquita."
+  }
+}

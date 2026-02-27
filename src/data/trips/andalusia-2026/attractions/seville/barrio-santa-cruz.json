@@ -1,0 +1,51 @@
+{
+  "id": "seville-barrio-santa-cruz",
+  "name": "Barrio Santa Cruz",
+  "city": "seville",
+  "category": "neighborhood",
+  "description": {
+    "nl": "Het Barrio Santa Cruz is de voormalige Joodse wijk van Sevilla en een van de meest sfeervolle buurten van de stad. Een doolhof van smalle straatjes, verborgen pleintjes met sinaasappelbomen, betegelde binnenplaatsen en witgekalkte huizen versierd met bloemen. Hier vind je gezellige tapasbarretjes, boetiekwinkels en prachtige patio's. Het is de perfecte buurt om doelloos te verdwalen.",
+    "en": "Barrio Santa Cruz is the former Jewish quarter of Seville and one of the most atmospheric neighborhoods in the city. A labyrinth of narrow streets, hidden plazas with orange trees, tiled courtyards, and whitewashed houses decorated with flowers. Here you will find charming tapas bars, boutique shops, and beautiful patios. It is the perfect neighborhood to wander aimlessly."
+  },
+  "coordinates": {
+    "lat": 37.3848,
+    "lng": -5.987
+  },
+  "pricing": {
+    "adult": 0,
+    "notes": {
+      "nl": "Gratis om te verkennen. Een rondleiding kost ca. €15-20 per persoon.",
+      "en": "Free to explore. A guided walking tour costs approx. €15-20 per person."
+    }
+  },
+  "duration": 60,
+  "priority": "recommended",
+  "images": [
+    "seville-santa-cruz-street-1",
+    "seville-santa-cruz-patio-1",
+    "seville-santa-cruz-plaza-1"
+  ],
+  "thumbnail": "/images/attractions/seville-barrio-santa-cruz.jpg",
+  "media": [
+    {
+      "type": "image",
+      "src": "/images/attractions/seville-barrio-santa-cruz-street.jpg",
+      "alt": { "nl": "Straatje in Barrio Santa Cruz", "en": "Street in Barrio Santa Cruz" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/seville-barrio-santa-cruz-patio.jpg",
+      "alt": { "nl": "Patio de los Banderas", "en": "Patio de los Banderas" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/seville-barrio-santa-cruz-plaza.jpg",
+      "alt": { "nl": "Plaza Doña Elvira", "en": "Plaza Doña Elvira" }
+    }
+  ],
+  "bookingRequired": false,
+  "tips": {
+    "nl": "Verken deze wijk na je bezoek aan het Alcázar of de kathedraal, want het ligt er direct naast. De beste patio's zijn te vinden in de zijstraatjes van Calle Mateos Gago. Plaza de los Venerables en Plaza de Doña Elvira zijn prachtige rustpunten. Vermijd de toeristenvallen op de hoofdstraten en zoek de verborgen barretjes op.",
+    "en": "Explore this neighborhood after visiting the Alcázar or the cathedral, as it is right next door. The best patios can be found in the side streets off Calle Mateos Gago. Plaza de los Venerables and Plaza de Doña Elvira are beautiful rest stops. Avoid the tourist traps on the main streets and seek out the hidden bars."
+  }
+}

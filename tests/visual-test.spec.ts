@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 const BASE_URL = 'http://localhost:3000';
+const TRIP_SLUG = 'andalusia-2026';
 
 test.describe('Vacation Guide Visual Tests', () => {
   test.use({
@@ -10,7 +11,7 @@ test.describe('Vacation Guide Visual Tests', () => {
   });
 
   test('should navigate through Dutch (NL) pages', async ({ page }) => {
-    // Go to Dutch homepage
+    // Go to Dutch homepage (redirects to trip page)
     await page.goto(`${BASE_URL}/nl`);
     await expect(page).toHaveTitle(/Vakantiegids/i);
 
@@ -23,35 +24,35 @@ test.describe('Vacation Guide Visual Tests', () => {
     // Test navigation - Itinerary
     console.log('✓ Clicking Dagplanning (Itinerary)...');
     await page.click('text=Dagplanning');
-    await page.waitForURL('**/nl/itinerary');
+    await page.waitForURL(`**/${TRIP_SLUG}/itinerary`);
     await expect(page.locator('h1')).toContainText('Dagplanning');
     await page.waitForTimeout(1500);
 
     // Test navigation - Attractions
     console.log('✓ Clicking Bezienswaardigheden (Attractions)...');
     await page.click('text=Bezienswaardigheden');
-    await page.waitForURL('**/nl/attractions');
+    await page.waitForURL(`**/${TRIP_SLUG}/attractions`);
     await expect(page.locator('h1')).toContainText('Bezienswaardigheden');
     await page.waitForTimeout(1500);
 
     // Test navigation - Map
     console.log('✓ Clicking Kaart (Map)...');
     await page.click('text=Kaart');
-    await page.waitForURL('**/nl/map');
+    await page.waitForURL(`**/${TRIP_SLUG}/map`);
     await expect(page.locator('h1')).toContainText('Kaart');
     await page.waitForTimeout(1500);
 
     // Test navigation - Restaurants
     console.log('✓ Clicking Restaurants...');
     await page.click('text=Restaurants');
-    await page.waitForURL('**/nl/restaurants');
+    await page.waitForURL(`**/${TRIP_SLUG}/restaurants`);
     await expect(page.locator('h1')).toContainText('Restaurants');
     await page.waitForTimeout(1500);
 
     // Test navigation - Budget
     console.log('✓ Clicking Budget...');
     await page.click('text=Budget');
-    await page.waitForURL('**/nl/budget');
+    await page.waitForURL(`**/${TRIP_SLUG}/budget`);
     await expect(page.locator('h1')).toContainText('Budget');
     await page.waitForTimeout(1500);
 
@@ -71,7 +72,7 @@ test.describe('Vacation Guide Visual Tests', () => {
     // Click EN button
     console.log('✓ Clicking EN button to switch to English...');
     await page.click('button:has-text("EN")');
-    await page.waitForURL('**/en');
+    await page.waitForURL('**/en/**');
 
     // Wait for the page to fully load with new content
     await page.waitForLoadState('networkidle');
@@ -88,7 +89,7 @@ test.describe('Vacation Guide Visual Tests', () => {
     // Switch back to Dutch
     console.log('✓ Switching back to Dutch...');
     await page.click('button:has-text("NL")');
-    await page.waitForURL('**/nl');
+    await page.waitForURL('**/nl/**');
 
     // Wait for page reload and content update
     await page.waitForLoadState('networkidle');
@@ -118,7 +119,7 @@ test.describe('Vacation Guide Visual Tests', () => {
     // Click on a menu item - specifically in the mobile nav
     console.log('✓ Clicking menu item in mobile menu...');
     await page.locator('nav.md\\:hidden a:has-text("Dagplanning")').click();
-    await page.waitForURL('**/nl/itinerary');
+    await page.waitForURL(`**/${TRIP_SLUG}/itinerary`);
     await page.waitForTimeout(2000);
 
     console.log('✅ Mobile navigation works!');
@@ -145,7 +146,7 @@ test.describe('Vacation Guide Visual Tests', () => {
 
     // Switch to EN and check lang changes
     await page.click('button:has-text("EN")');
-    await page.waitForURL('**/en');
+    await page.waitForURL('**/en/**');
 
     const htmlEn = await page.locator('html').getAttribute('lang');
     expect(htmlEn).toBe('en');

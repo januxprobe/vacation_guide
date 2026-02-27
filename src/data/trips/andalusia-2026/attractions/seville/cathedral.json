@@ -1,0 +1,64 @@
+{
+  "id": "seville-cathedral",
+  "name": "Catedral de Sevilla & La Giralda",
+  "city": "seville",
+  "category": "church",
+  "description": {
+    "nl": "De Kathedraal van Sevilla is de grootste gotische kathedraal ter wereld en de op twee na grootste kerk. Gebouwd op de plek van een voormalige Almohaden-moskee, waarvan de Giralda-toren het voormalige minaretis. Binnenin vind je het vermeende graf van Christoffel Columbus, een overweldigend gouden altaarstuk en talloze kapellen. De beklimming van de Giralda via 35 hellingbanen biedt een fantastisch uitzicht over de stad.",
+    "en": "The Cathedral of Seville is the largest Gothic cathedral in the world and the third-largest church. Built on the site of a former Almohad mosque, the Giralda tower is the former minaret. Inside you will find the alleged tomb of Christopher Columbus, an overwhelming golden altarpiece, and numerous chapels. The climb up the Giralda via 35 ramps offers a fantastic view over the city."
+  },
+  "coordinates": {
+    "lat": 37.3861,
+    "lng": -5.9932
+  },
+  "pricing": {
+    "adult": 18,
+    "student": 12,
+    "guidedTour": 29,
+    "notes": {
+      "nl": "De guided tour bevat fast-track toegang. Gratis toegang op maandag van 16:30-18:00 (beperkte capaciteit).",
+      "en": "The guided tour includes fast-track access. Free entry on Mondays from 16:30-18:00 (limited capacity)."
+    }
+  },
+  "duration": 90,
+  "priority": "essential",
+  "images": [
+    "seville-cathedral-exterior-1",
+    "seville-cathedral-interior-1",
+    "seville-giralda-tower-1",
+    "seville-cathedral-columbus-tomb"
+  ],
+  "thumbnail": "/images/attractions/seville-cathedral.jpg",
+  "media": [
+    {
+      "type": "image",
+      "src": "/images/attractions/seville-cathedral-interior.jpg",
+      "alt": { "nl": "Interieur van de Kathedraal van Sevilla", "en": "Interior of Seville Cathedral" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/seville-cathedral-giralda.jpg",
+      "alt": { "nl": "De Giralda toren", "en": "The Giralda tower" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/seville-cathedral-columbus.jpg",
+      "alt": { "nl": "Grafmonument van Columbus", "en": "Tomb of Columbus" }
+    }
+  ],
+  "bookingRequired": true,
+  "openingHours": {
+    "monday": "11:00-15:30",
+    "tuesday": "11:00-17:00",
+    "wednesday": "11:00-17:00",
+    "thursday": "11:00-17:00",
+    "friday": "11:00-17:00",
+    "saturday": "11:00-17:00",
+    "sunday": "14:30-18:00"
+  },
+  "website": "https://www.catedraldesevilla.es",
+  "tips": {
+    "nl": "Combineer het bezoek met het Real Alcázar dat naast de kathedraal ligt. De Giralda heeft hellingbanen in plaats van trappen, dus de beklimming is makkelijker dan je denkt. Ga vroeg in de middag voor het minste gedrang. Op maandag kun je gratis naar binnen, maar de rij is lang.",
+    "en": "Combine the visit with the Real Alcázar which is right next to the cathedral. The Giralda has ramps instead of stairs, so the climb is easier than you might think. Go early afternoon for the least crowding. On Mondays you can enter for free, but the queue is long."
+  }
+}

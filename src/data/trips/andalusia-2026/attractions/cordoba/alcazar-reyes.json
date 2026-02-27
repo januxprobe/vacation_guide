@@ -1,0 +1,65 @@
+{
+  "id": "cordoba-alcazar-reyes",
+  "name": "Alcázar de los Reyes Cristianos",
+  "city": "cordoba",
+  "category": "palace",
+  "description": {
+    "nl": "Het Alcázar de los Reyes Cristianos (Paleis van de Christelijke Koningen) is een indrukwekkend 14e-eeuws fort en paleis aan de oever van de Guadalquivir. Het was ooit de residentie van Ferdinand en Isabella, die hier Columbus ontvingen voor zijn reis naar de Nieuwe Wereld. De uitgestrekte tuinen zijn het hoogtepunt: symmetrische terrassen vol met fonteinvijvers, cipressen, sinaasappelbomen en kleurrijke bloemperken. De torens bieden een prachtig uitzicht over de stad en de rivier.",
+    "en": "The Alcázar de los Reyes Cristianos (Palace of the Christian Monarchs) is an impressive 14th-century fortress and palace on the banks of the Guadalquivir. It was once the residence of Ferdinand and Isabella, who received Columbus here before his voyage to the New World. The expansive gardens are the highlight: symmetrical terraces filled with fountain pools, cypress trees, orange trees, and colorful flower beds. The towers offer beautiful views over the city and the river."
+  },
+  "coordinates": {
+    "lat": 37.8768,
+    "lng": -4.7826
+  },
+  "pricing": {
+    "adult": 5,
+    "student": 2.5,
+    "child": 0,
+    "guidedTour": 12,
+    "notes": {
+      "nl": "Kinderen onder 14 jaar gratis. Gratis toegang op dinsdag (behalve feestdagen). De nachtshow van tuinen en fonteinen in de zomer kost apart.",
+      "en": "Children under 14 free. Free entry on Tuesdays (except holidays). The summer night garden and fountain show is a separate ticket."
+    }
+  },
+  "duration": 90,
+  "priority": "essential",
+  "images": [
+    "cordoba-alcazar-gardens-1",
+    "cordoba-alcazar-gardens-2",
+    "cordoba-alcazar-tower-view",
+    "cordoba-alcazar-fountains"
+  ],
+  "thumbnail": "/images/attractions/cordoba-alcazar-reyes.jpg",
+  "media": [
+    {
+      "type": "image",
+      "src": "/images/attractions/cordoba-alcazar-reyes-gardens.jpg",
+      "alt": { "nl": "Tuinen van het Alcázar de los Reyes", "en": "Gardens of the Alcázar de los Reyes" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/cordoba-alcazar-reyes-mosaics.jpg",
+      "alt": { "nl": "Romeinse mozaïeken in het Alcázar", "en": "Roman mosaics in the Alcázar" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/cordoba-alcazar-reyes-tower.jpg",
+      "alt": { "nl": "Torens van het Alcázar", "en": "Towers of the Alcázar" }
+    }
+  ],
+  "bookingRequired": false,
+  "openingHours": {
+    "monday": "Gesloten / Closed",
+    "tuesday": "08:15-20:00",
+    "wednesday": "08:15-20:00",
+    "thursday": "08:15-20:00",
+    "friday": "08:15-20:00",
+    "saturday": "08:15-14:45",
+    "sunday": "08:15-14:45"
+  },
+  "website": "https://alcazardelosreyescristianos.cordoba.es",
+  "tips": {
+    "nl": "Ga op dinsdag voor gratis toegang, maar verwacht dan wel meer drukte. De tuinen zijn het mooist in het voorjaar (april-mei) wanneer alles in bloei staat. Beklim de Torre de los Leones voor het beste uitzicht. In de zomer zijn er 's avonds spectaculaire licht- en waterfonteinen-shows in de tuinen — absoluut de moeite waard.",
+    "en": "Visit on Tuesday for free entry, but expect more crowds. The gardens are most beautiful in spring (April-May) when everything is in bloom. Climb the Torre de los Leones for the best views. In summer, there are spectacular evening light and water fountain shows in the gardens — absolutely worth it."
+  }
+}

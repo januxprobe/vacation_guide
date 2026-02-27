@@ -1,0 +1,62 @@
+{
+  "id": "seville-jerez",
+  "name": "Jerez de la Frontera",
+  "city": "seville",
+  "category": "neighborhood",
+  "description": {
+    "nl": "Jerez de la Frontera is de geboorteplaats van sherry, flamenco en de Koninklijke Andalusische Rijschool. Op circa 1 uur met de trein vanuit Sevilla is het de perfecte dagtrip. Bezoek een van de beroemde sherry-bodegas zoals Tío Pepe (González Byass) of Lustau voor een rondleiding met proeverij. De stad heeft ook een prachtige kathedraal, een Moorse Alcázar en een levendige tapastraditie. Tussen februari en maart vindt het Festival de Jerez plaats, een van de belangrijkste flamenco-evenementen ter wereld.",
+    "en": "Jerez de la Frontera is the birthplace of sherry, flamenco, and the Royal Andalusian School of Equestrian Art. About 1 hour by train from Seville, it is the perfect day trip. Visit one of the famous sherry bodegas such as Tío Pepe (González Byass) or Lustau for a tour with tasting. The city also has a beautiful cathedral, a Moorish Alcázar, and a lively tapas tradition. Between February and March the Festival de Jerez takes place, one of the most important flamenco events in the world."
+  },
+  "coordinates": {
+    "lat": 36.6817,
+    "lng": -6.1378
+  },
+  "pricing": {
+    "adult": 15,
+    "notes": {
+      "nl": "€15 is een schatting voor een retourtreinkaartje (ca. €10-12) plus bodega-bezoek (ca. €15-20). Tío Pepe Classic Tour kost €18, Lustau rondleiding ca. €15. Boek bodegas vooraf online.",
+      "en": "€15 is an estimate for a return train ticket (approx. €10-12) plus bodega visit (approx. €15-20). Tío Pepe Classic Tour costs €18, Lustau tour approx. €15. Book bodegas in advance online."
+    }
+  },
+  "duration": 240,
+  "priority": "optional",
+  "images": [
+    "seville-jerez-tio-pepe-1",
+    "seville-jerez-bodega-barrels-1",
+    "seville-jerez-cathedral-1",
+    "seville-jerez-horses-1"
+  ],
+  "thumbnail": "/images/attractions/seville-jerez.jpg",
+  "media": [
+    {
+      "type": "image",
+      "src": "/images/attractions/seville-jerez-alcazar.jpg",
+      "alt": { "nl": "Alcázar van Jerez", "en": "Alcázar of Jerez" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/seville-jerez-cathedral.jpg",
+      "alt": { "nl": "Kathedraal van Jerez", "en": "Jerez Cathedral" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/seville-jerez-horses.jpg",
+      "alt": { "nl": "Koninklijke Andalusische Rijschool", "en": "Royal Andalusian School of Equestrian Art" }
+    }
+  ],
+  "bookingRequired": false,
+  "openingHours": {
+    "monday": "Treinen elk uur / Trains every hour",
+    "tuesday": "Treinen elk uur / Trains every hour",
+    "wednesday": "Treinen elk uur / Trains every hour",
+    "thursday": "Treinen elk uur / Trains every hour",
+    "friday": "Treinen elk uur / Trains every hour",
+    "saturday": "Treinen elk uur / Trains every hour",
+    "sunday": "Treinen elk uur / Trains every hour"
+  },
+  "website": "https://www.turismojerez.com",
+  "tips": {
+    "nl": "Neem de Renfe Media Distancia-trein vanaf Sevilla Santa Justa. Boek je bodega-bezoek vooraf online, vooral Tío Pepe raakt snel vol. De proeverij bij Lustau is iets intiemer en minder toeristisch. Als je op dinsdag of donderdag gaat, kun je ook de paardenshow van de Koninklijke Rijschool bijwonen (apart ticket, ca. €21). Combineer de bodega met een wandeling door het centrum en tapas in de Barrio de Santiago.",
+    "en": "Take the Renfe Media Distancia train from Sevilla Santa Justa. Book your bodega visit in advance online, especially Tío Pepe fills up quickly. The tasting at Lustau is slightly more intimate and less touristy. If you go on Tuesday or Thursday, you can also attend the horse show at the Royal Equestrian School (separate ticket, approx. €21). Combine the bodega with a walk through the center and tapas in the Barrio de Santiago."
+  }
+}

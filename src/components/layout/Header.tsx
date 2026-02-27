@@ -3,25 +3,31 @@
 import { useTranslations } from 'next-intl';
 import { Link, usePathname } from '@/i18n/routing';
 import LanguageSwitcher from './LanguageSwitcher';
+import { useTripConfig } from '@/config/trip-context';
+import { hexToRgba } from '@/lib/city-colors';
 import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
 
 export default function Header() {
   const t = useTranslations();
   const pathname = usePathname();
+  const config = useTripConfig();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  const primaryColor = config.theme.primaryColor;
+  const prefix = `/${config.slug}`;
+
   const navItems = [
-    { href: '/', label: t('navigation.home') },
-    { href: '/itinerary', label: t('navigation.itinerary') },
-    { href: '/attractions', label: t('navigation.attractions') },
-    { href: '/map', label: t('navigation.map') },
-    { href: '/restaurants', label: t('navigation.restaurants') },
-    { href: '/budget', label: t('navigation.budget') },
+    { href: prefix, label: t('navigation.home') },
+    { href: `${prefix}/itinerary`, label: t('navigation.itinerary') },
+    { href: `${prefix}/attractions`, label: t('navigation.attractions') },
+    { href: `${prefix}/map`, label: t('navigation.map') },
+    { href: `${prefix}/restaurants`, label: t('navigation.restaurants') },
+    { href: `${prefix}/budget`, label: t('navigation.budget') },
   ];
 
   const isActive = (href: string) => {
-    if (href === '/') return pathname === '/';
+    if (href === prefix) return pathname === prefix;
     return pathname.startsWith(href);
   };
 
@@ -30,8 +36,8 @@ export default function Header() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <span className="text-xl font-bold text-orange-600">
+          <Link href={prefix} className="flex items-center space-x-2">
+            <span className="text-xl font-bold" style={{ color: primaryColor }}>
               {t('common.appName')}
             </span>
           </Link>
@@ -44,9 +50,17 @@ export default function Header() {
                 href={item.href}
                 className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                   isActive(item.href)
-                    ? 'bg-orange-100 text-orange-700'
+                    ? ''
                     : 'text-gray-700 hover:bg-gray-100'
                 }`}
+                style={
+                  isActive(item.href)
+                    ? {
+                        backgroundColor: hexToRgba(primaryColor, 0.1),
+                        color: primaryColor,
+                      }
+                    : undefined
+                }
               >
                 {item.label}
               </Link>
@@ -82,9 +96,17 @@ export default function Header() {
                   onClick={() => setMobileMenuOpen(false)}
                   className={`px-3 py-2 rounded-md text-base font-medium transition-colors ${
                     isActive(item.href)
-                      ? 'bg-orange-100 text-orange-700'
+                      ? ''
                       : 'text-gray-700 hover:bg-gray-100'
                   }`}
+                  style={
+                    isActive(item.href)
+                      ? {
+                          backgroundColor: hexToRgba(primaryColor, 0.1),
+                          color: primaryColor,
+                        }
+                      : undefined
+                  }
                 >
                   {item.label}
                 </Link>

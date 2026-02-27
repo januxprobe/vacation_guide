@@ -1,0 +1,49 @@
+{
+  "id": "granada-costa-tropical",
+  "name": "Costa Tropical",
+  "city": "granada",
+  "category": "nature",
+  "description": {
+    "nl": "De Costa Tropical is het kustgebied van de provincie Granada, beschermd door de Sierra Nevada tegen koude noordenwinden, waardoor hier een subtropisch microklimaat heerst. Salobrena is het hoogtepunt: een wit dorp gedrapeerd over een rots met een Moors kasteel en uitzicht op zee. Almunecar biedt een levendige boulevard, Romeinse resten en het Parque Ornitologico. Dit is de perfecte dagtrip voor een combinatie van cultuur, strand en een heerlijke vislunh aan zee.",
+    "en": "The Costa Tropical is the coastal area of Granada province, sheltered by the Sierra Nevada from cold northern winds, creating a subtropical microclimate. Salobrena is the highlight: a white village draped over a rock with a Moorish castle and sea views. Almunecar offers a lively seafront promenade, Roman remains, and the Parque Ornitologico. This is the perfect day trip combining culture, beach time, and a delicious seafood lunch by the sea."
+  },
+  "coordinates": {
+    "lat": 36.7441,
+    "lng": -3.6862
+  },
+  "pricing": {
+    "adult": 0,
+    "notes": {
+      "nl": "Gratis toegang tot stranden en dorpen. Kasteel van Salobrena: €4 entree. Rijafstand vanaf Granada: ca. 45 minuten tot Salobrena, 1 uur tot Almunecar. Alsa-bussen rijden regelmatig (ca. €6 enkele reis). Parkeren aan de kust kan in de zomer lastig zijn.",
+      "en": "Free access to beaches and villages. Salobrena Castle: €4 entry. Driving distance from Granada: approx. 45 minutes to Salobrena, 1 hour to Almunecar. Alsa buses run regularly (approx. €6 one way). Parking on the coast can be tricky in summer."
+    }
+  },
+  "duration": 300,
+  "priority": "optional",
+  "images": [
+    "granada-costa-tropical-salobrena",
+    "granada-costa-tropical-salobrena-castle",
+    "granada-costa-tropical-almunecar",
+    "granada-costa-tropical-beach",
+    "granada-costa-tropical-seafood"
+  ],
+  "thumbnail": "/images/attractions/granada-costa-tropical.jpg",
+  "media": [
+    {
+      "type": "image",
+      "src": "/images/attractions/granada-costa-tropical-beach.jpg",
+      "alt": { "nl": "Strand van Almuñécar", "en": "Beach of Almuñécar" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/granada-costa-tropical-nerja.jpg",
+      "alt": { "nl": "Balcón de Europa in Nerja", "en": "Balcón de Europa in Nerja" }
+    }
+  ],
+  "bookingRequired": false,
+  "website": "https://www.costatropical.net",
+  "tips": {
+    "nl": "Begin in Salobrena: beklim het kasteel voor adembenemend uitzicht over de kust, dwaal door de witte straatjes en drink een koffie op het centrale plein. Rijd dan door naar Almunecar voor de lunch — de chiringuitos (strandtenten) serveren verse vis en paella. Playa de San Cristobal is het populairste strand. Combineer deze trip niet met de Alpujarras op dezelfde dag — het zijn twee verschillende richtingen vanuit Granada.",
+    "en": "Start in Salobrena: climb the castle for breathtaking coastal views, wander through the white streets, and have a coffee on the central square. Then drive on to Almunecar for lunch — the chiringuitos (beach bars) serve fresh fish and paella. Playa de San Cristobal is the most popular beach. Do not combine this trip with the Alpujarras on the same day — they are in two different directions from Granada."
+  }
+}

@@ -102,7 +102,17 @@
     "openingHours": "Opening Hours",
     "website": "Website",
     "tips": "Tips",
-    "photos": "Photos"
+    "photos": "Photos",
+    "bookingAdvice": "Book in advance to avoid disappointment",
+    "subtitle": "Discover attractions in Seville, Córdoba and Granada",
+    "gallery": "Gallery",
+    "viewAllPhotos": "View all photos",
+    "morePhotos": "+{count} more",
+    "playVideo": "Play video",
+    "closeGallery": "Close gallery",
+    "previousPhoto": "Previous photo",
+    "nextPhoto": "Next photo",
+    "photoCounter": "{current} / {total}"
   },
   "map": {
     "title": "Interactive Map",

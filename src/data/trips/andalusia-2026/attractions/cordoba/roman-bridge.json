@@ -1,0 +1,64 @@
+{
+  "id": "cordoba-roman-bridge",
+  "name": "Puente Romano & Torre de la Calahorra",
+  "city": "cordoba",
+  "category": "monument",
+  "description": {
+    "nl": "De Puente Romano (Romeinse Brug) is een 2000 jaar oude brug over de Guadalquivir en een van de iconische beelden van Córdoba. De 331 meter lange brug met 16 bogen was oorspronkelijk onderdeel van de Via Augusta en verbindt de historische binnenstad met de Torre de la Calahorra. Deze Moorse verdedigingstoren aan het zuideinde van de brug herbergt nu het Museo Vivo de al-Andalus, gewijd aan de multiculturele geschiedenis van middeleeuws Córdoba. De brug biedt een spectaculair uitzicht op de Mezquita, vooral bij zonsondergang.",
+    "en": "The Puente Romano (Roman Bridge) is a 2,000-year-old bridge over the Guadalquivir and one of Córdoba's most iconic landmarks. The 331-meter-long bridge with 16 arches was originally part of the Via Augusta and connects the historic center with the Torre de la Calahorra. This Moorish defensive tower at the southern end of the bridge now houses the Museo Vivo de al-Andalus, dedicated to the multicultural history of medieval Córdoba. The bridge offers spectacular views of the Mezquita, especially at sunset."
+  },
+  "coordinates": {
+    "lat": 37.8764,
+    "lng": -4.7791
+  },
+  "pricing": {
+    "adult": 4.5,
+    "student": 3,
+    "child": 0,
+    "notes": {
+      "nl": "De brug zelf is gratis toegankelijk. De prijs geldt voor het museum in de Torre de la Calahorra. Kinderen onder 8 jaar gratis.",
+      "en": "The bridge itself is free to walk. The price is for the museum inside the Torre de la Calahorra. Children under 8 free."
+    }
+  },
+  "duration": 45,
+  "priority": "recommended",
+  "images": [
+    "cordoba-roman-bridge-sunset",
+    "cordoba-roman-bridge-mezquita-view",
+    "cordoba-calahorra-tower",
+    "cordoba-roman-bridge-night"
+  ],
+  "thumbnail": "/images/attractions/cordoba-roman-bridge.jpg",
+  "media": [
+    {
+      "type": "image",
+      "src": "/images/attractions/cordoba-roman-bridge-sunset.jpg",
+      "alt": { "nl": "Romeinse Brug bij zonsondergang", "en": "Roman Bridge at sunset" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/cordoba-roman-bridge-calahorra.jpg",
+      "alt": { "nl": "Torre de la Calahorra", "en": "Torre de la Calahorra" }
+    },
+    {
+      "type": "image",
+      "src": "/images/attractions/cordoba-roman-bridge-night.jpg",
+      "alt": { "nl": "Romeinse Brug verlicht bij nacht", "en": "Roman Bridge illuminated at night" }
+    }
+  ],
+  "bookingRequired": false,
+  "openingHours": {
+    "monday": "10:00-14:00, 16:30-20:30",
+    "tuesday": "10:00-14:00, 16:30-20:30",
+    "wednesday": "10:00-14:00, 16:30-20:30",
+    "thursday": "10:00-14:00, 16:30-20:30",
+    "friday": "10:00-14:00, 16:30-20:30",
+    "saturday": "10:00-14:00, 16:30-20:30",
+    "sunday": "10:00-14:00, 16:30-20:30"
+  },
+  "website": "https://www.torrecalahorra.es",
+  "tips": {
+    "nl": "Kom rond zonsondergang voor de mooiste foto's — het licht op de Mezquita en de brug is dan magisch. De brug is autovrij en heerlijk om over te wandelen. Het museum in de Calahorra is klein maar informatief met een mooie maquette van het middeleeuwse Córdoba. 's Avonds wordt de brug prachtig verlicht.",
+    "en": "Come around sunset for the best photos — the light on the Mezquita and the bridge is magical. The bridge is car-free and lovely to walk across. The museum inside the Calahorra is small but informative with a nice scale model of medieval Córdoba. In the evening, the bridge is beautifully illuminated."
+  }
+}
