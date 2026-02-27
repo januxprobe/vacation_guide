@@ -8,6 +8,7 @@ import { calculateBudget } from '@/lib/budget-calculator';
 import TravelerCountSelector from './TravelerCountSelector';
 import CategoryBreakdown from './CategoryBreakdown';
 import BudgetSummaryCard from './BudgetSummaryCard';
+import DayBreakdown from './DayBreakdown';
 
 interface BudgetCalculatorProps {
   itinerary: Itinerary;
@@ -81,6 +82,8 @@ export default function BudgetCalculator({ itinerary, attractions }: BudgetCalcu
             total={summary.total}
           />
         </div>
+
+        <DayBreakdown days={summary.days} />
       </div>
     </div>
   );

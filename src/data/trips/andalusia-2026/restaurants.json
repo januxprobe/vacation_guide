@@ -21,7 +21,7 @@
       "id": "seville-el-rinconcillo",
       "name": "El Rinconcillo",
       "city": "seville",
-      "neighborhood": "Centro",
+      "neighborhood": "La Macarena",
       "coordinates": { "lat": 37.3928, "lng": -5.9923 },
       "cuisine": ["tapas", "traditional"],
       "priceRange": "€€",
@@ -38,7 +38,7 @@
       "id": "seville-duo-tapas",
       "name": "Duo Tapas",
       "city": "seville",
-      "neighborhood": "Arenal",
+      "neighborhood": "Alameda",
       "coordinates": { "lat": 37.3861, "lng": -5.9978 },
       "cuisine": ["tapas", "modern"],
       "priceRange": "€€",
@@ -67,7 +67,7 @@
         "nl": "Elegant restaurant aan de rivier met panoramisch uitzicht en verfijnde Andalusische keuken.",
         "en": "Elegant riverside restaurant with panoramic views and refined Andalusian cuisine."
       },
-      "website": "https://abadesrestaurantes.com"
+      "website": "https://abadestriana.com"
     },
     {
       "id": "cordoba-bar-santos",
@@ -155,10 +155,10 @@
       }
     },
     {
-      "id": "granada-om-kalthum",
-      "name": "Om Kalthum",
+      "id": "granada-om-kalsum",
+      "name": "Om Kalsum",
       "city": "granada",
-      "neighborhood": "Albaicín",
+      "neighborhood": "Centro",
       "coordinates": { "lat": 37.1810, "lng": -3.5933 },
       "cuisine": ["moroccan", "arabic"],
       "priceRange": "€",
@@ -167,8 +167,8 @@
         "en": "Authentic Moroccan cuisine. Delicious tagines and mint tea."
       },
       "description": {
-        "nl": "Klein Marokkaans restaurant in het Albaicín dat de Arabische erfenis van Granada weerspiegelt.",
-        "en": "Small Moroccan restaurant in the Albaicín reflecting Granada's Arabic heritage."
+        "nl": "Marokkaanse tapasbar in het centrum met tagines, couscous en gezellige sfeer.",
+        "en": "Moroccan tapas bar in the center with tagines, couscous and cozy atmosphere."
       }
     },
     {
@@ -204,7 +204,7 @@
         "nl": "Elegant restaurant met terras en adembenemend uitzicht op de Alhambra.",
         "en": "Elegant restaurant with terrace and breathtaking views of the Alhambra."
       },
-      "website": "https://www.carmenabenhumeya.com"
+      "website": "https://abenhumeya.com"
     }
   ]
 }

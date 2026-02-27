@@ -139,8 +139,20 @@ export interface BudgetItem {
   total: number;
 }
 
+export interface DayBudget {
+  dayNumber: number;
+  city: City;
+  title: LocalizedString;
+  attractionsCost: number;
+  transportCost: number;
+  mealsCost: number;
+  total: number;
+  items: BudgetItem[];
+}
+
 export interface BudgetSummary {
   items: BudgetItem[];
+  days: DayBudget[];
   subtotalByCategory: Record<string, number>;
   total: number;
   perPerson: number;

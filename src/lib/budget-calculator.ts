@@ -4,6 +4,7 @@ import type {
   BudgetItem,
   BudgetSummary,
   BudgetConfig,
+  DayBudget,
   LocalizedString,
 } from '@/types';
 import type { TravelerGroup } from '@/config/trip-config';
@@ -28,7 +29,7 @@ export function calculateBudget(input: BudgetInput): BudgetSummary {
   // Calculate total travelers
   const totalTravelers = Object.values(config.travelerCounts).reduce((s, c) => s + c, 0);
   if (totalTravelers === 0) {
-    return { items: [], subtotalByCategory: {}, total: 0, perPerson: 0 };
+    return { items: [], days: [], subtotalByCategory: {}, total: 0, perPerson: 0 };
   }
 
   // Count student vs non-student travelers
@@ -44,7 +45,14 @@ export function calculateBudget(input: BudgetInput): BudgetSummary {
   }
 
   // Process each day
+  const days: DayBudget[] = [];
+
   for (const day of itinerary.days) {
+    const dayItems: BudgetItem[] = [];
+    let attractionsCost = 0;
+    let transportCost = 0;
+    let mealsCost = 0;
+
     // Attraction costs
     for (const activity of day.activities) {
       const attraction = attractionMap[activity.attractionId];
@@ -63,14 +71,18 @@ export function calculateBudget(input: BudgetInput): BudgetSummary {
         en: attraction.name,
       };
 
-      items.push({
+      const item: BudgetItem = {
         name,
         category: 'attractions',
         unitPrice: adultPrice,
         discountedPrice: studentPrice < adultPrice ? studentPrice : undefined,
         quantity: totalTravelers,
         total,
-      });
+      };
+
+      items.push(item);
+      dayItems.push(item);
+      attractionsCost += total;
     }
 
     // Transport costs
@@ -84,13 +96,17 @@ export function calculateBudget(input: BudgetInput): BudgetSummary {
         en: `Transport day ${day.dayNumber}`,
       };
 
-      items.push({
+      const item: BudgetItem = {
         name: transportName,
         category: 'transport',
         unitPrice: cost,
         quantity: totalTravelers,
         total,
-      });
+      };
+
+      items.push(item);
+      dayItems.push(item);
+      transportCost += total;
     }
 
     // Meal costs
@@ -104,14 +120,29 @@ export function calculateBudget(input: BudgetInput): BudgetSummary {
         snack: { nl: `Snack dag ${day.dayNumber}`, en: `Snack day ${day.dayNumber}` },
       };
 
-      items.push({
+      const item: BudgetItem = {
         name: mealLabel[meal.type],
         category: 'meals',
         unitPrice: meal.estimatedCost,
         quantity: totalTravelers,
         total,
-      });
+      };
+
+      items.push(item);
+      dayItems.push(item);
+      mealsCost += total;
     }
+
+    days.push({
+      dayNumber: day.dayNumber,
+      city: day.city,
+      title: day.title,
+      attractionsCost,
+      transportCost,
+      mealsCost,
+      total: attractionsCost + transportCost + mealsCost,
+      items: dayItems,
+    });
   }
 
   // Calculate subtotals
@@ -123,5 +154,5 @@ export function calculateBudget(input: BudgetInput): BudgetSummary {
   const total = Object.values(subtotalByCategory).reduce((s, v) => s + v, 0);
   const perPerson = total / totalTravelers;
 
-  return { items, subtotalByCategory, total, perPerson };
+  return { items, days, subtotalByCategory, total, perPerson };
 }

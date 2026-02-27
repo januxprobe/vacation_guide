@@ -232,6 +232,8 @@
     "travelers": "Travelers",
     "dailyAverage": "Daily average",
     "noData": "No budget available. Add an itinerary to calculate costs.",
-    "studentDiscount": "Student discount"
+    "studentDiscount": "Student discount",
+    "dayBreakdown": "Costs per Day",
+    "unitPrice": "p.p."
   }
 }

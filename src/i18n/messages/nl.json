@@ -232,6 +232,8 @@
     "travelers": "Reizigers",
     "dailyAverage": "Daggemiddelde",
     "noData": "Geen budget beschikbaar. Voeg een reisplanning toe om kosten te berekenen.",
-    "studentDiscount": "Studentenkorting"
+    "studentDiscount": "Studentenkorting",
+    "dayBreakdown": "Kosten per Dag",
+    "unitPrice": "p.p."
   }
 }
