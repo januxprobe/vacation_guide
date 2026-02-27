@@ -1,6 +1,10 @@
 import { notFound } from 'next/navigation';
 import { getTripBySlug, getAllTripSlugs } from '@/config/trips';
 import { TripConfigProvider } from '@/config/trip-context';
+import Header from '@/components/layout/Header';
+
+// Allow dynamic trip slugs (JSON-based trips created at runtime)
+export const dynamicParams = true;
 
 export function generateStaticParams() {
   return getAllTripSlugs().map((tripSlug) => ({ tripSlug }));
@@ -22,7 +26,8 @@ export default async function TripLayout({
 
   return (
     <TripConfigProvider config={trip}>
-      {children}
+      <Header />
+      <main className="flex-1">{children}</main>
     </TripConfigProvider>
   );
 }

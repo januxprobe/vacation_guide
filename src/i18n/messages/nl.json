@@ -43,6 +43,36 @@
     "recommended": "Aanbevolen",
     "optional": "Optioneel"
   },
+  "tripSelector": {
+    "appName": "Vakantiegids",
+    "title": "Jouw Reizen",
+    "subtitle": "Kies een reis of maak een nieuwe aan",
+    "createNew": "Nieuwe Reis Maken",
+    "days": "{count} dagen",
+    "cities": "{count} steden",
+    "attractions": "{count} bezienswaardigheden",
+    "deleteTrip": "Reis verwijderen",
+    "confirmDelete": "Verwijderen",
+    "cancel": "Annuleren",
+    "deleteSuccess": "Reis verwijderd",
+    "deleteError": "Verwijderen mislukt"
+  },
+  "tripCreator": {
+    "title": "Nieuwe Reis Plannen",
+    "placeholder": "Beschrijf je droomreis...",
+    "send": "Verstuur",
+    "createTrip": "Reis Aanmaken",
+    "creating": "Reis aanmaken...",
+    "success": "Reis succesvol aangemaakt!",
+    "error": "Er is iets misgegaan. Probeer het opnieuw.",
+    "tripPreview": "Reis Overzicht",
+    "suggestedAttractions": "Bezienswaardigheden",
+    "accept": "Accepteren",
+    "reject": "Verwijderen",
+    "searching": "Zoeken...",
+    "previewEmpty": "Begin een gesprek om je reis te plannen",
+    "initialMessage": "Hoi! Ik ben je reisplanner. Vertel me over de reis die je wilt plannen - waar wil je naartoe, wanneer, en met wie?"
+  },
   "home": {
     "hero": {
       "title": "Ontdek het Magische Andalusië",

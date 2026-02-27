@@ -1,19 +1,22 @@
 # Vacation Guide
 
-A reusable trip planning platform built with Next.js. Create detailed travel guides with interactive attraction browsing, city-based filtering, media galleries, and bilingual support (Dutch/English).
+A modern trip planning platform built with Next.js 16, featuring an AI-powered conversational trip builder and curated travel itineraries with interactive attraction browsing, media galleries, and bilingual support (Dutch/English).
 
-Currently features a complete **Andalusia 2026** trip covering Seville, Cordoba, and Granada with 25 attractions, photos, videos, pricing info, and opening hours.
+Currently features a pre-configured **Andalusia 2026** trip covering Seville, Cordoba, and Granada with 25 attractions, photos, videos, pricing info, and opening hours. Users can also create custom trips via the AI trip builder.
 
 ## Features
 
-- **Multi-trip architecture** -- each trip has its own config, data, and URL namespace (`/nl/andalusia-2026/attractions`)
-- **25 attractions** with photos, YouTube videos, pricing, opening hours, and tips
-- **City-based color coding** -- Seville (orange), Cordoba (red), Granada (green)
-- **Filtering & sorting** -- by city, category (monument, palace, church...), and priority (essential, recommended, optional)
-- **Bilingual** -- Dutch (NL) and English (EN) with full i18n support
-- **Media galleries** -- fullscreen carousel with images and embedded YouTube videos
-- **Responsive** -- works on desktop and mobile with collapsible navigation
-- **Data validation** -- Zod schemas validate all attraction data at build time
+- **Trip Selector Homepage** - Browse existing trips, create new ones, delete user-created trips
+- **AI Trip Builder** - Chat with Gemini AI to plan trips with real-time data from Google Search grounding
+- **Multi-trip architecture** - Each trip has its own config, data, and URL namespace (`/nl/andalusia-2026/attractions`)
+- **25+ attractions** with photos, YouTube videos, pricing, opening hours, and tips
+- **City-based color coding** - Each city gets a unique color applied via inline styles
+- **Filtering & sorting** - By city, category (monument, palace, church...), and priority (essential, recommended, optional)
+- **Bilingual** - Dutch (NL) and English (EN) with full i18n support
+- **Media galleries** - Fullscreen carousel with images and embedded YouTube videos
+- **Responsive** - Works on desktop and mobile with collapsible navigation
+- **Data validation** - Zod schemas validate all attraction and trip config data
+- **Trip management** - Create trips via AI chat, delete user-created trips with two-step confirmation
 
 ## Tech Stack
 
@@ -22,7 +25,9 @@ Currently features a complete **Andalusia 2026** trip covering Seville, Cordoba,
 | Next.js 16 (App Router) | SSR/SSG framework |
 | TypeScript | Type safety |
 | Tailwind CSS v4 | Styling |
+| shadcn/ui | UI component primitives |
 | next-intl v4 | Internationalization |
+| @google/genai | Gemini AI for conversational trip builder |
 | Zod | Data validation |
 | Playwright | E2E testing |
 | Lucide React | Icons |
@@ -30,26 +35,69 @@ Currently features a complete **Andalusia 2026** trip covering Seville, Cordoba,
 ## Getting Started
 
 ```bash
+# Install dependencies
 npm install
+
+# Set up environment variables
+cp .env.example .env.local
+# Edit .env.local and add your GEMINI_API_KEY
+# Get one at: https://aistudio.google.com/apikey
+
+# Start development server
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) -- you'll be redirected to the default trip.
+Open [http://localhost:3000](http://localhost:3000) to see the trip selector homepage.
+
+## How It Works
+
+### Trip Selector (`/{locale}`)
+The homepage shows all available trips as cards. Pre-configured trips (like Andalusia 2026) are always present. User-created trips show a delete button with two-step confirmation.
+
+### AI Trip Builder (`/{locale}/create-trip`)
+1. Click "Create New Trip" on the homepage
+2. Describe your trip idea in natural language (e.g., "5-day trip to Torremolinos with family")
+3. Gemini AI asks clarifying questions and suggests attractions with real data (prices, GPS coordinates, descriptions) from Google Search
+4. Accept or reject each suggestion via rich cards
+5. Click "Create Trip" to save everything as JSON files on disk
+6. Get redirected to your new trip
+
+### Trip Pages (`/{locale}/{tripSlug}/...`)
+Each trip has dedicated pages for attractions, itinerary, map, restaurants, and budget.
 
 ## Project Structure
 
 ```
 src/
-  config/trips/          # Trip configurations (cities, colors, stats)
-  data/trips/            # Attraction JSON data per trip
-  app/[locale]/[tripSlug]/  # Trip-scoped pages
-  components/            # Reusable UI components
-  lib/                   # Data loaders, color utilities, Zod schemas
-  i18n/                  # Translation files (nl.json, en.json)
+├── app/
+│   ├── api/                       # REST API routes
+│   │   ├── ai/chat/               # Streaming Gemini chat (SSE)
+│   │   ├── ai/finalize-trip/      # Extract structured trip data from conversation
+│   │   └── trips/                 # Trip CRUD + attraction management
+│   └── [locale]/
+│       ├── page.tsx               # Trip selector homepage
+│       ├── create-trip/           # AI trip builder chat interface
+│       └── [tripSlug]/            # Trip-scoped pages (attractions, map, etc.)
+├── components/
+│   ├── attractions/               # Attraction cards, filters, detail views, media
+│   ├── trip-selector/             # Trip cards, grid, create card
+│   ├── trip-creator/              # Chat UI, attraction suggestions, trip preview
+│   └── layout/                    # Headers (trip-scoped + generic), language switcher
+├── config/trips/                  # Trip configurations (static TS + dynamic JSON)
+├── data/trips/                    # Trip data on disk (attraction JSON files)
+├── lib/                           # Data loaders, color utilities, Zod schemas
+└── i18n/messages/                 # Translation files (nl.json, en.json)
 ```
 
 ## Adding a New Trip
 
+### Option 1: AI Trip Builder (recommended)
+1. Navigate to the homepage and click "Create New Trip"
+2. Chat with the AI to describe your trip
+3. Accept attraction suggestions
+4. Click "Create Trip" - done!
+
+### Option 2: Manual
 1. Create a config file in `src/config/trips/my-trip.ts` implementing the `TripConfig` interface
 2. Register it in `src/config/trips/index.ts`
 3. Add attraction data in `src/data/trips/my-trip/attractions/{city}/*.json`
@@ -61,14 +109,25 @@ See [RESOURCES.md](./RESOURCES.md) for detailed patterns on data sourcing, image
 ## Testing
 
 ```bash
-npx playwright test              # Run all 8 tests (headless)
-npx playwright test --headed     # Run with visible browser
+npx playwright test --headed     # Run all 10 tests with visible browser
+npx playwright test --headed --grep "attractions"  # Run specific tests
 ```
+
+**Test suite (10 tests):**
+- 5 core tests: NL navigation, language switching, mobile, HTML structure, trip selector
+- 4 attraction tests: list/filters, detail page, English mode, category filter
+- 1 E2E test: AI trip creation + verification + deletion (uses live Gemini API)
+
+## Environment Variables
+
+| Variable | Required | Description |
+|---|---|---|
+| `GEMINI_API_KEY` | Yes (for AI builder) | Google Gemini API key ([get one here](https://aistudio.google.com/apikey)) |
 
 ## Scripts
 
 ```bash
-npm run dev       # Development server
+npm run dev       # Development server (http://localhost:3000)
 npm run build     # Production build
 npm run lint      # ESLint
 ```

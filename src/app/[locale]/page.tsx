@@ -1,16 +1,36 @@
-import { redirect } from 'next/navigation';
-import { getDefaultTrip } from '@/config/trips';
+import { getTranslations } from 'next-intl/server';
+import { getAllTrips, isStaticTrip, clearTripCache } from '@/config/trips';
+import GenericHeader from '@/components/layout/GenericHeader';
+import TripGrid from '@/components/trip-selector/TripGrid';
 
 type Props = {
   params: Promise<{ locale: string }>;
 };
 
-/**
- * Root locale page redirects to the default trip.
- * When multiple trips exist, this will become a trip selector page.
- */
 export default async function LocaleHomePage({ params }: Props) {
   const { locale } = await params;
-  const trip = getDefaultTrip();
-  redirect(`/${locale}/${trip.slug}`);
+  const t = await getTranslations({ locale, namespace: 'tripSelector' });
+  clearTripCache();
+  const trips = getAllTrips();
+  const staticSlugs = trips.filter((t) => isStaticTrip(t.slug)).map((t) => t.slug);
+
+  return (
+    <>
+      <GenericHeader />
+      <main className="flex-1">
+        <div className="container mx-auto px-4 py-12">
+          <div className="text-center mb-10">
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+              {t('title')}
+            </h1>
+            <p className="text-gray-600">
+              {t('subtitle')}
+            </p>
+          </div>
+
+          <TripGrid trips={trips} locale={locale} staticSlugs={staticSlugs} />
+        </div>
+      </main>
+    </>
+  );
 }

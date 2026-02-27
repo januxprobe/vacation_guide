@@ -4,9 +4,6 @@ import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import { Geist, Geist_Mono } from 'next/font/google';
 import '../globals.css';
-import Header from '@/components/layout/Header';
-import { TripConfigProvider } from '@/config/trip-context';
-import { getDefaultTrip } from '@/config/trips';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -28,12 +25,17 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const trip = getDefaultTrip();
   const loc = locale as 'nl' | 'en';
 
+  const titles = { nl: 'Vakantiegids', en: 'Vacation Guide' };
+  const descriptions = {
+    nl: 'Plan je perfecte vakantie',
+    en: 'Plan your perfect vacation',
+  };
+
   return {
-    title: trip.name[loc],
-    description: trip.description[loc],
+    title: titles[loc],
+    description: descriptions[loc],
   };
 }
 
@@ -46,15 +48,11 @@ export default async function LocaleLayout({
 }) {
   const { locale } = await params;
 
-  // Ensure that the incoming `locale` is valid
   if (!routing.locales.includes(locale as any)) {
     notFound();
   }
 
-  // Providing all messages to the client
-  // side is the easiest way to get started
   const messages = await getMessages({ locale });
-  const trip = getDefaultTrip();
 
   return (
     <html lang={locale}>
@@ -66,12 +64,9 @@ export default async function LocaleLayout({
           locale={locale}
           key={locale}
         >
-          <TripConfigProvider config={trip}>
-            <div className="min-h-screen flex flex-col">
-              <Header />
-              <main className="flex-1">{children}</main>
-            </div>
-          </TripConfigProvider>
+          <div className="min-h-screen flex flex-col">
+            {children}
+          </div>
         </NextIntlClientProvider>
       </body>
     </html>

@@ -11,8 +11,8 @@ test.describe('Vacation Guide Visual Tests', () => {
   });
 
   test('should navigate through Dutch (NL) pages', async ({ page }) => {
-    // Go to Dutch homepage (redirects to trip page)
-    await page.goto(`${BASE_URL}/nl`);
+    // Go to Dutch trip homepage directly
+    await page.goto(`${BASE_URL}/nl/${TRIP_SLUG}`);
     await expect(page).toHaveTitle(/Vakantiegids/i);
 
     console.log('✓ Testing NL Homepage...');
@@ -60,8 +60,8 @@ test.describe('Vacation Guide Visual Tests', () => {
   });
 
   test('should switch between languages', async ({ page }) => {
-    // Start on Dutch homepage
-    await page.goto(`${BASE_URL}/nl`);
+    // Start on Dutch trip homepage
+    await page.goto(`${BASE_URL}/nl/${TRIP_SLUG}`);
 
     console.log('✓ Starting on Dutch (NL) homepage...');
     await page.waitForTimeout(2000);
@@ -106,7 +106,7 @@ test.describe('Vacation Guide Visual Tests', () => {
     // Set mobile viewport
     await page.setViewportSize({ width: 375, height: 667 });
 
-    await page.goto(`${BASE_URL}/nl`);
+    await page.goto(`${BASE_URL}/nl/${TRIP_SLUG}`);
 
     console.log('✓ Testing mobile viewport...');
     await page.waitForTimeout(2000);
@@ -126,12 +126,12 @@ test.describe('Vacation Guide Visual Tests', () => {
   });
 
   test('should have proper HTML structure', async ({ page }) => {
-    await page.goto(`${BASE_URL}/nl`);
+    await page.goto(`${BASE_URL}/nl/${TRIP_SLUG}`);
 
     console.log('✓ Checking HTML structure...');
 
     // Check for title
-    await expect(page).toHaveTitle(/Andalusië Vakantiegids/);
+    await expect(page).toHaveTitle(/Vakantiegids/);
     console.log('✓ Page title present');
 
     // Check for html tag with lang attribute
@@ -153,9 +153,35 @@ test.describe('Vacation Guide Visual Tests', () => {
     console.log(`✓ HTML lang attribute changed to: ${htmlEn}`);
 
     // Check English title
-    await expect(page).toHaveTitle(/Andalusia Travel Guide/);
+    await expect(page).toHaveTitle(/Travel Guide|Vacation Guide/);
     console.log('✓ English title correct');
 
     console.log('✅ HTML structure is correct!');
+  });
+
+  test('should show trip selector on locale homepage', async ({ page }) => {
+    await page.goto(`${BASE_URL}/nl`);
+
+    console.log('✓ Testing trip selector page...');
+    await page.waitForTimeout(1500);
+
+    // Check for trip selector title
+    await expect(page.locator('h1')).toContainText('Jouw Reizen');
+
+    // Check that the Andalusia trip card is visible
+    await expect(page.getByText('Andalusië Vakantiegids')).toBeVisible();
+    console.log('✓ Andalusia trip card visible');
+
+    // Check that create new trip card is visible
+    await expect(page.getByText('Nieuwe Reis Maken')).toBeVisible();
+    console.log('✓ Create new trip card visible');
+
+    // Click on the trip card to navigate to trip
+    await page.click('text=Andalusië Vakantiegids');
+    await page.waitForURL(`**/nl/${TRIP_SLUG}`);
+    await expect(page.locator('h1')).toContainText('Andalusië');
+    console.log('✓ Trip card navigation works');
+
+    console.log('✅ Trip selector works correctly!');
   });
 });

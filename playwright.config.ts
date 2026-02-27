@@ -7,6 +7,7 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: 1, // Run one test at a time for visual testing
   reporter: 'list',
+  timeout: 60000, // 60s per test (Turbopack first-compile can be slow)
 
   use: {
     baseURL: 'http://localhost:3000',

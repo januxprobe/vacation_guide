@@ -43,6 +43,36 @@
     "recommended": "Recommended",
     "optional": "Optional"
   },
+  "tripSelector": {
+    "appName": "Vacation Guide",
+    "title": "Your Trips",
+    "subtitle": "Choose a trip or create a new one",
+    "createNew": "Create New Trip",
+    "days": "{count} days",
+    "cities": "{count} cities",
+    "attractions": "{count} attractions",
+    "deleteTrip": "Delete trip",
+    "confirmDelete": "Delete",
+    "cancel": "Cancel",
+    "deleteSuccess": "Trip deleted",
+    "deleteError": "Failed to delete trip"
+  },
+  "tripCreator": {
+    "title": "Plan a New Trip",
+    "placeholder": "Describe your dream trip...",
+    "send": "Send",
+    "createTrip": "Create Trip",
+    "creating": "Creating trip...",
+    "success": "Trip created successfully!",
+    "error": "Something went wrong. Please try again.",
+    "tripPreview": "Trip Preview",
+    "suggestedAttractions": "Attractions",
+    "accept": "Accept",
+    "reject": "Remove",
+    "searching": "Searching...",
+    "previewEmpty": "Start a conversation to plan your trip",
+    "initialMessage": "Hi! I'm your travel planning assistant. Tell me about the trip you'd like to plan - where do you want to go, when, and with whom?"
+  },
   "home": {
     "hero": {
       "title": "Discover Magical Andalusia",

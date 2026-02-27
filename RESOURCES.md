@@ -97,7 +97,7 @@ Embed URL pattern: `https://www.youtube-nocookie.com/embed/{VIDEO_ID}`
 ```
 
 ### Trip Config Template
-See `src/config/trips/andalusia-2026.ts` for a complete example of the TripConfig interface.
+See `src/config/trips/andalusia-2026.ts` for a complete static example, or `src/data/trips/torremolinos-2027/trip-config.json` (when created via AI) for a JSON-based example.
 
 ### GPS Coordinates
 - **Google Maps:** Right-click on location -> "What's here?" -> Copy coordinates
@@ -128,7 +128,15 @@ See `src/config/trips/andalusia-2026.ts` for a complete example of the TripConfi
 
 ## Creating a New Trip
 
-### Step-by-step
+### Option 1: AI Trip Builder (recommended)
+1. Navigate to `/{locale}/create-trip` (or click "Create New Trip" on the homepage)
+2. Describe your trip in natural language to the Gemini AI chat
+3. Accept attraction suggestions (the AI uses Google Search grounding for real data)
+4. Click "Create Trip" to save
+5. The AI creates `src/data/trips/{slug}/trip-config.json` and attraction JSON files automatically
+6. User-created trips can be deleted from the trip selector homepage
+
+### Option 2: Manual
 1. Create trip config: `src/config/trips/{trip-slug}.ts` (implement TripConfig)
 2. Register in `src/config/trips/index.ts`
 3. Create data directory: `src/data/trips/{trip-slug}/attractions/{city}/`
@@ -138,9 +146,18 @@ See `src/config/trips/andalusia-2026.ts` for a complete example of the TripConfi
 7. Build and test: `npm run build && npx playwright test --headed`
 
 ### Validation
-- Zod schemas in `src/lib/schemas.ts` validate all attraction data at build time
+- Zod schemas in `src/lib/schemas.ts` validate all attraction and trip config data
+- `tripConfigSchema` validates JSON-based trip configs created by the AI builder
+- `attractionSchema` validates individual attraction files
 - Invalid JSON files are logged as warnings but don't break the build
 - Run `npm run build` to catch data issues early
+
+### Hybrid Trip Registry
+The trip registry (`src/config/trips/index.ts`) merges two sources:
+- **Static trips:** TypeScript configs in `src/config/trips/*.ts` (cannot be deleted)
+- **Dynamic trips:** JSON configs in `src/data/trips/*/trip-config.json` (created by AI, can be deleted)
+
+Call `clearTripCache()` before `getAllTrips()` in server components to ensure fresh data.
 
 ## Architecture Notes
 

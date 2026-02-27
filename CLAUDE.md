@@ -2,15 +2,20 @@
 
 ## Project Overview
 
-A reusable Next.js web application for planning multi-city trips. Currently configured with an Andalusia trip (Seville, Cordoba, Granada, September 2026) for 5 people: 2 adults (50+) and 3 young adults (~20 years). The platform supports multiple trips via URL routing (`/[locale]/[tripSlug]/...`).
+A reusable Next.js web application for planning multi-city trips. Users can browse pre-configured trips or create new ones via an AI-powered conversational trip builder (Gemini with Google Search grounding). The platform supports multiple trips via URL routing (`/[locale]/[tripSlug]/...`).
+
+### Pre-configured Trips
+- **Andalusia 2026** - Seville, Cordoba, Granada (September 2026, 5 travelers)
 
 ### Key Features
-- Interactive daily itinerary with timeline
-- Interactive map with OpenStreetMap (Leaflet)
+- **Trip Selector Homepage** - Browse existing trips, create new ones, delete user-created trips
+- **AI Trip Builder** - Conversational chat with Gemini AI to plan trips, suggest attractions with real data from Google Search
 - Attraction details with photos, prices, opening hours
-- Restaurant tips by neighborhood
 - Budget calculator with configurable student discounts
 - Bilingual: Dutch (NL) and English (EN)
+- Interactive daily itinerary with timeline
+- Interactive map with OpenStreetMap (Leaflet)
+- Restaurant tips by neighborhood
 - Deployable to Google Cloud Run
 
 ## Tech Stack
@@ -22,6 +27,7 @@ A reusable Next.js web application for planning multi-city trips. Currently conf
 | Tailwind CSS v4 | Styling |
 | shadcn/ui | UI component primitives |
 | next-intl v4 | Internationalization (NL/EN) |
+| @google/genai | Gemini AI for trip builder |
 | React-Leaflet | Interactive maps |
 | Leaflet Routing Machine | Route visualization |
 | Zod | Runtime validation |
@@ -36,11 +42,22 @@ vacation_guide/
 │   ├── app/
 │   │   ├── layout.tsx                   # Root layout (passthrough)
 │   │   ├── globals.css                  # Global styles + Tailwind
+│   │   ├── api/
+│   │   │   ├── trips/
+│   │   │   │   ├── route.ts            # GET/POST - List/create trips
+│   │   │   │   └── [slug]/
+│   │   │   │       ├── route.ts        # GET/DELETE - Get/delete trip
+│   │   │   │       └── attractions/
+│   │   │   │           └── route.ts    # POST - Add attraction to trip
+│   │   │   └── ai/
+│   │   │       ├── chat/route.ts       # POST - Streaming Gemini chat (SSE)
+│   │   │       └── finalize-trip/route.ts # POST - Extract structured trip data
 │   │   └── [locale]/                    # i18n routing (nl/en)
-│   │       ├── layout.tsx               # Locale layout (NextIntlClientProvider + default TripConfigProvider)
-│   │       ├── page.tsx                 # Redirect to default trip
+│   │       ├── layout.tsx               # Locale layout (NextIntlClientProvider)
+│   │       ├── page.tsx                 # Trip selector homepage
+│   │       ├── create-trip/page.tsx     # AI-powered trip builder
 │   │       ├── [tripSlug]/              # Trip-scoped routes
-│   │       │   ├── layout.tsx           # Trip layout (resolves TripConfig, provides context)
+│   │       │   ├── layout.tsx           # Trip layout (TripConfigProvider + Header)
 │   │       │   ├── page.tsx             # Trip homepage (hero, stats, quick links)
 │   │       │   ├── attractions/
 │   │       │   │   ├── page.tsx         # Attractions list with filters
@@ -56,15 +73,16 @@ vacation_guide/
 │   │       └── budget/page.tsx          # Backward-compat redirect
 │   ├── config/
 │   │   ├── trip-config.ts               # TripConfig, CityConfig, TravelerGroup interfaces
-│   │   ├── trip-context.tsx             # React context + useTripConfig() hook
+│   │   ├── trip-context.tsx             # React context + useTripConfig() + useOptionalTripConfig()
 │   │   └── trips/
-│   │       ├── index.ts                 # Trip registry (getTripBySlug, getAllTrips)
+│   │       ├── index.ts                 # Hybrid trip registry (static TS + JSON from disk)
 │   │       └── andalusia-2026.ts        # Andalusia trip config instance
 │   ├── components/
 │   │   ├── layout/
-│   │   │   ├── Header.tsx               # Navigation + language switcher (config-driven colors)
+│   │   │   ├── Header.tsx               # Trip-scoped navigation + language switcher
+│   │   │   ├── GenericHeader.tsx         # Generic header for non-trip pages
 │   │   │   └── LanguageSwitcher.tsx      # NL/EN toggle
-│   │   ├── ui/                          # shadcn/ui (empty, add as needed)
+│   │   ├── ui/                          # shadcn/ui components
 │   │   ├── attractions/
 │   │   │   ├── AttractionCard.tsx       # Card with config-driven color bar, badges, pricing
 │   │   │   ├── AttractionDetail.tsx     # Full detail view (config-driven colors)
@@ -74,22 +92,27 @@ vacation_guide/
 │   │   │   ├── FullscreenCarousel.tsx   # Fullscreen image viewer
 │   │   │   ├── VideoEmbed.tsx           # YouTube embed component
 │   │   │   └── PriceInfo.tsx            # Price breakdown display
-│   │   ├── itinerary/                   # TODO: Phase 3
-│   │   ├── budget/                      # TODO: Phase 3
-│   │   ├── restaurants/                 # TODO: Phase 3
-│   │   ├── map/                         # TODO: Phase 4
-│   │   ├── home/                        # TODO: Phase 5
-│   │   └── shared/                      # TODO: Phase 5
+│   │   ├── trip-selector/
+│   │   │   ├── TripCard.tsx             # Trip card with optional delete (two-step confirm)
+│   │   │   ├── CreateTripCard.tsx       # Dashed-border "+" card to create trip
+│   │   │   └── TripGrid.tsx            # Client wrapper managing trip list + deletion
+│   │   └── trip-creator/
+│   │       ├── TripChat.tsx             # Main chat container + state management
+│   │       ├── ChatMessage.tsx          # Message bubble with structured data parsing
+│   │       ├── ChatInput.tsx            # Auto-resizing textarea + send button
+│   │       ├── AttractionSuggestion.tsx # Rich attraction card with accept button
+│   │       ├── TripPreview.tsx          # Side panel showing trip being built
+│   │       └── CreateTripButton.tsx     # "Create Trip" button with loading state
 │   ├── lib/
 │   │   ├── utils.ts                     # cn() helper from shadcn
-│   │   ├── data-loaders.ts             # Config-driven fs.readFileSync + Zod validation
-│   │   ├── schemas.ts                   # Zod schemas for attraction data validation
+│   │   ├── data-loaders.ts             # Config-driven fs.readFileSync + Zod validation + cache
+│   │   ├── schemas.ts                   # Zod schemas (attraction + tripConfig)
 │   │   └── city-colors.ts              # Color utilities (hex->rgba, badge/gradient styles)
 │   ├── types/
 │   │   └── index.ts                     # All TypeScript interfaces (City = string)
 │   ├── data/
 │   │   └── trips/
-│   │       └── andalusia-2026/
+│   │       └── andalusia-2026/          # Static trip (25 attractions)
 │   │           └── attractions/
 │   │               ├── seville/         # 10 JSON files
 │   │               ├── cordoba/         # 7 JSON files
@@ -98,14 +121,16 @@ vacation_guide/
 │       ├── routing.ts                   # Locale config + navigation wrappers
 │       ├── request.ts                   # Server-side locale resolution
 │       └── messages/
-│           ├── nl.json                  # Dutch translations (generic UI)
-│           └── en.json                  # English translations (generic UI)
+│           ├── nl.json                  # Dutch translations
+│           └── en.json                  # English translations
 ├── public/
 │   ├── images/{cities,attractions}/     # Static images
 │   └── icons/markers/                   # Custom map markers
 ├── tests/
-│   ├── visual-test.spec.ts             # Core visual tests (navigation, i18n, mobile)
-│   └── attractions-test.spec.ts        # Attractions feature tests (list, detail, filters)
+│   ├── visual-test.spec.ts             # Core visual tests (navigation, i18n, mobile, trip selector)
+│   ├── attractions-test.spec.ts        # Attractions feature tests (list, detail, filters)
+│   └── create-trip-test.spec.ts        # AI trip builder E2E test (create + delete)
+├── .env.example                         # Environment variable template
 ├── middleware.ts                        # next-intl locale detection
 ├── next.config.ts                       # Next.js config (standalone + i18n)
 ├── playwright.config.ts                 # Playwright config (headed mode)
@@ -142,6 +167,12 @@ const t = useTranslations();
 - **Interactive components** (Header, LanguageSwitcher) use `'use client'` directive - use `useTranslations` from `next-intl`
 - **Map components** must use `'use client'` and dynamic import with `ssr: false`
 
+### Header Architecture
+
+Two header variants:
+- **`Header.tsx`** - Trip-scoped, uses `useTripConfig()`. Rendered inside `[tripSlug]/layout.tsx`.
+- **`GenericHeader.tsx`** - For non-trip pages (trip selector, create-trip). Shows generic branding + language switcher only.
+
 ### City Color Scheme
 City colors are defined in trip config (`src/config/trips/andalusia-2026.ts`), not hardcoded:
 - Seville: Orange (`#f97316`)
@@ -151,14 +182,33 @@ City colors are defined in trip config (`src/config/trips/andalusia-2026.ts`), n
 Colors are applied via inline styles using `src/lib/city-colors.ts` utilities (not Tailwind classes, because Tailwind v4 JIT can't handle runtime-interpolated classes).
 
 ### Multi-Trip Architecture
-- Trip configs: `src/config/trips/*.ts` (implement TripConfig interface)
-- Trip registry: `src/config/trips/index.ts` (maps slugs to configs)
-- Trip context: `src/config/trip-context.tsx` (React context for client components)
-- URL structure: `/{locale}/{tripSlug}/attractions/...`
-- Old URLs (without tripSlug) redirect to the default trip
-- Adding a new trip = new config file + new data directory + register in index.ts
+- **Static trips:** TypeScript configs in `src/config/trips/*.ts`, registered in `index.ts`
+- **Dynamic trips:** JSON configs in `src/data/trips/*/trip-config.json`, auto-discovered at runtime
+- **Hybrid registry:** `src/config/trips/index.ts` merges both sources via `getAllTrips()`
+- **Cache management:** `clearTripCache()` must be called before `getAllTrips()` in server components to ensure fresh data
+- **Trip context:** `useTripConfig()` for trip-scoped components, `useOptionalTripConfig()` for optional
+- **URL structure:** `/{locale}/{tripSlug}/attractions/...`
+- **Trip deletion:** Only dynamic (JSON-based) trips can be deleted; static trips are protected
+
+### AI Trip Builder Architecture
+- **Chat API** (`/api/ai/chat`): Streaming SSE with Gemini + Google Search grounding
+- **Finalize API** (`/api/ai/finalize-trip`): Non-streaming JSON extraction from conversation
+- **Trip CRUD** (`/api/trips`): Creates trip directory + `trip-config.json`, manages attractions
+- **Flow:** Chat → Accept suggestions → Click "Create Trip" → Finalize → Save → Redirect
+- **Gemini model:** `gemini-2.5-flash` with `tools: [{ googleSearch: {} }]` for grounding
 
 ## Development
+
+### Prerequisites
+- Node.js 18+
+- Gemini API key (for trip builder): get one at https://aistudio.google.com/apikey
+
+### Setup
+```bash
+npm install
+cp .env.example .env.local
+# Edit .env.local and add your GEMINI_API_KEY
+```
 
 ### Commands
 ```bash
@@ -167,15 +217,17 @@ npm run build        # Production build
 npm run lint         # ESLint
 
 # Testing
-npx playwright test --headed              # Run all visual tests (visible browser)
+npx playwright test --headed              # Run all tests (visible browser)
 npx playwright test --headed --grep "X"   # Run specific test
 ```
 
 ### Testing Strategy
-- Playwright visual tests in `tests/visual-test.spec.ts`
-- Tests run in headed mode (visible Chrome browser) so progress can be observed
+- Playwright tests in headed mode (visible Chrome browser)
 - After any changes, run `npx playwright test --headed` to verify
-- 8 tests total: 4 core (NL navigation, language switching, mobile, HTML structure) + 4 attractions (list/filters, detail page, English mode, category filter)
+- **10 tests total:**
+  - 5 core: NL navigation, language switching, mobile, HTML structure, trip selector
+  - 4 attractions: list/filters, detail page, English mode, category filter
+  - 1 E2E: AI trip creation + verification + deletion (uses live Gemini API)
 
 ### Adding shadcn/ui Components
 ```bash
@@ -207,62 +259,60 @@ npx shadcn@latest add card      # Example: add card component
 - [x] Attraction detail page (`/attractions/[id]`) with static generation
 - [x] Data loader (`src/lib/data-loaders.ts`) with query functions
 - [x] Playwright tests for attractions (4 tests passing)
-- [ ] Unsplash API proxy route for images (deferred - using placeholders)
-- [ ] PhotoGallery component (deferred - needs images)
 
 ### Phase 2.5: Platform Generalization [COMPLETED]
 - [x] TripConfig interface + andalusia-2026 config instance
 - [x] React context (TripConfigProvider + useTripConfig hook)
-- [x] Dynamic data loading (fs.readFileSync + directory scanning, replaces 25 static imports)
+- [x] Dynamic data loading (fs.readFileSync + directory scanning)
 - [x] Zod validation schemas for attraction data
 - [x] City color utilities (inline styles replacing hardcoded Tailwind classes)
-- [x] All components use config context (AttractionCard, AttractionDetail, AttractionFilter, Header, homepage)
+- [x] All components use config context
 - [x] Multi-trip URL routing: /[locale]/[tripSlug]/...
 - [x] Trip registry with getTripBySlug/getAllTrips
 - [x] Backward-compatible redirects (old URLs -> default trip)
 - [x] RESOURCES.md documentation for future trip creation
-- [x] All 8 Playwright tests passing
-- [x] City type generalized from union to string
-- [x] BudgetConfig generalized to use travelerCounts Record
+
+### Phase 2.7: Trip Selector + AI Trip Builder [COMPLETED]
+- [x] Trip selector homepage at `/{locale}` with trip cards + "Create New Trip"
+- [x] AI-powered conversational trip builder at `/{locale}/create-trip`
+- [x] Gemini integration with Google Search grounding for real attraction data
+- [x] Streaming SSE chat responses
+- [x] Structured JSON output parsing (attraction suggestions, trip configs)
+- [x] Accept/reject attraction suggestions with rich cards
+- [x] Trip finalization: extract structured data from conversation
+- [x] Trip CRUD API: create trip + attractions as JSON files on disk
+- [x] Trip deletion with two-step confirmation (user-created trips only)
+- [x] Hybrid trip registry: static TS configs + dynamic JSON configs
+- [x] GenericHeader for non-trip pages
+- [x] Cache invalidation for fresh trip data
+- [x] E2E Playwright test: full create -> verify -> delete flow
+- [x] All 10 Playwright tests passing
 
 ### Phase 3: Itinerary & Budget [PENDING]
-- [ ] Complete itinerary JSON (`september-2026.json`) with all 7 days
+- [ ] Complete itinerary JSON with all 7 days
 - [ ] DayCard and ActivityTimeline components
 - [ ] Itinerary overview and day detail pages
-- [ ] Budget calculator logic (`budget-calculator.ts`)
-- [ ] DiscountSelector, BudgetSummary, CategoryBreakdown components
-- [ ] Restaurant data JSON per city (3-5 restaurants per neighborhood)
+- [ ] Budget calculator logic
+- [ ] Restaurant data JSON per city
 - [ ] RestaurantCard component and restaurants page
-- [ ] Add Playwright tests for itinerary, budget, restaurants
 
 ### Phase 4: Interactive Map [PENDING]
 - [ ] React-Leaflet setup with dynamic import (ssr: false)
 - [ ] InteractiveMap client component with OpenStreetMap tiles
-- [ ] Custom colored markers per city (orange/red/green SVGs)
-- [ ] AttractionMarker with popup info
-- [ ] RouteLayer for routes between attractions
-- [ ] Marker clustering (react-leaflet-cluster)
-- [ ] Map filters: by city, by day, show/hide restaurants
-- [ ] Full-screen map page + mini-maps on detail pages
-- [ ] Add Playwright tests for map
+- [ ] Custom colored markers per city
+- [ ] Marker clustering
+- [ ] Map filters: by city, by day
 
 ### Phase 5: Homepage & Polish [PENDING]
-- [ ] Hero section with Andalusia imagery
-- [ ] Trip overview card, featured attractions carousel
+- [ ] Hero section with trip imagery
 - [ ] Loading skeletons and error boundaries
-- [ ] Smooth transitions between pages
-- [ ] Mobile optimizations (touch targets, bottom sheets)
+- [ ] Mobile optimizations
 - [ ] Lighthouse audit (target: >90 performance, >95 accessibility)
-- [ ] Content enrichment: weather info, packing list, travel tips
 
 ### Phase 6: Deployment to GCP [PENDING]
-- [ ] Multi-stage Dockerfile (deps -> build -> runtime)
-- [ ] `.dockerignore` for minimal images
-- [ ] Local Docker testing
-- [ ] GCP Project setup (Cloud Run, Artifact Registry, Cloud Build)
-- [ ] `cloudbuild.yaml` configuration
-- [ ] GitHub Actions CI/CD (`.github/workflows/deploy.yml`)
-- [ ] Environment variables (Unsplash API key)
+- [ ] Multi-stage Dockerfile
+- [ ] GCP Project setup (Cloud Run, Artifact Registry)
+- [ ] GitHub Actions CI/CD
 - [ ] Billing alerts (target: <15 EUR/month)
 
 ## Trip Data Summary (from vakantie 2026.docx)

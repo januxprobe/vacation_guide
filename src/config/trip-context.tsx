@@ -26,3 +26,8 @@ export function useTripConfig(): TripConfig {
   }
   return config;
 }
+
+/** Returns TripConfig or null when outside a TripConfigProvider */
+export function useOptionalTripConfig(): TripConfig | null {
+  return useContext(TripConfigContext);
+}

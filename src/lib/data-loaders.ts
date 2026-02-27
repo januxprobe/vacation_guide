@@ -113,3 +113,12 @@ export function getAllAttractionIds(): string[] {
 export function getAllAttractionIdsForTrip(config: TripConfig): string[] {
   return getAttractionsForTrip(config).map((a) => a.id);
 }
+
+/** Clear cached attractions for a specific trip (e.g. after adding new ones) */
+export function clearAttractionCache(tripId?: string): void {
+  if (tripId) {
+    attractionCache.delete(tripId);
+  } else {
+    attractionCache.clear();
+  }
+}
