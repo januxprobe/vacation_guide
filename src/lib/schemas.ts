@@ -114,7 +114,7 @@ const transportSchema = z.object({
 
 const activitySchema = z.object({
   time: z.string(),
-  attractionId: z.string(),
+  attractionId: z.string().optional(),
   duration: z.number(),
   notes: localizedStringSchema.optional(),
   transport: transportSchema.optional(),

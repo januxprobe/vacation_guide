@@ -25,7 +25,7 @@ export function ActivityCard({
   const t = useTranslations();
   const locale = useLocale() as 'nl' | 'en';
 
-  const name = attraction?.name ?? activity.attractionId;
+  const name = attraction?.name ?? activity.attractionId ?? activity.notes?.[locale] ?? t('planner.activity');
   const duration = activity.duration >= 60
     ? `${Math.floor(activity.duration / 60)}h${activity.duration % 60 > 0 ? `${activity.duration % 60}m` : ''}`
     : `${activity.duration}m`;

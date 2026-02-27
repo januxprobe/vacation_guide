@@ -224,7 +224,8 @@
     "bookingTip": "Book in advance",
     "mapView": "Map",
     "listView": "Itinerary",
-    "noItinerary": "No itinerary available for this trip"
+    "noItinerary": "No itinerary available for this trip",
+    "activity": "Activity"
   },
   "budget": {
     "title": "Budget Calculator",

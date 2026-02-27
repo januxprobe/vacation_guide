@@ -224,7 +224,8 @@
     "bookingTip": "Boek vooraf",
     "mapView": "Kaart",
     "listView": "Dagplanning",
-    "noItinerary": "Geen reisplanning beschikbaar voor deze reis"
+    "noItinerary": "Geen reisplanning beschikbaar voor deze reis",
+    "activity": "Activiteit"
   },
   "budget": {
     "title": "Budget Calculator",

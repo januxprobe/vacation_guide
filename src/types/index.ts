@@ -78,7 +78,7 @@ export interface Transport {
 
 export interface Activity {
   time: string; // "09:00"
-  attractionId: string;
+  attractionId?: string;
   duration: number; // minutes
   notes?: LocalizedString;
   transport?: Transport;

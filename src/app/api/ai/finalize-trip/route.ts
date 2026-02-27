@@ -1,5 +1,6 @@
 import { GoogleGenAI } from '@google/genai';
 import { restaurantsFileSchema, itinerarySchema } from '@/lib/schemas';
+import { normalizeItinerary } from '@/lib/normalize-itinerary';
 
 const FINALIZE_PROMPT = `Based on the conversation so far, generate the COMPLETE trip configuration, ALL attraction data, restaurant recommendations, and a day-by-day itinerary as a single JSON object.
 
@@ -73,44 +74,70 @@ The output must be valid JSON with this exact structure:
   ],
   "itinerary": {
     "trip": {
-      "title": { "nl": "...", "en": "..." },
-      "startDate": "YYYY-MM-DD",
-      "endDate": "YYYY-MM-DD"
+      "title": { "nl": "Rome Stedentrip", "en": "Rome City Trip" },
+      "startDate": "2026-06-01",
+      "endDate": "2026-06-03"
     },
     "days": [
       {
-        "date": "YYYY-MM-DD",
+        "date": "2026-06-01",
         "dayNumber": 1,
-        "city": "city-id",
-        "title": { "nl": "Dag 1: ...", "en": "Day 1: ..." },
+        "city": "rome",
+        "title": { "nl": "Dag 1: Colosseum & Forum", "en": "Day 1: Colosseum & Forum" },
         "activities": [
           {
-            "time": "10:00",
-            "attractionId": "city-attraction-name",
-            "duration": 120,
-            "notes": { "nl": "...", "en": "..." },
+            "time": "09:30",
+            "attractionId": "rome-colosseum",
+            "duration": 150,
+            "notes": { "nl": "Reserveer tickets van tevoren", "en": "Book tickets in advance" }
+          },
+          {
+            "time": "13:00",
+            "attractionId": "rome-roman-forum",
+            "duration": 90,
+            "notes": { "nl": "Combiticket met Colosseum", "en": "Combined ticket with Colosseum" },
             "transport": {
               "method": "walk",
-              "duration": 15,
-              "cost": 0
+              "duration": 5
             }
           }
         ],
         "meals": [
           {
             "type": "breakfast",
-            "time": "08:30",
-            "neighborhood": "Neighborhood",
-            "estimatedCost": 10,
-            "notes": { "nl": "...", "en": "..." },
-            "coordinates": { "lat": 0.0, "lng": 0.0 },
-            "restaurantName": "Cafe Name"
+            "time": "08:00",
+            "neighborhood": "Centro Storico",
+            "estimatedCost": 8,
+            "notes": { "nl": "Ontbijt bij lokale bar", "en": "Breakfast at local bar" }
+          },
+          {
+            "type": "lunch",
+            "time": "12:15",
+            "neighborhood": "Monti",
+            "estimatedCost": 15,
+            "notes": { "nl": "Pasta bij trattoria", "en": "Pasta at trattoria" },
+            "coordinates": { "lat": 41.8946, "lng": 12.4964 },
+            "restaurantName": "Trattoria da Mario"
+          },
+          {
+            "type": "dinner",
+            "time": "19:30",
+            "neighborhood": "Trastevere",
+            "estimatedCost": 25,
+            "notes": { "nl": "Avondeten in Trastevere", "en": "Dinner in Trastevere" }
           }
         ]
       }
     ]
   }
 }
+
+IMPORTANT FORMAT RULES — follow the example above exactly:
+- All times in 24-hour format WITHOUT AM/PM: "09:30", "14:00", "19:30" (NOT "2:00 PM")
+- All text fields with translations MUST be objects: { "nl": "Dutch text", "en": "English text" } (NOT plain strings)
+- duration, estimatedCost, dayNumber, transport.duration, transport.cost are NUMBERS (NOT strings like "120")
+- coordinates use "lat" and "lng" keys (NOT "latitude"/"longitude")
+- attractionId values MUST exactly match the "id" field of an attraction in the attractions array above
 
 RULES:
 - Include ALL attractions that were discussed and accepted in the conversation
@@ -129,13 +156,12 @@ RESTAURANTS:
 
 ITINERARY:
 - Cover all trip dates (one day entry per date)
-- Reference attraction IDs from the attractions array in activities
-- Include breakfast, lunch, and dinner meals each day with estimated costs
+- Each activity's attractionId MUST be the exact "id" of an attraction from the attractions array
+- Include breakfast, lunch, and dinner meals each day with estimated costs as numbers
 - Order activities geographically to minimize travel time
-- Include transport between activities (method: "walk", "bus", "train", or "car")
+- Include transport between activities; transport.method must be one of: "walk", "bus", "train", "car" (lowercase)
+- meal.type must be one of: "breakfast", "lunch", "dinner", "snack" (lowercase)
 - Meal coordinates and restaurantName are optional but preferred
-- transport.method must be one of: "walk", "bus", "train", "car"
-- meal.type must be one of: "breakfast", "lunch", "dinner", "snack"
 
 - Output ONLY valid JSON, no markdown or explanation`;
 
@@ -217,8 +243,9 @@ export async function POST(request: Request) {
       data.restaurants = [];
     }
 
-    // Validate itinerary (graceful fallback to null)
+    // Normalize + validate itinerary (graceful fallback to null)
     if (data.itinerary) {
+      normalizeItinerary(data.itinerary);
       const itineraryParsed = itinerarySchema.safeParse(data.itinerary);
       if (!itineraryParsed.success) {
         console.warn('Itinerary validation failed, falling back to null:', itineraryParsed.error.format());

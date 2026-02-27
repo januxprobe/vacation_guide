@@ -88,7 +88,9 @@ export default function PlannerMap({
   const city = findCity(config.cities, day.city);
   const cityColor = city?.color ?? '#6b7280';
 
-  const activityIds = day.activities.map((a) => a.attractionId);
+  const activityIds = day.activities
+    .map((a) => a.attractionId)
+    .filter((id): id is string => !!id);
 
   // Map activities to attractions with their sequence number
   const dayAttractions = useMemo(() => {

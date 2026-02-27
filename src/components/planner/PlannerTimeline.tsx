@@ -47,7 +47,7 @@ export default function PlannerTimeline({
     ...activities.map((a, i) => ({
       type: 'activity' as const,
       data: a,
-      attraction: attractionMap.get(a.attractionId),
+      attraction: a.attractionId ? attractionMap.get(a.attractionId) : undefined,
       index: i,
     })),
     ...meals.map((m) => ({
@@ -95,7 +95,7 @@ export default function PlannerTimeline({
                   return <MealCard key={`meal-${item.data.type}-${item.data.time}`} meal={item.data} />;
                 }
 
-                const activityId = item.data.attractionId;
+                const activityId = item.data.attractionId ?? `freeform-${i}`;
                 return (
                   <div
                     key={`activity-${activityId}`}

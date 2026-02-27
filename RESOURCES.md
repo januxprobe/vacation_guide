@@ -117,6 +117,7 @@ Each trip can have an `itinerary.json` file in its data directory. See `src/data
           "time": "09:00",
           "attractionId": "city-attraction-slug",
           "duration": 120,
+          // NOTE: attractionId is optional — free-form activities (travel, free time) omit it
           "notes": { "nl": "Notes NL", "en": "Notes EN" },
           "transport": {
             "method": "walk|bus|train|car",
@@ -217,7 +218,8 @@ See `src/config/trips/andalusia-2026.ts` for a complete static example, or `src/
 
 **Notes on AI-generated data:**
 - Restaurants are reliably generated (Zod validation is lenient for optional fields)
-- Itinerary generation is best-effort — Gemini must produce exact `attractionId` matches, valid transport enums, etc. Falls back gracefully to `null` if validation fails
+- Itinerary generation uses a two-layer defense: (1) the finalize prompt includes a concrete one-shot example with FORMAT RULES, and (2) `normalizeItinerary()` fixes common issues (capitalized enums, AM/PM times, string numbers, plain strings instead of `{nl,en}` objects) before Zod validation. Falls back to `null` if validation still fails.
+- `attractionId` is optional on activities — Gemini generates free-form activities (train transfers, free time) that don't reference a specific attraction. The planner, map, and budget components all handle this gracefully.
 - Attraction categories/priorities are normalized (e.g. `"square"` → `"monument"`, `"important"` → `"essential"`) before validation
 
 ### Option 2: Manual

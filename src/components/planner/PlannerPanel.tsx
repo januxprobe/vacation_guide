@@ -49,7 +49,9 @@ export default function PlannerPanel({
   const cityColor = city?.color ?? '#6b7280';
   const cityName = city?.name[locale] ?? day.city;
   const dayTitle = day.title[locale];
-  const activityIds = day.activities.map((a) => a.attractionId);
+  const activityIds = day.activities
+    .map((a) => a.attractionId)
+    .filter((id): id is string => !!id);
   const routeUrl = buildGoogleMapsUrl(attractions, activityIds);
 
   // Auto-scroll to highlighted activity

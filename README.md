@@ -19,7 +19,7 @@ Currently features a pre-configured **Andalusia 2026** trip covering Seville, Co
 - **Bilingual** - Dutch (NL) and English (EN) with full i18n support
 - **Media galleries** - Fullscreen carousel with images and embedded YouTube videos
 - **Responsive** - Works on desktop and mobile with collapsible navigation
-- **Data validation** - Zod schemas validate all attraction, itinerary, and restaurant data
+- **Data validation** - Zod schemas validate all data; AI-generated itineraries are auto-normalized (enum casing, time formats, type coercion) before validation
 - **Trip management** - Create trips via AI chat, delete user-created trips with two-step confirmation
 
 ## Tech Stack
@@ -104,7 +104,7 @@ src/
 ├── config/trips/                  # Trip configurations (static TS + dynamic JSON)
 ├── data/trips/                    # Trip data on disk (attraction JSON files)
 ├── hooks/                         # Custom hooks (walking route via Valhalla)
-├── lib/                           # Data loaders, budget calculator, color utilities, Zod schemas
+├── lib/                           # Data loaders, budget calculator, color utilities, Zod schemas, AI normalization
 └── i18n/messages/                 # Translation files (nl.json, en.json)
 ```
 

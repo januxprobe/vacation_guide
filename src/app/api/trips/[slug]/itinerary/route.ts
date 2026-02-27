@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { getTripBySlug, clearTripCache } from '@/config/trips';
 import { itinerarySchema } from '@/lib/schemas';
+import { normalizeItinerary } from '@/lib/normalize-itinerary';
 import { clearItineraryCache } from '@/lib/data-loaders';
 
 /** POST: Save itinerary.json for a trip */
@@ -20,6 +21,7 @@ export async function POST(
     }
 
     const body = await request.json();
+    normalizeItinerary(body);
     const parsed = itinerarySchema.safeParse(body);
 
     if (!parsed.success) {

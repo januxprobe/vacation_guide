@@ -55,6 +55,7 @@ export function calculateBudget(input: BudgetInput): BudgetSummary {
 
     // Attraction costs (include free attractions so every activity appears in the breakdown)
     for (const activity of day.activities) {
+      if (!activity.attractionId) continue;
       const attraction = attractionMap[activity.attractionId];
       if (!attraction) continue;
 

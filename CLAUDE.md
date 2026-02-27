@@ -4,6 +4,7 @@
 
 - **Documentation files live at the project root:** `README.md`, `CLAUDE.md`, `RESOURCES.md`, `.env.example`. Always check the root directory directly when looking for docs - do NOT use broad glob patterns that match `node_modules/`.
 - **Never commit or push without manual testing.** After implementing changes, always let the user manually test first. Do not create commits or push to remote unless the user explicitly asks after they have verified the changes.
+- **Do NOT run tests unless explicitly asked.** Never run `npx playwright test` or `npm run build` on your own. The user will tell you when to test.
 - **Always update documentation before committing.** Before creating a commit, ensure `CLAUDE.md`, `README.md`, and `RESOURCES.md` are up to date with any changes made (new files, updated structure, new features, test counts, etc.).
 
 ## Project Overview
@@ -156,6 +157,7 @@ vacation_guide/
 │   │   ├── utils.ts                     # cn() helper from shadcn
 │   │   ├── data-loaders.ts             # Config-driven fs.readFileSync + Zod validation + cache (clearable)
 │   │   ├── schemas.ts                   # Zod schemas (attraction, tripConfig, itinerary, restaurant)
+│   │   ├── normalize-itinerary.ts      # Normalize AI-generated itinerary data before Zod validation
 │   │   ├── budget-calculator.ts        # Pure utility: calculateBudget() from itinerary + attractions (includes free attractions in breakdown)
 │   │   └── city-colors.ts              # Color utilities (hex->rgba, badge/gradient styles)
 │   ├── types/
@@ -262,6 +264,9 @@ Colors are applied via inline styles using `src/lib/city-colors.ts` utilities (n
 - **Flow:** Chat → Accept suggestions → Click "Create Trip" → Finalize → Save config + attractions + restaurants + itinerary → Redirect
 - **Gemini model:** `gemini-2.5-flash` with `tools: [{ googleSearch: {} }]` for grounding
 - **Attraction normalization:** AI-generated enum values (e.g. `"square"`, `"important"`) are mapped to valid schema values before Zod validation. See `CATEGORY_MAP` and `PRIORITY_MAP` in attractions endpoint.
+- **Itinerary normalization:** `normalizeItinerary()` in `src/lib/normalize-itinerary.ts` fixes common Gemini output issues before Zod validation: capitalized/synonym enums (e.g. `"Walk"`→`"walk"`, `"taxi"`→`"car"`, `"Breakfast"`→`"breakfast"`), AM/PM→24h time conversion, string→number coercion, plain string→`{nl,en}` localized string coercion, `latitude`/`longitude`→`lat`/`lng` coordinate normalization, and cleanup of invalid optional fields. Applied in both `finalize-trip` and `itinerary` save endpoints.
+- **Finalize prompt:** Uses a concrete one-shot example (Rome trip day) instead of abstract `"..."` placeholders, plus explicit FORMAT RULES block calling out the 5 most common Gemini mistakes.
+- **Optional attractionId:** `Activity.attractionId` is optional — Gemini generates free-form activities (train transfers, free time, souvenir shopping) that don't reference a specific attraction. All consumers (planner, map, budget) handle this gracefully.
 
 ### Planner Map Architecture
 - **Photo markers:** `createPhotoMarkerIcon()` in `map-utils.ts` renders attraction thumbnails as 44px square markers with city-colored borders and number badges. Highlighted markers scale to 56px.
