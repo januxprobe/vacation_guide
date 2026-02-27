@@ -2,7 +2,7 @@
 
 A modern trip planning platform built with Next.js 16, featuring an AI-powered conversational trip builder and curated travel itineraries with interactive attraction browsing, media galleries, and bilingual support (Dutch/English).
 
-Currently features a pre-configured **Andalusia 2026** trip covering Seville, Cordoba, and Granada with 25 attractions, a 7-day itinerary, 12 restaurant recommendations, an interactive budget calculator, an interactive map with clustered markers and route visualization, photos, videos, pricing info, and opening hours. Users can also create custom trips via the AI trip builder.
+Currently features a pre-configured **Andalusia 2026** trip covering Seville, Cordoba, and Granada with 25 attractions, a 7-day itinerary, 12 restaurant recommendations, an interactive budget calculator, an interactive map with photo markers, pedestrian walking routes, and meal stops, photos, videos, pricing info, and opening hours. Users can also create custom trips via the AI trip builder.
 
 ## Features
 
@@ -13,7 +13,7 @@ Currently features a pre-configured **Andalusia 2026** trip covering Seville, Co
 - **7-day itinerary** - Expandable day cards with activity timeline, meals, transport indicators, and attraction links
 - **12 restaurant recommendations** - Filterable by city and price range with cuisine tags and specialties
 - **Budget calculator** - Interactive calculator with traveler count selectors, student discount toggle, category breakdown, and per-person totals
-- **Interactive map** - OpenStreetMap with clustered markers, city/day filters, restaurant toggle, day route polylines, and colored SVG markers
+- **Interactive map** - Photo thumbnail markers with number badges, pedestrian walking routes via Valhalla (OpenStreetMap), permanent name labels, meal stop markers, CartoDB Positron tiles, city/day filters, restaurant toggle
 - **City-based color coding** - Each city gets a unique color applied via inline styles
 - **Filtering & sorting** - By city, category (monument, palace, church...), and priority (essential, recommended, optional)
 - **Bilingual** - Dutch (NL) and English (EN) with full i18n support
@@ -33,6 +33,7 @@ Currently features a pre-configured **Andalusia 2026** trip covering Seville, Co
 | next-intl v4 | Internationalization |
 | @google/genai | Gemini AI for conversational trip builder |
 | React-Leaflet | Interactive maps |
+| Valhalla (OSM) | Pedestrian walking routes (free public API) |
 | react-leaflet-cluster | Marker clustering |
 | Zod | Data validation |
 | Playwright | E2E testing |
@@ -74,7 +75,7 @@ Each trip has dedicated pages:
 - **Itinerary** - Expandable day cards with chronological timeline of activities, meals, and transport
 - **Restaurants** - Filterable list by city and price range with cuisine tags and specialties
 - **Budget** - Interactive calculator with configurable traveler counts and student discount toggle
-- **Map** - Interactive OpenStreetMap with clustered markers, city/day filters, restaurant toggle, and route visualization
+- **Planner** - Split-view with interactive map (photo markers, walking routes, meal stops) and day-by-day itinerary panel
 
 ## Project Structure
 
@@ -94,12 +95,14 @@ src/
 │   ├── itinerary/                 # Day cards, activity timeline, itinerary list
 │   ├── restaurants/               # Restaurant cards, filters, restaurant list
 │   ├── budget/                    # Budget calculator, traveler selector, category breakdown
-│   ├── map/                       # Interactive map, markers, filters, legend, route
+│   ├── map/                       # Map utilities, photo/meal/restaurant markers, route, legend
+│   ├── planner/                   # Split-view planner (map + itinerary panel + day tabs)
 │   ├── trip-selector/             # Trip cards, grid, create card
 │   ├── trip-creator/              # Chat UI, attraction suggestions, trip preview
 │   └── layout/                    # Headers (trip-scoped + generic), language switcher
 ├── config/trips/                  # Trip configurations (static TS + dynamic JSON)
 ├── data/trips/                    # Trip data on disk (attraction JSON files)
+├── hooks/                         # Custom hooks (walking route via Valhalla)
 ├── lib/                           # Data loaders, budget calculator, color utilities, Zod schemas
 └── i18n/messages/                 # Translation files (nl.json, en.json)
 ```
@@ -126,16 +129,18 @@ See [RESOURCES.md](./RESOURCES.md) for detailed patterns on data sourcing, image
 ## Testing
 
 ```bash
-npx playwright test --headed     # Run all 17 tests with visible browser
+npx playwright test --headed     # Run all 23 tests with visible browser
 npx playwright test --headed --grep "attractions"  # Run specific tests
 ```
 
-**Test suite (17 tests):**
+**Test suite (23 tests):**
 - 5 core tests: NL navigation, language switching, mobile, HTML structure, trip selector
 - 4 attraction tests: list/filters, detail page, English mode, category filter
 - 1 E2E test: AI trip creation + verification + deletion (uses live Gemini API)
-- 4 phase 3 tests: itinerary (NL + EN), restaurant filters, budget calculator
-- 3 phase 4 tests: map markers + city filter, day filter + route, restaurant toggle
+- 3 planner tests: split-view load, day sync, mobile toggle
+- 4 phase 3 tests: planner panel (NL + EN), restaurant filters, budget calculator
+- 3 phase 4 tests: map markers + day switching, route polyline toggle, restaurant toggle
+- 3 phase 5 tests: hero section with image, navigation/loading, 404 not-found page
 
 ## Environment Variables
 
