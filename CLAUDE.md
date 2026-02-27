@@ -35,7 +35,7 @@ A reusable Next.js web application for planning multi-city trips. Users can brow
 | next-intl v4 | Internationalization (NL/EN) |
 | @google/genai | Gemini AI for trip builder |
 | React-Leaflet | Interactive maps |
-| Leaflet Routing Machine | Route visualization |
+| react-leaflet-cluster | Marker clustering |
 | Zod | Runtime validation |
 | Lucide React | Icons |
 | Playwright | Visual/E2E testing |
@@ -115,6 +115,14 @@ vacation_guide/
 │   │   │   ├── BudgetSummaryCard.tsx    # Highlighted total + per-person display
 │   │   │   ├── CategoryBreakdown.tsx    # Category bars with amounts + percentages
 │   │   │   └── TravelerCountSelector.tsx # +/- steppers for each traveler group
+│   │   ├── map/
+│   │   │   ├── InteractiveMap.tsx       # Main map with markers, clustering, filtering
+│   │   │   ├── MapWrapper.tsx           # Client wrapper for dynamic import (ssr: false)
+│   │   │   ├── MapFilters.tsx           # City/day filter pills, restaurant/route toggles
+│   │   │   ├── MapLegend.tsx            # Overlay legend with city colors
+│   │   │   ├── MapPopup.tsx             # HTML popup content for markers
+│   │   │   ├── MapRoute.tsx             # Dashed polyline for day routes
+│   │   │   └── map-utils.ts            # SVG marker icons + bounds calculation
 │   │   └── trip-creator/
 │   │       ├── TripChat.tsx             # Main chat container + state management
 │   │       ├── ChatMessage.tsx          # Message bubble with structured data parsing
@@ -152,7 +160,8 @@ vacation_guide/
 │   ├── visual-test.spec.ts             # Core visual tests (navigation, i18n, mobile, trip selector)
 │   ├── attractions-test.spec.ts        # Attractions feature tests (list, detail, filters)
 │   ├── create-trip-test.spec.ts        # AI trip builder E2E test (create + delete)
-│   └── phase3-test.spec.ts            # Phase 3 tests (itinerary, restaurants, budget)
+│   ├── phase3-test.spec.ts            # Phase 3 tests (itinerary, restaurants, budget)
+│   └── phase4-test.spec.ts            # Phase 4 tests (map markers, filters, routes, restaurants)
 ├── .env.example                         # Environment variable template
 ├── middleware.ts                        # next-intl locale detection
 ├── next.config.ts                       # Next.js config (standalone + i18n)
@@ -188,7 +197,7 @@ const t = useTranslations();
 
 - **Pages** (`page.tsx`) are server components - use `getTranslations` from `next-intl/server`
 - **Interactive components** (Header, LanguageSwitcher) use `'use client'` directive - use `useTranslations` from `next-intl`
-- **Map components** must use `'use client'` and dynamic import with `ssr: false`
+- **Map components** must use `'use client'` and dynamic import with `ssr: false` via a client MapWrapper (Next.js 16 disallows `ssr: false` in server components)
 
 ### Header Architecture
 
@@ -247,11 +256,12 @@ npx playwright test --headed --grep "X"   # Run specific test
 ### Testing Strategy
 - Playwright tests in headed mode (visible Chrome browser)
 - After any changes, run `npx playwright test --headed` to verify
-- **14 tests total:**
+- **17 tests total:**
   - 5 core: NL navigation, language switching, mobile, HTML structure, trip selector
   - 4 attractions: list/filters, detail page, English mode, category filter
   - 1 E2E: AI trip creation + verification + deletion (uses live Gemini API)
   - 4 phase 3: itinerary (NL + EN), restaurant filters, budget calculator
+  - 3 phase 4: map markers + city filter, day filter + route, restaurant toggle
 
 ### Adding shadcn/ui Components
 ```bash
@@ -325,12 +335,18 @@ npx shadcn@latest add card      # Example: add card component
 - [x] All 3 page stubs replaced with full implementations
 - [x] 4 Playwright tests (14 total, all passing)
 
-### Phase 4: Interactive Map [PENDING]
-- [ ] React-Leaflet setup with dynamic import (ssr: false)
-- [ ] InteractiveMap client component with OpenStreetMap tiles
-- [ ] Custom colored markers per city
-- [ ] Marker clustering
-- [ ] Map filters: by city, by day
+### Phase 4: Interactive Map [COMPLETED]
+- [x] React-Leaflet setup with client-side MapWrapper + dynamic import (ssr: false)
+- [x] InteractiveMap client component with OpenStreetMap tiles
+- [x] Custom SVG colored markers per city (teardrop pins from TripConfig colors)
+- [x] Marker clustering via react-leaflet-cluster
+- [x] Map filters: by city (colored pills), by day (auto-selects city)
+- [x] Restaurant marker toggle (separate unclustered layer, circle icons)
+- [x] Day route polyline (dashed, city-colored, connecting day's attractions)
+- [x] Map legend overlay with city colors + restaurant icon
+- [x] Popups with attraction/restaurant info + "View details" links
+- [x] Responsive map height (500px → 600px → 70vh)
+- [x] 3 Playwright tests (17 total, all passing)
 
 ### Phase 5: Homepage & Polish [PENDING]
 - [ ] Hero section with trip imagery
