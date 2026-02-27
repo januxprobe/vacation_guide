@@ -12,7 +12,7 @@ Currently features a pre-configured **Andalusia 2026** trip covering Seville, Co
 - **25+ attractions** with photos, YouTube videos, pricing, opening hours, and tips
 - **7-day itinerary** - Expandable day cards with activity timeline, meals, transport indicators, and attraction links
 - **12 restaurant recommendations** - Filterable by city and price range with cuisine tags and specialties
-- **Budget calculator** - Interactive calculator with traveler count selectors, student discount toggle, category breakdown, and per-person totals
+- **Budget calculator** - Interactive calculator with traveler count selectors, student discount toggle, category breakdown (including free attractions), and per-person totals
 - **Interactive map** - Photo thumbnail markers with number badges, pedestrian walking routes via Valhalla (OpenStreetMap), permanent name labels, meal stop markers, CartoDB Positron tiles, city/day filters, restaurant toggle
 - **City-based color coding** - Each city gets a unique color applied via inline styles
 - **Filtering & sorting** - By city, category (monument, palace, church...), and priority (essential, recommended, optional)
@@ -66,14 +66,14 @@ The homepage shows all available trips as cards. Pre-configured trips (like Anda
 2. Describe your trip idea in natural language (e.g., "5-day trip to Torremolinos with family")
 3. Gemini AI asks clarifying questions and suggests attractions with real data (prices, GPS coordinates, descriptions) from Google Search
 4. Accept or reject each suggestion via rich cards
-5. Click "Create Trip" to save everything as JSON files on disk
+5. Click "Create Trip" - the AI auto-generates restaurants and an itinerary alongside the attractions
 6. Get redirected to your new trip
 
 ### Trip Pages (`/{locale}/{tripSlug}/...`)
 Each trip has dedicated pages:
 - **Attractions** - Filterable list + detail pages with photos, pricing, opening hours
 - **Itinerary** - Expandable day cards with chronological timeline of activities, meals, and transport
-- **Restaurants** - Filterable list by city and price range with cuisine tags and specialties
+- **Restaurants** - Filterable list by city and price range with cuisine tags, specialties, AI-powered search, and add/remove for user-created trips
 - **Budget** - Interactive calculator with configurable traveler counts and student discount toggle
 - **Planner** - Split-view with interactive map (photo markers, walking routes, meal stops) and day-by-day itinerary panel
 
@@ -85,7 +85,8 @@ src/
 │   ├── api/                       # REST API routes
 │   │   ├── ai/chat/               # Streaming Gemini chat (SSE)
 │   │   ├── ai/finalize-trip/      # Extract structured trip data from conversation
-│   │   └── trips/                 # Trip CRUD + attraction management
+│   │   ├── ai/search-restaurants/ # Gemini-powered restaurant search
+│   │   └── trips/                 # Trip CRUD + attraction/restaurant/itinerary management
 │   └── [locale]/
 │       ├── page.tsx               # Trip selector homepage
 │       ├── create-trip/           # AI trip builder chat interface
