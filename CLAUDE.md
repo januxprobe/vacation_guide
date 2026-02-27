@@ -4,6 +4,7 @@
 
 - **Documentation files live at the project root:** `README.md`, `CLAUDE.md`, `RESOURCES.md`, `.env.example`. Always check the root directory directly when looking for docs - do NOT use broad glob patterns that match `node_modules/`.
 - **Never commit or push without manual testing.** After implementing changes, always let the user manually test first. Do not create commits or push to remote unless the user explicitly asks after they have verified the changes.
+- **Always update documentation before committing.** Before creating a commit, ensure `CLAUDE.md`, `README.md`, and `RESOURCES.md` are up to date with any changes made (new files, updated structure, new features, test counts, etc.).
 
 ## Project Overview
 
@@ -67,10 +68,10 @@ vacation_guide/
 │   │       │   ├── attractions/
 │   │       │   │   ├── page.tsx         # Attractions list with filters
 │   │       │   │   └── [id]/page.tsx    # Attraction detail (static gen)
-│   │       │   ├── itinerary/page.tsx   # Day overview
+│   │       │   ├── itinerary/page.tsx   # Expandable 7-day itinerary with timeline
 │   │       │   ├── map/page.tsx         # Interactive map
-│   │       │   ├── restaurants/page.tsx # Restaurant tips
-│   │       │   └── budget/page.tsx      # Budget calculator
+│   │       │   ├── restaurants/page.tsx # Filterable restaurant list (city + price)
+│   │       │   └── budget/page.tsx      # Interactive budget calculator
 │   │       ├── attractions/page.tsx     # Backward-compat redirect
 │   │       ├── itinerary/page.tsx       # Backward-compat redirect
 │   │       ├── map/page.tsx             # Backward-compat redirect
@@ -101,6 +102,19 @@ vacation_guide/
 │   │   │   ├── TripCard.tsx             # Trip card with optional delete (two-step confirm)
 │   │   │   ├── CreateTripCard.tsx       # Dashed-border "+" card to create trip
 │   │   │   └── TripGrid.tsx            # Client wrapper managing trip list + deletion
+│   │   ├── itinerary/
+│   │   │   ├── DayCard.tsx              # Expandable day card (city badge, activity count)
+│   │   │   ├── ActivityTimeline.tsx     # Vertical timeline (activities + meals + transport)
+│   │   │   └── ItineraryList.tsx        # Expand/collapse all + list of DayCards
+│   │   ├── restaurants/
+│   │   │   ├── RestaurantCard.tsx       # Card with city color bar, price badge, cuisine tags
+│   │   │   ├── RestaurantFilter.tsx     # City + price range filter buttons
+│   │   │   └── RestaurantsList.tsx      # Filter state management + grid of cards
+│   │   ├── budget/
+│   │   │   ├── BudgetCalculator.tsx     # Main wrapper managing state + calculation
+│   │   │   ├── BudgetSummaryCard.tsx    # Highlighted total + per-person display
+│   │   │   ├── CategoryBreakdown.tsx    # Category bars with amounts + percentages
+│   │   │   └── TravelerCountSelector.tsx # +/- steppers for each traveler group
 │   │   └── trip-creator/
 │   │       ├── TripChat.tsx             # Main chat container + state management
 │   │       ├── ChatMessage.tsx          # Message bubble with structured data parsing
@@ -111,13 +125,16 @@ vacation_guide/
 │   ├── lib/
 │   │   ├── utils.ts                     # cn() helper from shadcn
 │   │   ├── data-loaders.ts             # Config-driven fs.readFileSync + Zod validation + cache
-│   │   ├── schemas.ts                   # Zod schemas (attraction + tripConfig)
+│   │   ├── schemas.ts                   # Zod schemas (attraction, tripConfig, itinerary, restaurant)
+│   │   ├── budget-calculator.ts        # Pure utility: calculateBudget() from itinerary + attractions
 │   │   └── city-colors.ts              # Color utilities (hex->rgba, badge/gradient styles)
 │   ├── types/
 │   │   └── index.ts                     # All TypeScript interfaces (City = string)
 │   ├── data/
 │   │   └── trips/
 │   │       └── andalusia-2026/          # Static trip (25 attractions)
+│   │           ├── itinerary.json       # 7-day itinerary (activities, meals, transport)
+│   │           ├── restaurants.json     # 12 restaurants (4 per city)
 │   │           └── attractions/
 │   │               ├── seville/         # 10 JSON files
 │   │               ├── cordoba/         # 7 JSON files

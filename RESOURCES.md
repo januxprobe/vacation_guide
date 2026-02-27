@@ -96,6 +96,79 @@ Embed URL pattern: `https://www.youtube-nocookie.com/embed/{VIDEO_ID}`
 }
 ```
 
+### Itinerary JSON Template
+Each trip can have an `itinerary.json` file in its data directory. See `src/data/trips/andalusia-2026/itinerary.json` for a complete example.
+
+```json
+{
+  "trip": {
+    "title": { "nl": "Trip Name NL", "en": "Trip Name EN" },
+    "startDate": "2026-09-01",
+    "endDate": "2026-09-07"
+  },
+  "days": [
+    {
+      "date": "2026-09-01",
+      "dayNumber": 1,
+      "city": "city-id",
+      "title": { "nl": "Day title NL", "en": "Day title EN" },
+      "activities": [
+        {
+          "time": "09:00",
+          "attractionId": "city-attraction-slug",
+          "duration": 120,
+          "notes": { "nl": "Notes NL", "en": "Notes EN" },
+          "transport": {
+            "method": "walk|bus|train|car",
+            "duration": 10,
+            "cost": 3.00,
+            "notes": { "nl": "Transport notes NL", "en": "Transport notes EN" }
+          }
+        }
+      ],
+      "meals": [
+        {
+          "type": "breakfast|lunch|dinner|snack",
+          "time": "08:30",
+          "neighborhood": "Area name",
+          "estimatedCost": 15,
+          "notes": { "nl": "Meal notes NL", "en": "Meal notes EN" }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Restaurant JSON Template
+Each trip can have a `restaurants.json` file. See `src/data/trips/andalusia-2026/restaurants.json` for a complete example.
+
+```json
+{
+  "restaurants": [
+    {
+      "id": "city-restaurant-slug",
+      "name": "Restaurant Name",
+      "city": "city-id",
+      "neighborhood": "Area Name",
+      "coordinates": { "lat": 37.38, "lng": -5.99 },
+      "cuisine": ["tapas", "traditional"],
+      "priceRange": "€|€€|€€€|€€€€",
+      "specialties": { "nl": "Specialties NL", "en": "Specialties EN" },
+      "description": { "nl": "Description NL", "en": "Description EN" },
+      "website": "https://..."
+    }
+  ]
+}
+```
+
+### Budget Calculator
+The budget is derived automatically from the itinerary + attraction pricing data - no separate budget data file is needed. The `calculateBudget()` function in `src/lib/budget-calculator.ts`:
+- Reads itinerary days and resolves attraction pricing per activity
+- Applies student discount per traveler group where applicable
+- Adds transport costs (per-person) and meal estimates (per-person)
+- Returns items list, subtotalByCategory, total, and perPerson
+
 ### Trip Config Template
 See `src/config/trips/andalusia-2026.ts` for a complete static example, or `src/data/trips/torremolinos-2027/trip-config.json` (when created via AI) for a JSON-based example.
 
@@ -141,14 +214,18 @@ See `src/config/trips/andalusia-2026.ts` for a complete static example, or `src/
 2. Register in `src/config/trips/index.ts`
 3. Create data directory: `src/data/trips/{trip-slug}/attractions/{city}/`
 4. Add attraction JSON files (one per attraction, validated by Zod schema)
-5. Add images to `public/images/attractions/{city}/`
-6. Update translation files if new categories or UI terms are needed
-7. Build and test: `npm run build && npx playwright test --headed`
+5. Add `itinerary.json` to `src/data/trips/{trip-slug}/` (optional, enables itinerary + budget pages)
+6. Add `restaurants.json` to `src/data/trips/{trip-slug}/` (optional, enables restaurant page)
+7. Add images to `public/images/attractions/{city}/`
+8. Update translation files if new categories or UI terms are needed
+9. Build and test: `npm run build && npx playwright test --headed`
 
 ### Validation
-- Zod schemas in `src/lib/schemas.ts` validate all attraction and trip config data
-- `tripConfigSchema` validates JSON-based trip configs created by the AI builder
-- `attractionSchema` validates individual attraction files
+- Zod schemas in `src/lib/schemas.ts` validate all data:
+  - `attractionSchema` validates individual attraction files
+  - `tripConfigSchema` validates JSON-based trip configs created by the AI builder
+  - `itinerarySchema` validates itinerary.json files (days, activities, meals, transport)
+  - `restaurantSchema` / `restaurantsFileSchema` validates restaurants.json files
 - Invalid JSON files are logged as warnings but don't break the build
 - Run `npm run build` to catch data issues early
 
