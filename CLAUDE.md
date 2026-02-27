@@ -3,6 +3,7 @@
 ## Important Reminders
 
 - **Documentation files live at the project root:** `README.md`, `CLAUDE.md`, `RESOURCES.md`, `.env.example`. Always check the root directory directly when looking for docs - do NOT use broad glob patterns that match `node_modules/`.
+- **Never commit or push without manual testing.** After implementing changes, always let the user manually test first. Do not create commits or push to remote unless the user explicitly asks after they have verified the changes.
 
 ## Project Overview
 
@@ -133,7 +134,8 @@ vacation_guide/
 ├── tests/
 │   ├── visual-test.spec.ts             # Core visual tests (navigation, i18n, mobile, trip selector)
 │   ├── attractions-test.spec.ts        # Attractions feature tests (list, detail, filters)
-│   └── create-trip-test.spec.ts        # AI trip builder E2E test (create + delete)
+│   ├── create-trip-test.spec.ts        # AI trip builder E2E test (create + delete)
+│   └── phase3-test.spec.ts            # Phase 3 tests (itinerary, restaurants, budget)
 ├── .env.example                         # Environment variable template
 ├── middleware.ts                        # next-intl locale detection
 ├── next.config.ts                       # Next.js config (standalone + i18n)
@@ -228,10 +230,11 @@ npx playwright test --headed --grep "X"   # Run specific test
 ### Testing Strategy
 - Playwright tests in headed mode (visible Chrome browser)
 - After any changes, run `npx playwright test --headed` to verify
-- **10 tests total:**
+- **14 tests total:**
   - 5 core: NL navigation, language switching, mobile, HTML structure, trip selector
   - 4 attractions: list/filters, detail page, English mode, category filter
   - 1 E2E: AI trip creation + verification + deletion (uses live Gemini API)
+  - 4 phase 3: itinerary (NL + EN), restaurant filters, budget calculator
 
 ### Adding shadcn/ui Components
 ```bash
@@ -292,13 +295,18 @@ npx shadcn@latest add card      # Example: add card component
 - [x] E2E Playwright test: full create -> verify -> delete flow
 - [x] All 10 Playwright tests passing
 
-### Phase 3: Itinerary & Budget [PENDING]
-- [ ] Complete itinerary JSON with all 7 days
-- [ ] DayCard and ActivityTimeline components
-- [ ] Itinerary overview and day detail pages
-- [ ] Budget calculator logic
-- [ ] Restaurant data JSON per city
-- [ ] RestaurantCard component and restaurants page
+### Phase 3: Itinerary, Restaurants & Budget [COMPLETED]
+- [x] Zod schemas for itinerary + restaurant data (schemas.ts)
+- [x] Complete itinerary.json with 7 days (activities, meals, transport)
+- [x] Restaurant data: 12 restaurants (4 per city) in restaurants.json
+- [x] Data loaders: getItineraryForTrip + getRestaurantsForTrip
+- [x] Translations extended for itinerary, restaurants, budget
+- [x] Restaurant components: RestaurantCard, RestaurantFilter, RestaurantsList
+- [x] Itinerary components: DayCard, ActivityTimeline, ItineraryList
+- [x] Budget calculator utility (budget-calculator.ts)
+- [x] Budget components: TravelerCountSelector, CategoryBreakdown, BudgetSummaryCard, BudgetCalculator
+- [x] All 3 page stubs replaced with full implementations
+- [x] 4 Playwright tests (14 total, all passing)
 
 ### Phase 4: Interactive Map [PENDING]
 - [ ] React-Leaflet setup with dynamic import (ssr: false)

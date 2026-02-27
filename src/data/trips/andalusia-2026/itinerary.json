@@ -1,0 +1,504 @@
+{
+  "trip": {
+    "title": {
+      "nl": "Andalusië Familiereis",
+      "en": "Andalusia Family Trip"
+    },
+    "startDate": "2026-09-01",
+    "endDate": "2026-09-07"
+  },
+  "days": [
+    {
+      "date": "2026-09-01",
+      "dayNumber": 1,
+      "city": "seville",
+      "title": {
+        "nl": "Aankomst & Historisch Centrum",
+        "en": "Arrival & Historic Center"
+      },
+      "activities": [
+        {
+          "time": "10:00",
+          "attractionId": "seville-real-alcazar",
+          "duration": 150,
+          "notes": {
+            "nl": "Reserveer tickets van tevoren online",
+            "en": "Book tickets online in advance"
+          }
+        },
+        {
+          "time": "13:00",
+          "attractionId": "seville-cathedral",
+          "duration": 90,
+          "transport": {
+            "method": "walk",
+            "duration": 5
+          }
+        },
+        {
+          "time": "15:30",
+          "attractionId": "seville-barrio-santa-cruz",
+          "duration": 60,
+          "transport": {
+            "method": "walk",
+            "duration": 5
+          }
+        }
+      ],
+      "meals": [
+        {
+          "type": "breakfast",
+          "time": "08:30",
+          "neighborhood": "Centro",
+          "estimatedCost": 8,
+          "notes": {
+            "nl": "Ontbijt in het hotel of lokale bar",
+            "en": "Breakfast at hotel or local bar"
+          }
+        },
+        {
+          "type": "lunch",
+          "time": "12:30",
+          "neighborhood": "Santa Cruz",
+          "estimatedCost": 15,
+          "notes": {
+            "nl": "Tapas in de Barrio Santa Cruz",
+            "en": "Tapas in the Barrio Santa Cruz"
+          }
+        },
+        {
+          "type": "dinner",
+          "time": "20:00",
+          "neighborhood": "Centro",
+          "estimatedCost": 25,
+          "notes": {
+            "nl": "Diner bij een traditioneel Sevillaans restaurant",
+            "en": "Dinner at a traditional Sevillian restaurant"
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-09-02",
+      "dayNumber": 2,
+      "city": "seville",
+      "title": {
+        "nl": "Parken & Moderne Architectuur",
+        "en": "Parks & Modern Architecture"
+      },
+      "activities": [
+        {
+          "time": "09:30",
+          "attractionId": "seville-plaza-de-espana",
+          "duration": 60,
+          "notes": {
+            "nl": "Ga vroeg voor minder drukte",
+            "en": "Go early for fewer crowds"
+          }
+        },
+        {
+          "time": "11:00",
+          "attractionId": "seville-parque-maria-luisa",
+          "duration": 60,
+          "transport": {
+            "method": "walk",
+            "duration": 5
+          }
+        },
+        {
+          "time": "13:00",
+          "attractionId": "seville-setas-de-sevilla",
+          "duration": 45,
+          "transport": {
+            "method": "walk",
+            "duration": 20
+          }
+        },
+        {
+          "time": "15:00",
+          "attractionId": "seville-torre-del-oro",
+          "duration": 30,
+          "transport": {
+            "method": "walk",
+            "duration": 15
+          }
+        }
+      ],
+      "meals": [
+        {
+          "type": "breakfast",
+          "time": "08:30",
+          "neighborhood": "Centro",
+          "estimatedCost": 8
+        },
+        {
+          "type": "lunch",
+          "time": "12:15",
+          "neighborhood": "Centro",
+          "estimatedCost": 15,
+          "notes": {
+            "nl": "Lunch bij de Mercado de la Encarnación",
+            "en": "Lunch at the Mercado de la Encarnación"
+          }
+        },
+        {
+          "type": "dinner",
+          "time": "20:30",
+          "neighborhood": "Triana",
+          "estimatedCost": 25,
+          "notes": {
+            "nl": "Diner in de wijk Triana",
+            "en": "Dinner in the Triana neighborhood"
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-09-03",
+      "dayNumber": 3,
+      "city": "seville",
+      "title": {
+        "nl": "Triana & Daguitstap",
+        "en": "Triana & Day Trip"
+      },
+      "activities": [
+        {
+          "time": "09:00",
+          "attractionId": "seville-triana",
+          "duration": 120,
+          "notes": {
+            "nl": "Bezoek de Mercado de Triana en keramiekwinkels",
+            "en": "Visit the Triana Market and ceramic shops"
+          }
+        },
+        {
+          "time": "12:00",
+          "attractionId": "seville-italica",
+          "duration": 150,
+          "transport": {
+            "method": "bus",
+            "duration": 30,
+            "cost": 3,
+            "notes": {
+              "nl": "Bus M-172A vanuit Plaza de Armas",
+              "en": "Bus M-172A from Plaza de Armas"
+            }
+          }
+        }
+      ],
+      "meals": [
+        {
+          "type": "breakfast",
+          "time": "08:00",
+          "neighborhood": "Triana",
+          "estimatedCost": 8
+        },
+        {
+          "type": "lunch",
+          "time": "11:30",
+          "neighborhood": "Triana",
+          "estimatedCost": 15,
+          "notes": {
+            "nl": "Tapas op de Mercado de Triana",
+            "en": "Tapas at the Triana Market"
+          }
+        },
+        {
+          "type": "dinner",
+          "time": "20:00",
+          "neighborhood": "Centro",
+          "estimatedCost": 25,
+          "notes": {
+            "nl": "Laatste avond in Sevilla",
+            "en": "Last evening in Seville"
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-09-04",
+      "dayNumber": 4,
+      "city": "cordoba",
+      "title": {
+        "nl": "Córdoba - Moskee & Joods Kwartier",
+        "en": "Córdoba - Mosque & Jewish Quarter"
+      },
+      "activities": [
+        {
+          "time": "10:30",
+          "attractionId": "cordoba-mezquita",
+          "duration": 120,
+          "notes": {
+            "nl": "Na aankomst per trein vanuit Sevilla (09:00-10:00)",
+            "en": "After arrival by train from Seville (09:00-10:00)"
+          },
+          "transport": {
+            "method": "train",
+            "duration": 60,
+            "cost": 15,
+            "notes": {
+              "nl": "AVE/AVANT trein Sevilla → Córdoba",
+              "en": "AVE/AVANT train Seville → Córdoba"
+            }
+          }
+        },
+        {
+          "time": "13:00",
+          "attractionId": "cordoba-alcazar-reyes",
+          "duration": 90,
+          "transport": {
+            "method": "walk",
+            "duration": 10
+          }
+        },
+        {
+          "time": "15:00",
+          "attractionId": "cordoba-juderia",
+          "duration": 60,
+          "transport": {
+            "method": "walk",
+            "duration": 5
+          }
+        },
+        {
+          "time": "16:30",
+          "attractionId": "cordoba-roman-bridge",
+          "duration": 45,
+          "transport": {
+            "method": "walk",
+            "duration": 10
+          }
+        },
+        {
+          "time": "17:30",
+          "attractionId": "cordoba-plaza-corredera",
+          "duration": 30,
+          "transport": {
+            "method": "walk",
+            "duration": 15
+          }
+        }
+      ],
+      "meals": [
+        {
+          "type": "breakfast",
+          "time": "07:30",
+          "neighborhood": "Centro (Sevilla)",
+          "estimatedCost": 8,
+          "notes": {
+            "nl": "Vroeg ontbijt voor de trein",
+            "en": "Early breakfast before the train"
+          }
+        },
+        {
+          "type": "lunch",
+          "time": "12:30",
+          "neighborhood": "Judería",
+          "estimatedCost": 15,
+          "notes": {
+            "nl": "Salmorejo en flamenquín proeven",
+            "en": "Try the salmorejo and flamenquín"
+          }
+        },
+        {
+          "type": "dinner",
+          "time": "20:00",
+          "neighborhood": "Centro",
+          "estimatedCost": 25,
+          "notes": {
+            "nl": "Diner op de Plaza de la Corredera",
+            "en": "Dinner at the Plaza de la Corredera"
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-09-05",
+      "dayNumber": 5,
+      "city": "granada",
+      "title": {
+        "nl": "Alhambra & Albaicín",
+        "en": "Alhambra & Albaicín"
+      },
+      "activities": [
+        {
+          "time": "09:00",
+          "attractionId": "granada-alhambra",
+          "duration": 240,
+          "notes": {
+            "nl": "Tickets MOETEN maanden van tevoren geboekt worden!",
+            "en": "Tickets MUST be booked months in advance!"
+          },
+          "transport": {
+            "method": "train",
+            "duration": 100,
+            "cost": 25,
+            "notes": {
+              "nl": "Trein Córdoba → Granada (ochtend)",
+              "en": "Train Córdoba → Granada (morning)"
+            }
+          }
+        },
+        {
+          "time": "14:00",
+          "attractionId": "granada-albaicin",
+          "duration": 90,
+          "transport": {
+            "method": "bus",
+            "duration": 15,
+            "cost": 1.40,
+            "notes": {
+              "nl": "Minibus C30/C32 naar Albaicín",
+              "en": "Minibus C30/C32 to Albaicín"
+            }
+          }
+        }
+      ],
+      "meals": [
+        {
+          "type": "breakfast",
+          "time": "07:00",
+          "neighborhood": "Centro (Córdoba)",
+          "estimatedCost": 8,
+          "notes": {
+            "nl": "Vroeg ontbijt voor vertrek",
+            "en": "Early breakfast before departure"
+          }
+        },
+        {
+          "type": "lunch",
+          "time": "13:30",
+          "neighborhood": "Alhambra",
+          "estimatedCost": 15,
+          "notes": {
+            "nl": "Lunch in de tuinen of nabijgelegen restaurant",
+            "en": "Lunch in the gardens or nearby restaurant"
+          }
+        },
+        {
+          "type": "dinner",
+          "time": "20:30",
+          "neighborhood": "Albaicín",
+          "estimatedCost": 20,
+          "notes": {
+            "nl": "Diner met uitzicht over de Alhambra",
+            "en": "Dinner with views over the Alhambra"
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-09-06",
+      "dayNumber": 6,
+      "city": "granada",
+      "title": {
+        "nl": "Kathedraal, Sacromonte & Flamenco",
+        "en": "Cathedral, Sacromonte & Flamenco"
+      },
+      "activities": [
+        {
+          "time": "09:30",
+          "attractionId": "granada-capilla-real",
+          "duration": 60
+        },
+        {
+          "time": "11:00",
+          "attractionId": "granada-cathedral",
+          "duration": 60,
+          "transport": {
+            "method": "walk",
+            "duration": 5
+          }
+        },
+        {
+          "time": "12:30",
+          "attractionId": "granada-carrera-del-darro",
+          "duration": 60,
+          "transport": {
+            "method": "walk",
+            "duration": 10
+          }
+        },
+        {
+          "time": "16:00",
+          "attractionId": "granada-sacromonte",
+          "duration": 90,
+          "transport": {
+            "method": "walk",
+            "duration": 20
+          },
+          "notes": {
+            "nl": "Bezoek de grotwoningen en Sacromonte Museum",
+            "en": "Visit the cave dwellings and Sacromonte Museum"
+          }
+        }
+      ],
+      "meals": [
+        {
+          "type": "breakfast",
+          "time": "08:30",
+          "neighborhood": "Centro",
+          "estimatedCost": 8
+        },
+        {
+          "type": "lunch",
+          "time": "14:00",
+          "neighborhood": "Centro",
+          "estimatedCost": 15,
+          "notes": {
+            "nl": "Geniet van gratis tapas bij je drankje",
+            "en": "Enjoy free tapas with your drink"
+          }
+        },
+        {
+          "type": "dinner",
+          "time": "20:00",
+          "neighborhood": "Sacromonte",
+          "estimatedCost": 30,
+          "notes": {
+            "nl": "Diner + flamencshow in een grot",
+            "en": "Dinner + flamenco show in a cave"
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-09-07",
+      "dayNumber": 7,
+      "city": "granada",
+      "title": {
+        "nl": "Vrije Dag & Vertrek",
+        "en": "Free Day & Departure"
+      },
+      "activities": [
+        {
+          "time": "10:00",
+          "attractionId": "granada-albaicin",
+          "duration": 90,
+          "notes": {
+            "nl": "Vrije wandeling door smalle straatjes en souvenirs kopen",
+            "en": "Free walk through narrow streets and souvenir shopping"
+          }
+        }
+      ],
+      "meals": [
+        {
+          "type": "breakfast",
+          "time": "09:00",
+          "neighborhood": "Centro",
+          "estimatedCost": 8
+        },
+        {
+          "type": "lunch",
+          "time": "13:00",
+          "neighborhood": "Centro",
+          "estimatedCost": 15,
+          "notes": {
+            "nl": "Laatste lunch in Granada",
+            "en": "Last lunch in Granada"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,9 +1,9 @@
 import fs from 'fs';
 import path from 'path';
-import type { Attraction } from '@/types';
+import type { Attraction, Itinerary, Restaurant } from '@/types';
 import type { TripConfig } from '@/config/trip-config';
 import { getDefaultTrip } from '@/config/trips';
-import { attractionSchema } from './schemas';
+import { attractionSchema, itinerarySchema, restaurantsFileSchema } from './schemas';
 
 /**
  * Load all attraction JSON files from a trip's data directory.
@@ -121,4 +121,80 @@ export function clearAttractionCache(tripId?: string): void {
   } else {
     attractionCache.clear();
   }
+}
+
+// ---------- Itinerary ----------
+
+const itineraryCache = new Map<string, Itinerary | null>();
+
+export function getItineraryForTrip(config: TripConfig): Itinerary | null {
+  if (itineraryCache.has(config.id)) {
+    return itineraryCache.get(config.id)!;
+  }
+
+  const filePath = path.join(
+    process.cwd(),
+    'src',
+    'data',
+    'trips',
+    config.dataDirectory,
+    'itinerary.json'
+  );
+
+  if (!fs.existsSync(filePath)) {
+    itineraryCache.set(config.id, null);
+    return null;
+  }
+
+  const raw = fs.readFileSync(filePath, 'utf-8');
+  const data = JSON.parse(raw);
+  const result = itinerarySchema.safeParse(data);
+
+  if (!result.success) {
+    console.error(`Invalid itinerary data in ${filePath}:`, result.error.format());
+    itineraryCache.set(config.id, null);
+    return null;
+  }
+
+  const itinerary = result.data as Itinerary;
+  itineraryCache.set(config.id, itinerary);
+  return itinerary;
+}
+
+// ---------- Restaurants ----------
+
+const restaurantCache = new Map<string, Restaurant[]>();
+
+export function getRestaurantsForTrip(config: TripConfig): Restaurant[] {
+  if (restaurantCache.has(config.id)) {
+    return restaurantCache.get(config.id)!;
+  }
+
+  const filePath = path.join(
+    process.cwd(),
+    'src',
+    'data',
+    'trips',
+    config.dataDirectory,
+    'restaurants.json'
+  );
+
+  if (!fs.existsSync(filePath)) {
+    restaurantCache.set(config.id, []);
+    return [];
+  }
+
+  const raw = fs.readFileSync(filePath, 'utf-8');
+  const data = JSON.parse(raw);
+  const result = restaurantsFileSchema.safeParse(data);
+
+  if (!result.success) {
+    console.error(`Invalid restaurant data in ${filePath}:`, result.error.format());
+    restaurantCache.set(config.id, []);
+    return [];
+  }
+
+  const restaurants = result.data.restaurants as Restaurant[];
+  restaurantCache.set(config.id, restaurants);
+  return restaurants;
 }

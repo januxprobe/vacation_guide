@@ -1,0 +1,210 @@
+{
+  "restaurants": [
+    {
+      "id": "seville-bodega-santa-cruz",
+      "name": "Bodega Santa Cruz",
+      "city": "seville",
+      "neighborhood": "Santa Cruz",
+      "coordinates": { "lat": 37.3847, "lng": -5.9888 },
+      "cuisine": ["tapas", "andalusian"],
+      "priceRange": "€",
+      "specialties": {
+        "nl": "Beroemd om hun montaditos en huiswijn. Altijd druk, geen reservering mogelijk.",
+        "en": "Famous for their montaditos and house wine. Always busy, no reservations."
+      },
+      "description": {
+        "nl": "Authentieke staande tapasbar in het hart van Santa Cruz. Goedkope tapas en levendige sfeer.",
+        "en": "Authentic standing tapas bar in the heart of Santa Cruz. Cheap tapas and lively atmosphere."
+      }
+    },
+    {
+      "id": "seville-el-rinconcillo",
+      "name": "El Rinconcillo",
+      "city": "seville",
+      "neighborhood": "Centro",
+      "coordinates": { "lat": 37.3928, "lng": -5.9923 },
+      "cuisine": ["tapas", "traditional"],
+      "priceRange": "€€",
+      "specialties": {
+        "nl": "Oudste bar van Sevilla (sinds 1670). Beroemd om de espinacas con garbanzos.",
+        "en": "Oldest bar in Seville (since 1670). Famous for espinacas con garbanzos (spinach with chickpeas)."
+      },
+      "description": {
+        "nl": "De oudste tapasbar van Sevilla met een rijke geschiedenis en traditionele gerechten.",
+        "en": "Seville's oldest tapas bar with rich history and traditional dishes."
+      }
+    },
+    {
+      "id": "seville-duo-tapas",
+      "name": "Duo Tapas",
+      "city": "seville",
+      "neighborhood": "Arenal",
+      "coordinates": { "lat": 37.3861, "lng": -5.9978 },
+      "cuisine": ["tapas", "modern"],
+      "priceRange": "€€",
+      "specialties": {
+        "nl": "Moderne twist op klassieke Andalusische tapas. Uitstekende wijnkaart.",
+        "en": "Modern twist on classic Andalusian tapas. Excellent wine list."
+      },
+      "description": {
+        "nl": "Moderne tapasbar met creatieve gerechten en een stijlvol interieur.",
+        "en": "Modern tapas bar with creative dishes and stylish interior."
+      }
+    },
+    {
+      "id": "seville-abades-triana",
+      "name": "Abades Triana",
+      "city": "seville",
+      "neighborhood": "Triana",
+      "coordinates": { "lat": 37.3825, "lng": -6.0024 },
+      "cuisine": ["andalusian", "fine dining"],
+      "priceRange": "€€€",
+      "specialties": {
+        "nl": "Uitzicht over de Guadalquivir. Bekende chef met Michelin-ambitie.",
+        "en": "Views over the Guadalquivir. Renowned chef with Michelin ambition."
+      },
+      "description": {
+        "nl": "Elegant restaurant aan de rivier met panoramisch uitzicht en verfijnde Andalusische keuken.",
+        "en": "Elegant riverside restaurant with panoramic views and refined Andalusian cuisine."
+      },
+      "website": "https://abadesrestaurantes.com"
+    },
+    {
+      "id": "cordoba-bar-santos",
+      "name": "Bar Santos",
+      "city": "cordoba",
+      "neighborhood": "Judería",
+      "coordinates": { "lat": 37.8791, "lng": -4.7793 },
+      "cuisine": ["tapas", "local"],
+      "priceRange": "€",
+      "specialties": {
+        "nl": "Beroemd om de beste tortilla de patatas van Córdoba. Enorme porties!",
+        "en": "Famous for the best tortilla de patatas in Córdoba. Huge portions!"
+      },
+      "description": {
+        "nl": "Eenvoudige bar naast de Mezquita, beroemd om hun reusachtige tortilla.",
+        "en": "Simple bar next to the Mezquita, famous for their giant tortilla."
+      }
+    },
+    {
+      "id": "cordoba-bodegas-mezquita",
+      "name": "Bodegas Mezquita",
+      "city": "cordoba",
+      "neighborhood": "Centro",
+      "coordinates": { "lat": 37.8802, "lng": -4.7789 },
+      "cuisine": ["andalusian", "traditional"],
+      "priceRange": "€€",
+      "specialties": {
+        "nl": "Salmorejo, flamenquín en rabo de toro. Uitstekende lokale wijnen.",
+        "en": "Salmorejo, flamenquín and oxtail stew. Excellent local wines."
+      },
+      "description": {
+        "nl": "Traditioneel Córdobaans restaurant met alle lokale specialiteiten op het menu.",
+        "en": "Traditional Córdoban restaurant featuring all the local specialties on the menu."
+      }
+    },
+    {
+      "id": "cordoba-casa-pepe",
+      "name": "Casa Pepe de la Judería",
+      "city": "cordoba",
+      "neighborhood": "Judería",
+      "coordinates": { "lat": 37.8797, "lng": -4.7815 },
+      "cuisine": ["andalusian", "traditional"],
+      "priceRange": "€€",
+      "specialties": {
+        "nl": "Patio-dining in Joods Kwartier. Mazamorra en berenjenas con miel.",
+        "en": "Patio dining in the Jewish Quarter. Mazamorra and aubergines with honey."
+      },
+      "description": {
+        "nl": "Charmant restaurant met patio in het historische Joodse kwartier.",
+        "en": "Charming restaurant with patio in the historic Jewish Quarter."
+      }
+    },
+    {
+      "id": "cordoba-la-regadera",
+      "name": "La Regadera",
+      "city": "cordoba",
+      "neighborhood": "Centro",
+      "coordinates": { "lat": 37.8835, "lng": -4.7760 },
+      "cuisine": ["modern", "mediterranean"],
+      "priceRange": "€€€",
+      "specialties": {
+        "nl": "Seizoensgebonden menu met lokale ingrediënten. Mooi terras.",
+        "en": "Seasonal menu with local ingredients. Beautiful terrace."
+      },
+      "description": {
+        "nl": "Modern restaurant met seizoensgebonden gerechten en een prachtig terras.",
+        "en": "Modern restaurant with seasonal dishes and a beautiful terrace."
+      }
+    },
+    {
+      "id": "granada-bodegas-castaneda",
+      "name": "Bodegas Castañeda",
+      "city": "granada",
+      "neighborhood": "Centro",
+      "coordinates": { "lat": 37.1764, "lng": -3.5977 },
+      "cuisine": ["tapas", "traditional"],
+      "priceRange": "€",
+      "specialties": {
+        "nl": "Gratis tapas bij elke bestelling. Beroemd om de vermut de grifo.",
+        "en": "Free tapas with every order. Famous for their draft vermouth."
+      },
+      "description": {
+        "nl": "Klassieke bodega in het centrum waar je gratis tapas krijgt bij je drankje.",
+        "en": "Classic bodega in the center where you get free tapas with your drink."
+      }
+    },
+    {
+      "id": "granada-om-kalthum",
+      "name": "Om Kalthum",
+      "city": "granada",
+      "neighborhood": "Albaicín",
+      "coordinates": { "lat": 37.1810, "lng": -3.5933 },
+      "cuisine": ["moroccan", "arabic"],
+      "priceRange": "€",
+      "specialties": {
+        "nl": "Authentieke Marokkaanse keuken. Heerlijke tagines en muntthee.",
+        "en": "Authentic Moroccan cuisine. Delicious tagines and mint tea."
+      },
+      "description": {
+        "nl": "Klein Marokkaans restaurant in het Albaicín dat de Arabische erfenis van Granada weerspiegelt.",
+        "en": "Small Moroccan restaurant in the Albaicín reflecting Granada's Arabic heritage."
+      }
+    },
+    {
+      "id": "granada-arrayanes",
+      "name": "Arrayanes",
+      "city": "granada",
+      "neighborhood": "Albaicín",
+      "coordinates": { "lat": 37.1799, "lng": -3.5940 },
+      "cuisine": ["moroccan", "mediterranean"],
+      "priceRange": "€€",
+      "specialties": {
+        "nl": "Fusion van Marokkaans en Spaans. Couscous en gegrild lamsvlees.",
+        "en": "Fusion of Moroccan and Spanish. Couscous and grilled lamb."
+      },
+      "description": {
+        "nl": "Populair restaurant in het Albaicín met Marokkaans-Spaanse fusionkeuken.",
+        "en": "Popular restaurant in the Albaicín with Moroccan-Spanish fusion cuisine."
+      }
+    },
+    {
+      "id": "granada-carmen-aben-humeya",
+      "name": "Carmen de Aben Humeya",
+      "city": "granada",
+      "neighborhood": "Albaicín",
+      "coordinates": { "lat": 37.1813, "lng": -3.5913 },
+      "cuisine": ["andalusian", "fine dining"],
+      "priceRange": "€€€",
+      "specialties": {
+        "nl": "Schitterend uitzicht op de Alhambra. Verfijnde Andalusische keuken op een Carmen-terras.",
+        "en": "Stunning views of the Alhambra. Refined Andalusian cuisine on a Carmen terrace."
+      },
+      "description": {
+        "nl": "Elegant restaurant met terras en adembenemend uitzicht op de Alhambra.",
+        "en": "Elegant restaurant with terrace and breathtaking views of the Alhambra."
+      },
+      "website": "https://www.carmenabenhumeya.com"
+    }
+  ]
+}

@@ -102,3 +102,69 @@ export const tripConfigSchema = z.object({
 });
 
 export type TripConfigInput = z.infer<typeof tripConfigSchema>;
+
+// --- Itinerary Schemas ---
+
+const transportSchema = z.object({
+  method: z.enum(['walk', 'bus', 'train', 'car']),
+  duration: z.number(),
+  cost: z.number().optional(),
+  notes: localizedStringSchema.optional(),
+});
+
+const activitySchema = z.object({
+  time: z.string(),
+  attractionId: z.string(),
+  duration: z.number(),
+  notes: localizedStringSchema.optional(),
+  transport: transportSchema.optional(),
+});
+
+const mealSuggestionSchema = z.object({
+  type: z.enum(['breakfast', 'lunch', 'dinner', 'snack']),
+  time: z.string(),
+  neighborhood: z.string().optional(),
+  estimatedCost: z.number(),
+  notes: localizedStringSchema.optional(),
+});
+
+const itineraryDaySchema = z.object({
+  date: z.string(),
+  dayNumber: z.number(),
+  city: z.string(),
+  title: localizedStringSchema,
+  activities: z.array(activitySchema),
+  meals: z.array(mealSuggestionSchema),
+});
+
+export const itinerarySchema = z.object({
+  trip: z.object({
+    title: localizedStringSchema,
+    startDate: z.string(),
+    endDate: z.string(),
+  }),
+  days: z.array(itineraryDaySchema),
+});
+
+export type ItineraryInput = z.infer<typeof itinerarySchema>;
+
+// --- Restaurant Schemas ---
+
+export const restaurantSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  city: z.string(),
+  neighborhood: z.string(),
+  coordinates: coordinatesSchema,
+  cuisine: z.array(z.string()),
+  priceRange: z.enum(['€', '€€', '€€€', '€€€€']),
+  specialties: localizedStringSchema.optional(),
+  description: localizedStringSchema.optional(),
+  website: z.string().optional(),
+});
+
+export const restaurantsFileSchema = z.object({
+  restaurants: z.array(restaurantSchema),
+});
+
+export type RestaurantInput = z.infer<typeof restaurantSchema>;

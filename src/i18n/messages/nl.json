@@ -101,7 +101,7 @@
   },
   "itinerary": {
     "title": "Dagplanning",
-    "comingSoon": "Binnenkort: Volledige 7-daagse reisplanning met activiteiten en tijden",
+    "subtitle": "Volledige reisplanning met activiteiten, maaltijden en vervoer",
     "day": "Dag",
     "viewDay": "Bekijk dag",
     "activities": "Activiteiten",
@@ -114,7 +114,13 @@
     "breakfast": "Ontbijt",
     "lunch": "Lunch",
     "dinner": "Diner",
-    "snack": "Snack"
+    "snack": "Snack",
+    "expandAll": "Alles uitklappen",
+    "collapseAll": "Alles inklappen",
+    "noData": "Geen reisplanning beschikbaar voor deze reis",
+    "estimatedCost": "Geschatte kosten",
+    "free": "Gratis",
+    "viewAttraction": "Bekijk bezienswaardigheid"
   },
   "attractions": {
     "title": "Bezienswaardigheden",
@@ -157,7 +163,7 @@
   },
   "restaurants": {
     "title": "Restaurants",
-    "comingSoon": "Binnenkort: Restauranttips per wijk",
+    "subtitle": "Restauranttips per stad en prijsklasse",
     "neighborhood": "Wijk",
     "cuisine": "Keuken",
     "priceRange": "Prijsklasse",
@@ -165,11 +171,17 @@
     "budget": "Budget",
     "midRange": "Middenbereik",
     "upscale": "Luxe",
-    "fineDining": "Fine Dining"
+    "fineDining": "Fine Dining",
+    "filterByCity": "Filter op stad",
+    "filterByPrice": "Filter op prijsklasse",
+    "allRestaurants": "Alle Restaurants",
+    "allPrices": "Alle prijzen",
+    "noResults": "Geen restaurants gevonden met deze filters",
+    "visitWebsite": "Bezoek website"
   },
   "budget": {
     "title": "Budget Calculator",
-    "comingSoon": "Binnenkort: Budget calculator met studentenkortingen",
+    "subtitle": "Bereken de geschatte kosten voor je reis",
     "configuration": "Configuratie",
     "adults": "Volwassenen (50+)",
     "youngAdults": "Jongvolwassenen (~20 jaar)",
@@ -182,6 +194,10 @@
     "transport": "Vervoer",
     "meals": "Maaltijden",
     "accommodation": "Accommodatie",
-    "subtotal": "Subtotaal"
+    "subtotal": "Subtotaal",
+    "travelers": "Reizigers",
+    "dailyAverage": "Daggemiddelde",
+    "noData": "Geen budget beschikbaar. Voeg een reisplanning toe om kosten te berekenen.",
+    "studentDiscount": "Studentenkorting"
   }
 }

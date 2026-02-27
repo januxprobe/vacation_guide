@@ -101,7 +101,7 @@
   },
   "itinerary": {
     "title": "Itinerary",
-    "comingSoon": "Coming soon: Complete 7-day itinerary with activities and timings",
+    "subtitle": "Complete travel plan with activities, meals and transport",
     "day": "Day",
     "viewDay": "View day",
     "activities": "Activities",
@@ -114,7 +114,13 @@
     "breakfast": "Breakfast",
     "lunch": "Lunch",
     "dinner": "Dinner",
-    "snack": "Snack"
+    "snack": "Snack",
+    "expandAll": "Expand all",
+    "collapseAll": "Collapse all",
+    "noData": "No itinerary available for this trip",
+    "estimatedCost": "Estimated cost",
+    "free": "Free",
+    "viewAttraction": "View attraction"
   },
   "attractions": {
     "title": "Attractions",
@@ -157,7 +163,7 @@
   },
   "restaurants": {
     "title": "Restaurants",
-    "comingSoon": "Coming soon: Restaurant recommendations by neighborhood",
+    "subtitle": "Restaurant tips by city and price range",
     "neighborhood": "Neighborhood",
     "cuisine": "Cuisine",
     "priceRange": "Price Range",
@@ -165,11 +171,17 @@
     "budget": "Budget",
     "midRange": "Mid-Range",
     "upscale": "Upscale",
-    "fineDining": "Fine Dining"
+    "fineDining": "Fine Dining",
+    "filterByCity": "Filter by city",
+    "filterByPrice": "Filter by price range",
+    "allRestaurants": "All Restaurants",
+    "allPrices": "All prices",
+    "noResults": "No restaurants found with these filters",
+    "visitWebsite": "Visit website"
   },
   "budget": {
     "title": "Budget Calculator",
-    "comingSoon": "Coming soon: Budget calculator with student discounts",
+    "subtitle": "Calculate the estimated costs for your trip",
     "configuration": "Configuration",
     "adults": "Adults (50+)",
     "youngAdults": "Young Adults (~20 years)",
@@ -182,6 +194,10 @@
     "transport": "Transport",
     "meals": "Meals",
     "accommodation": "Accommodation",
-    "subtotal": "Subtotal"
+    "subtotal": "Subtotal",
+    "travelers": "Travelers",
+    "dailyAverage": "Daily average",
+    "noData": "No budget available. Add an itinerary to calculate costs.",
+    "studentDiscount": "Student discount"
   }
 }
