@@ -6,6 +6,7 @@
 - **Never commit or push without manual testing.** After implementing changes, always let the user manually test first. Do not create commits or push to remote unless the user explicitly asks after they have verified the changes.
 - **Do NOT run tests unless explicitly asked.** Never run `npx playwright test` or `npm run build` on your own. The user will tell you when to test.
 - **Always update documentation before committing.** Before creating a commit, ensure `CLAUDE.md`, `README.md`, and `RESOURCES.md` are up to date with any changes made (new files, updated structure, new features, test counts, etc.).
+- **Record agreed plans immediately.** When the user agrees to a proposed plan (feature list, UX improvements, refactoring steps, etc.), write it as a checklist in the `## Agreed Plans` section at the bottom of this file BEFORE starting implementation. Each item should have a `[ ]` checkbox. Check items off (`[x]`) as they are implemented and committed. This ensures nothing gets lost between sessions.
 
 ## Project Overview
 
@@ -518,3 +519,11 @@ npx shadcn@latest add card      # Example: add card component
 - Cordoba to Seville by train: EUR 15, ~1 hour
 - Hop on Hop off bus Seville: EUR 28/day
 - Granada City Mini-train: EUR 9.60/day
+
+## Agreed Plans
+
+<!-- When the user agrees to a proposed plan, record it here as a checklist.
+     Check off items as they are implemented and committed.
+     Keep completed plans for reference; archive old ones under a "### Completed" sub-heading. -->
+
+_No active plans._
