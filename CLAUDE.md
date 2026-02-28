@@ -298,19 +298,19 @@ const attractions = await tripDataRepo.getAllAttractions(slug);
 - **Static trips:** TypeScript configs in `src/config/trips/*.ts`, re-exported from `index.ts`
 - **Dynamic trips:** JSON configs in `src/data/trips/*/trip-config.json`, auto-discovered at runtime
 - **Hybrid registry:** `JsonTripRepository` merges static TS configs + dynamic JSON configs
-- **Cache management:** Handled internally by repository implementations — no manual cache clearing needed
+- **Cache management:** Handled internally by repository implementations — no manual cache clearing needed. **Important:** `getItinerary()` does not cache `null` results (only successful loads are cached). This prevents stale misses caused by Next.js module duplication between API routes and server components, where cache invalidation from `saveItinerary()` in an API route may not reach the repository instance used by page server components.
 - **Trip context:** `useTripConfig()` for trip-scoped components, `useOptionalTripConfig()` for optional
 - **URL structure:** `/{locale}/{tripSlug}/attractions/...`
 - **Trip deletion:** Only dynamic (JSON-based) trips can be deleted; protected trips return `isProtected()=true`
 
 ### AI Trip Builder Architecture
 - **Chat API** (`/api/ai/chat`): Streaming SSE with Gemini + Google Search grounding
-- **Finalize API** (`/api/ai/finalize-trip`): Non-streaming JSON extraction from conversation. Returns `{ tripConfig, attractions, restaurants, itinerary }`. Restaurants and itinerary are validated with Zod; graceful fallback to `[]`/`null` on validation failure.
+- **Finalize API** (`/api/ai/finalize-trip`): Non-streaming JSON extraction from conversation. Returns `{ tripConfig, attractions, restaurants, itinerary }`. Restaurants and itinerary are validated with Zod.
 - **Restaurant Search API** (`/api/ai/search-restaurants`): Gemini + Google Search for finding real restaurants. Returns validated `Restaurant[]`. Note: `responseMimeType` cannot be combined with `tools: [{ googleSearch }]` — rely on prompt instructions for JSON output.
 - **Trip CRUD** (`/api/trips`): Creates trip directory + `trip-config.json`, manages attractions
 - **Restaurant CRUD** (`/api/trips/[slug]/restaurants`): POST (batch save), PUT (add single), DELETE (remove by ID). Static trips are protected (403).
 - **Itinerary API** (`/api/trips/[slug]/itinerary`): POST to save `itinerary.json`.
-- **Flow:** Chat → Accept suggestions → Click "Create Trip" → Finalize → Save config + attractions + restaurants + itinerary → Redirect
+- **Flow:** Chat → Accept suggestions → Click "Create Trip" → Finalize → Validate all resources present (restaurants non-empty, itinerary non-null) → Save config + attractions + restaurants + itinerary (all blocking, failures show error toast) → Redirect
 - **Gemini model:** `gemini-2.5-flash` with `tools: [{ googleSearch: {} }]` for grounding
 - **Attraction normalization:** AI-generated enum values (e.g. `"square"`, `"important"`) are mapped to valid schema values before Zod validation. See `CATEGORY_MAP` and `PRIORITY_MAP` in attractions endpoint.
 - **Itinerary normalization:** `normalizeItinerary()` in `src/lib/normalize-itinerary.ts` fixes common Gemini output issues before Zod validation: capitalized/synonym enums (e.g. `"Walk"`→`"walk"`, `"taxi"`→`"car"`, `"Breakfast"`→`"breakfast"`), AM/PM→24h time conversion, string→number coercion, plain string→`{nl,en}` localized string coercion, `latitude`/`longitude`→`lat`/`lng` coordinate normalization, and cleanup of invalid optional fields. Applied in both `finalize-trip` and `itinerary` save endpoints.
