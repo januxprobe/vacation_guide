@@ -177,6 +177,14 @@ export default function TripChat() {
         throw new Error('Invalid finalized data');
       }
 
+      if (!restaurants || !Array.isArray(restaurants) || restaurants.length === 0) {
+        throw new Error('No restaurants generated');
+      }
+
+      if (!itinerary) {
+        throw new Error('No itinerary generated');
+      }
+
       // Step 2: Create the trip
       const createRes = await fetch('/api/trips', {
         method: 'POST',
@@ -198,30 +206,24 @@ export default function TripChat() {
         });
       }
 
-      // Step 4: Save restaurants (non-blocking)
-      if (restaurants && Array.isArray(restaurants) && restaurants.length > 0) {
-        try {
-          await fetch(`/api/trips/${tripConfig.slug}/restaurants`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ restaurants }),
-          });
-        } catch (err) {
-          console.error('Failed to save restaurants:', err);
-        }
+      // Step 4: Save restaurants
+      const restaurantRes = await fetch(`/api/trips/${tripConfig.slug}/restaurants`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ restaurants }),
+      });
+      if (!restaurantRes.ok) {
+        throw new Error('Failed to save restaurants');
       }
 
-      // Step 5: Save itinerary (non-blocking)
-      if (itinerary) {
-        try {
-          await fetch(`/api/trips/${tripConfig.slug}/itinerary`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(itinerary),
-          });
-        } catch (err) {
-          console.error('Failed to save itinerary:', err);
-        }
+      // Step 5: Save itinerary
+      const itineraryRes = await fetch(`/api/trips/${tripConfig.slug}/itinerary`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(itinerary),
+      });
+      if (!itineraryRes.ok) {
+        throw new Error('Failed to save itinerary');
       }
 
       // Step 6: Redirect to the new trip

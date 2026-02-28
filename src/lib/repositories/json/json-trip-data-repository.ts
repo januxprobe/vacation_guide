@@ -203,11 +203,15 @@ export class JsonTripDataRepository implements TripDataRepository {
   }
 
   async getItinerary(tripSlug: string): Promise<Itinerary | null> {
-    if (!this.itineraryCache.has(tripSlug)) {
-      const dataDir = await this.getDataDirectory(tripSlug);
-      this.itineraryCache.set(tripSlug, this.loadItinerary(dataDir));
+    if (this.itineraryCache.has(tripSlug)) {
+      return this.itineraryCache.get(tripSlug) ?? null;
     }
-    return this.itineraryCache.get(tripSlug) ?? null;
+    const dataDir = await this.getDataDirectory(tripSlug);
+    const itinerary = this.loadItinerary(dataDir);
+    if (itinerary) {
+      this.itineraryCache.set(tripSlug, itinerary);
+    }
+    return itinerary;
   }
 
   async saveItinerary(tripSlug: string, itinerary: Itinerary): Promise<void> {

@@ -148,14 +148,11 @@ test.describe('Create & Delete Trip (E2E)', () => {
     await page.goto(`${BASE_URL}/nl/${tripSlug}/planner`);
     await page.waitForTimeout(3000);
 
-    const hasNoItinerary = await page.getByText('Geen reisplanning beschikbaar').isVisible().catch(() => false);
-    if (hasNoItinerary) {
-      console.log('⚠ Itinerary not generated (Gemini validation fallback - expected occasionally)');
-    } else {
-      const dayTabs = page.locator('button:has-text("Dag")');
-      const dayCount = await dayTabs.count();
-      console.log(`✓ Itinerary generated with ${dayCount} day tabs`);
-    }
+    const dayTabs = page.locator('button:has-text("Dag")');
+    await expect(dayTabs.first()).toBeVisible({ timeout: 10000 });
+    const dayCount = await dayTabs.count();
+    console.log(`✓ Itinerary generated with ${dayCount} day tabs`);
+    expect(dayCount).toBeGreaterThan(0);
 
     // Step 7: Verify budget page loads
     console.log('\n=== Step 7: Verify budget page ===');
@@ -166,7 +163,8 @@ test.describe('Create & Delete Trip (E2E)', () => {
     console.log('✓ Budget page loaded');
 
     const hasBudgetData = !(await page.getByText('Geen budget beschikbaar').isVisible().catch(() => false));
-    console.log(`✓ Budget has data: ${hasBudgetData}`);
+    expect(hasBudgetData).toBe(true);
+    console.log('✓ Budget has data');
 
     // Step 8: Verify on trip selector
     console.log('\n=== Step 8: Verify trip on selector ===');
