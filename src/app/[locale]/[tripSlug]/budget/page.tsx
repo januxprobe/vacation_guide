@@ -1,7 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { getTripBySlug } from '@/config/trips';
-import { getItineraryForTrip, getAllAttractionsForTrip } from '@/lib/data-loaders';
+import { getTripRepository, getTripDataRepository } from '@/lib/repositories';
 import BudgetCalculator from '@/components/budget/BudgetCalculator';
 
 type Props = {
@@ -11,12 +10,16 @@ type Props = {
 export default async function BudgetPage({ params }: Props) {
   const { locale, tripSlug } = await params;
   const t = await getTranslations({ locale });
-  const trip = getTripBySlug(tripSlug);
+  const tripRepo = getTripRepository();
+  const trip = await tripRepo.getBySlug(tripSlug);
 
   if (!trip) notFound();
 
-  const itinerary = getItineraryForTrip(trip);
-  const attractions = getAllAttractionsForTrip(trip);
+  const tripDataRepo = getTripDataRepository();
+  const [itinerary, attractions] = await Promise.all([
+    tripDataRepo.getItinerary(tripSlug),
+    tripDataRepo.getAllAttractions(tripSlug),
+  ]);
 
   return (
     <div className="container mx-auto px-4 py-12">

@@ -1,16 +1,13 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
-import { getTripBySlug, clearTripCache, isStaticTrip } from '@/config/trips';
-import { clearAttractionCache, clearRestaurantCache, clearItineraryCache } from '@/lib/data-loaders';
+import { getTripRepository } from '@/lib/repositories';
 
 export async function GET(
   _request: Request,
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params;
-  clearTripCache();
-  const trip = getTripBySlug(slug);
+  const tripRepo = getTripRepository();
+  const trip = await tripRepo.getBySlug(slug);
 
   if (!trip) {
     return NextResponse.json({ error: 'Trip not found' }, { status: 404 });
@@ -24,41 +21,24 @@ export async function DELETE(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params;
+  const tripRepo = getTripRepository();
 
-  // Prevent deleting static TS-based trips
-  if (isStaticTrip(slug)) {
+  // Prevent deleting protected (static) trips
+  if (await tripRepo.isProtected(slug)) {
     return NextResponse.json(
       { error: 'Cannot delete a built-in trip' },
       { status: 403 }
     );
   }
 
-  clearTripCache();
-  const trip = getTripBySlug(slug);
+  const trip = await tripRepo.getBySlug(slug);
 
   if (!trip) {
     return NextResponse.json({ error: 'Trip not found' }, { status: 404 });
   }
 
   try {
-    const tripDir = path.join(
-      process.cwd(),
-      'src',
-      'data',
-      'trips',
-      trip.dataDirectory
-    );
-
-    if (fs.existsSync(tripDir)) {
-      fs.rmSync(tripDir, { recursive: true, force: true });
-    }
-
-    // Clear all caches
-    clearAttractionCache(trip.id);
-    clearRestaurantCache(trip.id);
-    clearItineraryCache(trip.id);
-    clearTripCache();
-
+    await tripRepo.delete(slug);
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Failed to delete trip:', error);

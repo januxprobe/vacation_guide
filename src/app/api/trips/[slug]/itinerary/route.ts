@@ -1,10 +1,7 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
-import { getTripBySlug, clearTripCache } from '@/config/trips';
+import { getTripRepository, getTripDataRepository } from '@/lib/repositories';
 import { itinerarySchema } from '@/lib/schemas';
 import { normalizeItinerary } from '@/lib/normalize-itinerary';
-import { clearItineraryCache } from '@/lib/data-loaders';
 
 /** POST: Save itinerary.json for a trip */
 export async function POST(
@@ -13,8 +10,8 @@ export async function POST(
 ) {
   try {
     const { slug } = await params;
-    clearTripCache();
-    const trip = getTripBySlug(slug);
+    const tripRepo = getTripRepository();
+    const trip = await tripRepo.getBySlug(slug);
 
     if (!trip) {
       return NextResponse.json({ error: 'Trip not found' }, { status: 404 });
@@ -32,17 +29,8 @@ export async function POST(
       );
     }
 
-    const filePath = path.join(
-      process.cwd(),
-      'src',
-      'data',
-      'trips',
-      trip.dataDirectory,
-      'itinerary.json'
-    );
-
-    fs.writeFileSync(filePath, JSON.stringify(parsed.data, null, 2), 'utf-8');
-    clearItineraryCache(trip.id);
+    const tripDataRepo = getTripDataRepository();
+    await tripDataRepo.saveItinerary(slug, parsed.data);
 
     return NextResponse.json({ success: true }, { status: 201 });
   } catch (error) {

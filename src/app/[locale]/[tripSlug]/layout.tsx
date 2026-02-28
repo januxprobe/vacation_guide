@@ -1,13 +1,15 @@
 import { notFound } from 'next/navigation';
-import { getTripBySlug, getAllTripSlugs, clearTripCache } from '@/config/trips';
+import { getTripRepository } from '@/lib/repositories';
 import { TripConfigProvider } from '@/config/trip-context';
 import Header from '@/components/layout/Header';
 
 // Allow dynamic trip slugs (JSON-based trips created at runtime)
 export const dynamicParams = true;
 
-export function generateStaticParams() {
-  return getAllTripSlugs().map((tripSlug) => ({ tripSlug }));
+export async function generateStaticParams() {
+  const tripRepo = getTripRepository();
+  const slugs = await tripRepo.getAllSlugs();
+  return slugs.map((tripSlug) => ({ tripSlug }));
 }
 
 export default async function TripLayout({
@@ -18,9 +20,8 @@ export default async function TripLayout({
   params: Promise<{ locale: string; tripSlug: string }>;
 }) {
   const { tripSlug } = await params;
-  // Clear cache to pick up dynamically created trips
-  clearTripCache();
-  const trip = getTripBySlug(tripSlug);
+  const tripRepo = getTripRepository();
+  const trip = await tripRepo.getBySlug(tripSlug);
 
   if (!trip) {
     notFound();

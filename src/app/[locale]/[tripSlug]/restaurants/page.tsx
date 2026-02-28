@@ -1,7 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { getTripBySlug, isStaticTrip } from '@/config/trips';
-import { getRestaurantsForTrip } from '@/lib/data-loaders';
+import { getTripRepository, getTripDataRepository } from '@/lib/repositories';
 import RestaurantsList from '@/components/restaurants/RestaurantsList';
 
 type Props = {
@@ -11,11 +10,14 @@ type Props = {
 export default async function RestaurantsPage({ params }: Props) {
   const { locale, tripSlug } = await params;
   const t = await getTranslations({ locale });
-  const trip = getTripBySlug(tripSlug);
+  const tripRepo = getTripRepository();
+  const trip = await tripRepo.getBySlug(tripSlug);
 
   if (!trip) notFound();
 
-  const restaurants = getRestaurantsForTrip(trip);
+  const tripDataRepo = getTripDataRepository();
+  const restaurants = await tripDataRepo.getRestaurants(tripSlug);
+  const isProtected = await tripRepo.isProtected(tripSlug);
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -29,7 +31,7 @@ export default async function RestaurantsPage({ params }: Props) {
       <RestaurantsList
         restaurants={restaurants}
         tripSlug={tripSlug}
-        isDynamic={!isStaticTrip(tripSlug)}
+        isDynamic={!isProtected}
       />
     </div>
   );

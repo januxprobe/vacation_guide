@@ -1,10 +1,6 @@
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
-import { getTripBySlug, getAllTripSlugs } from '@/config/trips';
-import {
-  getAttractionByIdForTrip,
-  getAllAttractionIdsForTrip,
-} from '@/lib/data-loaders';
+import { getTripRepository, getTripDataRepository } from '@/lib/repositories';
 import AttractionDetail from '@/components/attractions/AttractionDetail';
 
 type Props = {
@@ -12,10 +8,12 @@ type Props = {
 };
 
 export async function generateStaticParams() {
+  const tripRepo = getTripRepository();
+  const tripDataRepo = getTripDataRepository();
   const results: { tripSlug: string; id: string }[] = [];
-  for (const slug of getAllTripSlugs()) {
-    const trip = getTripBySlug(slug)!;
-    const ids = getAllAttractionIdsForTrip(trip);
+  const slugs = await tripRepo.getAllSlugs();
+  for (const slug of slugs) {
+    const ids = await tripDataRepo.getAllAttractionIds(slug);
     for (const id of ids) {
       results.push({ tripSlug: slug, id });
     }
@@ -25,10 +23,12 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props) {
   const { locale, tripSlug, id } = await params;
-  const trip = getTripBySlug(tripSlug);
+  const tripRepo = getTripRepository();
+  const trip = await tripRepo.getBySlug(tripSlug);
   if (!trip) return { title: 'Not Found' };
 
-  const attraction = getAttractionByIdForTrip(id, trip);
+  const tripDataRepo = getTripDataRepository();
+  const attraction = await tripDataRepo.getAttractionById(tripSlug, id);
   const t = await getTranslations({ locale });
 
   if (!attraction) {
@@ -43,10 +43,12 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function AttractionDetailPage({ params }: Props) {
   const { tripSlug, id } = await params;
-  const trip = getTripBySlug(tripSlug);
+  const tripRepo = getTripRepository();
+  const trip = await tripRepo.getBySlug(tripSlug);
   if (!trip) notFound();
 
-  const attraction = getAttractionByIdForTrip(id, trip);
+  const tripDataRepo = getTripDataRepository();
+  const attraction = await tripDataRepo.getAttractionById(tripSlug, id);
   if (!attraction) notFound();
 
   return (

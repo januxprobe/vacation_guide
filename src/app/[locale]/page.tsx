@@ -1,5 +1,5 @@
 import { getTranslations } from 'next-intl/server';
-import { getAllTrips, isStaticTrip, clearTripCache } from '@/config/trips';
+import { getTripRepository } from '@/lib/repositories';
 import GenericHeader from '@/components/layout/GenericHeader';
 import TripGrid from '@/components/trip-selector/TripGrid';
 
@@ -10,9 +10,14 @@ type Props = {
 export default async function LocaleHomePage({ params }: Props) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'tripSelector' });
-  clearTripCache();
-  const trips = getAllTrips();
-  const staticSlugs = trips.filter((t) => isStaticTrip(t.slug)).map((t) => t.slug);
+  const tripRepo = getTripRepository();
+  const trips = await tripRepo.getAll();
+  const protectedChecks = await Promise.all(
+    trips.map((trip) => tripRepo.isProtected(trip.slug))
+  );
+  const staticSlugs = trips
+    .filter((_, i) => protectedChecks[i])
+    .map((trip) => trip.slug);
 
   return (
     <>

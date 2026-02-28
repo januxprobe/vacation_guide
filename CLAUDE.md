@@ -97,7 +97,7 @@ vacation_guide/
 │   │   ├── trip-config.ts               # TripConfig, CityConfig, TravelerGroup interfaces
 │   │   ├── trip-context.tsx             # React context + useTripConfig() + useOptionalTripConfig()
 │   │   └── trips/
-│   │       ├── index.ts                 # Hybrid trip registry (static TS + JSON from disk)
+│   │       ├── index.ts                 # Re-exports static trip configs
 │   │       └── andalusia-2026.ts        # Andalusia trip config instance
 │   ├── components/
 │   │   ├── layout/
@@ -155,11 +155,16 @@ vacation_guide/
 │   │   └── useOsrmRoute.ts             # Valhalla pedestrian walking route hook with cache
 │   ├── lib/
 │   │   ├── utils.ts                     # cn() helper from shadcn
-│   │   ├── data-loaders.ts             # Config-driven fs.readFileSync + Zod validation + cache (clearable)
 │   │   ├── schemas.ts                   # Zod schemas (attraction, tripConfig, itinerary, restaurant)
 │   │   ├── normalize-itinerary.ts      # Normalize AI-generated itinerary data before Zod validation
 │   │   ├── budget-calculator.ts        # Pure utility: calculateBudget() from itinerary + attractions (includes free attractions in breakdown)
-│   │   └── city-colors.ts              # Color utilities (hex->rgba, badge/gradient styles)
+│   │   ├── city-colors.ts              # Color utilities (hex->rgba, badge/gradient styles)
+│   │   └── repositories/
+│   │       ├── types.ts                 # TripRepository + TripDataRepository interfaces
+│   │       ├── index.ts                 # Factory (DATA_BACKEND env switch: json | firestore)
+│   │       └── json/
+│   │           ├── json-trip-repository.ts      # TripConfig CRUD (static TS + JSON from disk)
+│   │           └── json-trip-data-repository.ts # Attractions/Restaurants/Itinerary (fs + Zod + cache)
 │   ├── types/
 │   │   └── index.ts                     # All TypeScript interfaces (City = string)
 │   ├── data/
@@ -245,14 +250,35 @@ City colors are defined in trip config (`src/config/trips/andalusia-2026.ts`), n
 
 Colors are applied via inline styles using `src/lib/city-colors.ts` utilities (not Tailwind classes, because Tailwind v4 JIT can't handle runtime-interpolated classes).
 
+### Repository / DAO Layer
+All data access goes through two repository interfaces in `src/lib/repositories/types.ts`:
+- **`TripRepository`** — CRUD for trip configs (`getAll`, `getBySlug`, `create`, `delete`, `isProtected`)
+- **`TripDataRepository`** — CRUD for attractions, restaurants, itinerary (scoped by `tripSlug`)
+
+Factory in `src/lib/repositories/index.ts` returns singletons based on `DATA_BACKEND` env var (`json` default, `firestore` later):
+```typescript
+import { getTripRepository, getTripDataRepository } from '@/lib/repositories';
+const tripRepo = getTripRepository();
+const trip = await tripRepo.getBySlug(slug);
+const tripDataRepo = getTripDataRepository();
+const attractions = await tripDataRepo.getAllAttractions(slug);
+```
+
+**Key design decisions:**
+- All methods are `async` (JSON impl is sync internally, but Firestore needs async)
+- `tripSlug` is the scope key (not `TripConfig`) — `dataDirectory` is a JSON implementation detail
+- Caching is internal to the implementation (no `clearCache()` in the interface)
+- Validation stays in API routes — the DAO receives already-validated data
+- `isProtected()` replaces `isStaticTrip()` — storage-agnostic naming
+
 ### Multi-Trip Architecture
-- **Static trips:** TypeScript configs in `src/config/trips/*.ts`, registered in `index.ts`
+- **Static trips:** TypeScript configs in `src/config/trips/*.ts`, re-exported from `index.ts`
 - **Dynamic trips:** JSON configs in `src/data/trips/*/trip-config.json`, auto-discovered at runtime
-- **Hybrid registry:** `src/config/trips/index.ts` merges both sources via `getAllTrips()`
-- **Cache management:** `clearTripCache()` must be called before `getAllTrips()` in server components to ensure fresh data
+- **Hybrid registry:** `JsonTripRepository` merges static TS configs + dynamic JSON configs
+- **Cache management:** Handled internally by repository implementations — no manual cache clearing needed
 - **Trip context:** `useTripConfig()` for trip-scoped components, `useOptionalTripConfig()` for optional
 - **URL structure:** `/{locale}/{tripSlug}/attractions/...`
-- **Trip deletion:** Only dynamic (JSON-based) trips can be deleted; static trips are protected
+- **Trip deletion:** Only dynamic (JSON-based) trips can be deleted; protected trips return `isProtected()=true`
 
 ### AI Trip Builder Architecture
 - **Chat API** (`/api/ai/chat`): Streaming SSE with Gemini + Google Search grounding
@@ -287,6 +313,7 @@ Colors are applied via inline styles using `src/lib/city-colors.ts` utilities (n
 npm install
 cp .env.example .env.local
 # Edit .env.local and add your GEMINI_API_KEY
+# Optional: DATA_BACKEND=json (default) or DATA_BACKEND=firestore (future)
 ```
 
 ### Commands

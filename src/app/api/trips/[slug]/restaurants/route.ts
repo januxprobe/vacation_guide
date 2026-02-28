@@ -1,28 +1,6 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
-import { getTripBySlug, clearTripCache, isStaticTrip } from '@/config/trips';
+import { getTripRepository, getTripDataRepository } from '@/lib/repositories';
 import { restaurantSchema, restaurantsFileSchema } from '@/lib/schemas';
-import { clearRestaurantCache } from '@/lib/data-loaders';
-
-function getRestaurantsFilePath(dataDirectory: string): string {
-  return path.join(
-    process.cwd(),
-    'src',
-    'data',
-    'trips',
-    dataDirectory,
-    'restaurants.json'
-  );
-}
-
-function readRestaurantsFile(filePath: string): { restaurants: unknown[] } {
-  if (!fs.existsSync(filePath)) {
-    return { restaurants: [] };
-  }
-  const raw = fs.readFileSync(filePath, 'utf-8');
-  return JSON.parse(raw);
-}
 
 /** POST: Save full restaurants.json (batch, used during trip creation) */
 export async function POST(
@@ -31,8 +9,8 @@ export async function POST(
 ) {
   try {
     const { slug } = await params;
-    clearTripCache();
-    const trip = getTripBySlug(slug);
+    const tripRepo = getTripRepository();
+    const trip = await tripRepo.getBySlug(slug);
 
     if (!trip) {
       return NextResponse.json({ error: 'Trip not found' }, { status: 404 });
@@ -49,9 +27,8 @@ export async function POST(
       );
     }
 
-    const filePath = getRestaurantsFilePath(trip.dataDirectory);
-    fs.writeFileSync(filePath, JSON.stringify(parsed.data, null, 2), 'utf-8');
-    clearRestaurantCache(trip.id);
+    const tripDataRepo = getTripDataRepository();
+    await tripDataRepo.saveRestaurants(slug, parsed.data.restaurants);
 
     return NextResponse.json({ success: true, count: parsed.data.restaurants.length }, { status: 201 });
   } catch (error) {
@@ -67,16 +44,16 @@ export async function PUT(
 ) {
   try {
     const { slug } = await params;
+    const tripRepo = getTripRepository();
 
-    if (isStaticTrip(slug)) {
+    if (await tripRepo.isProtected(slug)) {
       return NextResponse.json(
         { error: 'Cannot modify a built-in trip' },
         { status: 403 }
       );
     }
 
-    clearTripCache();
-    const trip = getTripBySlug(slug);
+    const trip = await tripRepo.getBySlug(slug);
 
     if (!trip) {
       return NextResponse.json({ error: 'Trip not found' }, { status: 404 });
@@ -93,20 +70,18 @@ export async function PUT(
       );
     }
 
-    const filePath = getRestaurantsFilePath(trip.dataDirectory);
-    const existing = readRestaurantsFile(filePath);
-
-    // Check for duplicate ID
-    if (existing.restaurants.some((r: unknown) => (r as { id: string }).id === parsed.data.id)) {
-      return NextResponse.json(
-        { error: 'Restaurant with this ID already exists' },
-        { status: 409 }
-      );
+    const tripDataRepo = getTripDataRepository();
+    try {
+      await tripDataRepo.addRestaurant(slug, parsed.data);
+    } catch (e) {
+      if (e instanceof Error && e.message.includes('already exists')) {
+        return NextResponse.json(
+          { error: 'Restaurant with this ID already exists' },
+          { status: 409 }
+        );
+      }
+      throw e;
     }
-
-    existing.restaurants.push(parsed.data);
-    fs.writeFileSync(filePath, JSON.stringify(existing, null, 2), 'utf-8');
-    clearRestaurantCache(trip.id);
 
     return NextResponse.json({ success: true, id: parsed.data.id }, { status: 201 });
   } catch (error) {
@@ -122,16 +97,16 @@ export async function DELETE(
 ) {
   try {
     const { slug } = await params;
+    const tripRepo = getTripRepository();
 
-    if (isStaticTrip(slug)) {
+    if (await tripRepo.isProtected(slug)) {
       return NextResponse.json(
         { error: 'Cannot modify a built-in trip' },
         { status: 403 }
       );
     }
 
-    clearTripCache();
-    const trip = getTripBySlug(slug);
+    const trip = await tripRepo.getBySlug(slug);
 
     if (!trip) {
       return NextResponse.json({ error: 'Trip not found' }, { status: 404 });
@@ -142,23 +117,12 @@ export async function DELETE(
       return NextResponse.json({ error: 'Restaurant ID is required' }, { status: 400 });
     }
 
-    const filePath = getRestaurantsFilePath(trip.dataDirectory);
-    const existing = readRestaurantsFile(filePath);
+    const tripDataRepo = getTripDataRepository();
+    const removed = await tripDataRepo.removeRestaurant(slug, id);
 
-    const filtered = existing.restaurants.filter(
-      (r: unknown) => (r as { id: string }).id !== id
-    );
-
-    if (filtered.length === existing.restaurants.length) {
+    if (!removed) {
       return NextResponse.json({ error: 'Restaurant not found' }, { status: 404 });
     }
-
-    fs.writeFileSync(
-      filePath,
-      JSON.stringify({ restaurants: filtered }, null, 2),
-      'utf-8'
-    );
-    clearRestaurantCache(trip.id);
 
     return NextResponse.json({ success: true });
   } catch (error) {

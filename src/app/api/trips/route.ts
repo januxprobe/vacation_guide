@@ -1,13 +1,11 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
-import { getAllTrips, clearTripCache } from '@/config/trips';
+import { getTripRepository } from '@/lib/repositories';
 import { tripConfigSchema } from '@/lib/schemas';
 
 export async function GET() {
   try {
-    clearTripCache(); // Always get fresh data
-    const trips = getAllTrips();
+    const tripRepo = getTripRepository();
+    const trips = await tripRepo.getAll();
     return NextResponse.json(trips);
   } catch (error) {
     console.error('Failed to load trips:', error);
@@ -39,34 +37,18 @@ export async function POST(request: Request) {
     }
 
     const tripConfig = parsed.data;
-    const tripDir = path.join(process.cwd(), 'src', 'data', 'trips', tripConfig.dataDirectory);
+    const tripRepo = getTripRepository();
 
     // Check if trip already exists
-    if (fs.existsSync(tripDir)) {
+    const existing = await tripRepo.getBySlug(tripConfig.slug);
+    if (existing) {
       return NextResponse.json(
         { error: 'Trip directory already exists' },
         { status: 409 }
       );
     }
 
-    // Create trip directory structure
-    fs.mkdirSync(tripDir, { recursive: true });
-    fs.mkdirSync(path.join(tripDir, 'attractions'), { recursive: true });
-
-    // Create city subdirectories
-    for (const city of tripConfig.cities) {
-      fs.mkdirSync(path.join(tripDir, 'attractions', city.id), { recursive: true });
-    }
-
-    // Write trip config JSON
-    fs.writeFileSync(
-      path.join(tripDir, 'trip-config.json'),
-      JSON.stringify(tripConfig, null, 2),
-      'utf-8'
-    );
-
-    // Clear caches
-    clearTripCache();
+    await tripRepo.create(tripConfig);
 
     return NextResponse.json({ success: true, slug: tripConfig.slug }, { status: 201 });
   } catch (error) {

@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
-import { getDefaultTrip } from '@/config/trips';
+import { getTripRepository } from '@/lib/repositories';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -7,6 +7,7 @@ type Props = {
 
 export default async function MapRedirect({ params }: Props) {
   const { locale } = await params;
-  const trip = getDefaultTrip();
+  const tripRepo = getTripRepository();
+  const trip = await tripRepo.getDefault();
   redirect(`/${locale}/${trip.slug}/planner`);
 }

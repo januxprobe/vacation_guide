@@ -1,9 +1,6 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
-import { getTripBySlug, clearTripCache } from '@/config/trips';
+import { getTripRepository, getTripDataRepository } from '@/lib/repositories';
 import { attractionSchema } from '@/lib/schemas';
-import { clearAttractionCache } from '@/lib/data-loaders';
 
 // Normalize AI-generated values to match our Zod enums
 const CATEGORY_MAP: Record<string, string> = {
@@ -44,8 +41,8 @@ export async function POST(
 ) {
   try {
     const { slug } = await params;
-    clearTripCache();
-    const trip = getTripBySlug(slug);
+    const tripRepo = getTripRepository();
+    const trip = await tripRepo.getBySlug(slug);
 
     if (!trip) {
       return NextResponse.json({ error: 'Trip not found' }, { status: 404 });
@@ -71,28 +68,10 @@ export async function POST(
       );
     }
 
-    const attraction = parsed.data;
-    const cityDir = path.join(
-      process.cwd(),
-      'src',
-      'data',
-      'trips',
-      trip.dataDirectory,
-      'attractions',
-      attraction.city
-    );
+    const tripDataRepo = getTripDataRepository();
+    await tripDataRepo.addAttraction(slug, parsed.data);
 
-    // Ensure city directory exists
-    fs.mkdirSync(cityDir, { recursive: true });
-
-    // Write attraction JSON file
-    const filePath = path.join(cityDir, `${attraction.id}.json`);
-    fs.writeFileSync(filePath, JSON.stringify(attraction, null, 2), 'utf-8');
-
-    // Clear attraction cache for this trip
-    clearAttractionCache(trip.id);
-
-    return NextResponse.json({ success: true, id: attraction.id }, { status: 201 });
+    return NextResponse.json({ success: true, id: parsed.data.id }, { status: 201 });
   } catch (error) {
     console.error('Failed to add attraction:', error);
     return NextResponse.json({ error: 'Failed to add attraction' }, { status: 500 });

@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
-import { getTripBySlug } from '@/config/trips';
-import { getAllAttractionsForTrip, getItineraryForTrip, getRestaurantsForTrip } from '@/lib/data-loaders';
+import { getTripRepository, getTripDataRepository } from '@/lib/repositories';
 import PlannerWrapper from '@/components/planner/PlannerWrapper';
 
 type Props = {
@@ -11,13 +10,17 @@ type Props = {
 export default async function PlannerPage({ params }: Props) {
   const { locale, tripSlug } = await params;
   const t = await getTranslations({ locale });
-  const trip = getTripBySlug(tripSlug);
+  const tripRepo = getTripRepository();
+  const trip = await tripRepo.getBySlug(tripSlug);
 
   if (!trip) notFound();
 
-  const attractions = getAllAttractionsForTrip(trip);
-  const itinerary = getItineraryForTrip(trip);
-  const restaurants = getRestaurantsForTrip(trip);
+  const tripDataRepo = getTripDataRepository();
+  const [attractions, itinerary, restaurants] = await Promise.all([
+    tripDataRepo.getAllAttractions(tripSlug),
+    tripDataRepo.getItinerary(tripSlug),
+    tripDataRepo.getRestaurants(tripSlug),
+  ]);
 
   if (!itinerary) {
     return (

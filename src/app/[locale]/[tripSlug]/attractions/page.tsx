@@ -1,7 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { getTripBySlug } from '@/config/trips';
-import { getAllAttractionsForTrip } from '@/lib/data-loaders';
+import { getTripRepository, getTripDataRepository } from '@/lib/repositories';
 import AttractionsList from '@/components/attractions/AttractionsList';
 
 type Props = {
@@ -11,11 +10,13 @@ type Props = {
 export default async function AttractionsPage({ params }: Props) {
   const { locale, tripSlug } = await params;
   const t = await getTranslations({ locale });
-  const trip = getTripBySlug(tripSlug);
+  const tripRepo = getTripRepository();
+  const trip = await tripRepo.getBySlug(tripSlug);
 
   if (!trip) notFound();
 
-  const attractions = getAllAttractionsForTrip(trip);
+  const tripDataRepo = getTripDataRepository();
+  const attractions = await tripDataRepo.getAllAttractions(tripSlug);
 
   return (
     <div className="container mx-auto px-4 py-12">

@@ -2,7 +2,7 @@ import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { Link } from '@/i18n/routing';
-import { getTripBySlug } from '@/config/trips';
+import { getTripRepository } from '@/lib/repositories';
 import { hexToRgba } from '@/lib/city-colors';
 import { MapPin, Calendar, Euro, Navigation } from 'lucide-react';
 
@@ -12,7 +12,8 @@ type Props = {
 
 export async function generateMetadata({ params }: Props) {
   const { locale, tripSlug } = await params;
-  const trip = getTripBySlug(tripSlug);
+  const tripRepo = getTripRepository();
+  const trip = await tripRepo.getBySlug(tripSlug);
   if (!trip) return { title: 'Not Found' };
   const loc = locale as 'nl' | 'en';
   return {
@@ -25,7 +26,8 @@ export default async function TripHomePage({ params }: Props) {
   const { locale, tripSlug } = await params;
   const loc = locale as 'nl' | 'en';
   const t = await getTranslations({ locale });
-  const trip = getTripBySlug(tripSlug);
+  const tripRepo = getTripRepository();
+  const trip = await tripRepo.getBySlug(tripSlug);
 
   if (!trip) notFound();
 
