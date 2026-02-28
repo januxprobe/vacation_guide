@@ -217,8 +217,8 @@ See `src/config/trips/andalusia-2026.ts` for a complete static example, or `src/
 7. User-created trips can be deleted from the trip selector homepage
 
 **Notes on AI-generated data:**
-- Restaurants are reliably generated (Zod validation is lenient for optional fields)
-- Itinerary generation uses a two-layer defense: (1) the finalize prompt includes a concrete one-shot example with FORMAT RULES, and (2) `normalizeItinerary()` fixes common issues (capitalized enums, AM/PM times, string numbers, plain strings instead of `{nl,en}` objects) before Zod validation. Falls back to `null` if validation still fails.
+- Trip creation validates that restaurants (non-empty array) and itinerary (non-null) are present before saving. All saves are blocking — failures propagate to the error toast so the user is informed instead of getting a broken trip.
+- Itinerary generation uses a two-layer defense: (1) the finalize prompt includes a concrete one-shot example with FORMAT RULES, and (2) `normalizeItinerary()` fixes common issues (capitalized enums, AM/PM times, string numbers, plain strings instead of `{nl,en}` objects) before Zod validation.
 - `attractionId` is optional on activities — Gemini generates free-form activities (train transfers, free time) that don't reference a specific attraction. The planner, map, and budget components all handle this gracefully.
 - Attraction categories/priorities are normalized (e.g. `"square"` → `"monument"`, `"important"` → `"essential"`) before validation
 
@@ -247,7 +247,7 @@ The trip registry (`src/config/trips/index.ts`) merges two sources:
 - **Static trips:** TypeScript configs in `src/config/trips/*.ts` (cannot be deleted)
 - **Dynamic trips:** JSON configs in `src/data/trips/*/trip-config.json` (created by AI, can be deleted)
 
-Call `clearTripCache()` before `getAllTrips()` in server components to ensure fresh data.
+Cache management is handled internally by the repository implementations — no manual cache clearing needed.
 
 ## Restaurant CRUD API
 

@@ -130,18 +130,20 @@ See [RESOURCES.md](./RESOURCES.md) for detailed patterns on data sourcing, image
 ## Testing
 
 ```bash
-npx playwright test --headed     # Run all 23 tests with visible browser
-npx playwright test --headed --grep "attractions"  # Run specific tests
+npm run test:unit        # Vitest unit/hook/API tests (158 tests)
+npm run test:integration # Playwright integration tests (33 tests, headed)
+npm run test:e2e         # Playwright E2E tests (1 test, headed, 10min timeout)
+npm run test:playwright  # All Playwright tests (headed)
 ```
 
-**Test suite (23 tests):**
-- 5 core tests: NL navigation, language switching, mobile, HTML structure, trip selector
-- 4 attraction tests: list/filters, detail page, English mode, category filter
-- 1 E2E test: AI trip creation + verification + deletion (uses live Gemini API)
-- 3 planner tests: split-view load, day sync, mobile toggle
-- 4 phase 3 tests: planner panel (NL + EN), restaurant filters, budget calculator
-- 3 phase 4 tests: map markers + day switching, route polyline toggle, restaurant toggle
-- 3 phase 5 tests: hero section with image, navigation/loading, 404 not-found page
+**Vitest (158 tests)** — fast, no browser needed:
+- Unit tests: budget calculator, schemas, planner utils, normalize-itinerary, city-colors
+- Hook tests: useFavorites, useDayComments
+- API route tests: all 6 API routes with mocked repositories
+
+**Playwright (34 tests)** — headed Chrome browser:
+- Integration (33 tests): navigation, i18n, trip selector, attractions, restaurants, planner, map, budget, hero, 404
+- E2E (1 test): AI trip creation + verification of all resources (restaurants, itinerary, budget) + deletion
 
 ## Environment Variables
 
@@ -152,9 +154,12 @@ npx playwright test --headed --grep "attractions"  # Run specific tests
 ## Scripts
 
 ```bash
-npm run dev       # Development server (http://localhost:3000)
-npm run build     # Production build
-npm run lint      # ESLint
+npm run dev              # Development server (http://localhost:3000)
+npm run build            # Production build
+npm run lint             # ESLint
+npm run test:unit        # Vitest tests (158 tests)
+npm run test:integration # Playwright integration tests (33 tests)
+npm run test:e2e         # Playwright E2E tests (1 test)
 ```
 
 ## License
