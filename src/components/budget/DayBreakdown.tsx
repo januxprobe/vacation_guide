@@ -2,13 +2,14 @@
 
 import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
-import { ChevronDown, Landmark, Bus, UtensilsCrossed } from 'lucide-react';
+import { ChevronDown, Landmark, Bus, UtensilsCrossed, Eye, EyeOff } from 'lucide-react';
 import type { DayBudget } from '@/types';
 import { useTripConfig } from '@/config/trip-context';
 import { findCity, hexToRgba } from '@/lib/city-colors';
 
 interface DayBreakdownProps {
   days: DayBudget[];
+  onToggleExcluded?: (attractionId: string) => void;
 }
 
 const categoryIcon: Record<string, typeof Landmark> = {
@@ -17,7 +18,7 @@ const categoryIcon: Record<string, typeof Landmark> = {
   meals: UtensilsCrossed,
 };
 
-export default function DayBreakdown({ days }: DayBreakdownProps) {
+export default function DayBreakdown({ days, onToggleExcluded }: DayBreakdownProps) {
   const t = useTranslations();
   const locale = useLocale();
   const config = useTripConfig();
@@ -97,29 +98,47 @@ export default function DayBreakdown({ days }: DayBreakdownProps) {
                           </span>
                         </div>
                         <div className="space-y-1 ml-5.5">
-                          {catItems.map((item, idx) => (
-                            <div key={idx} className="flex items-center justify-between text-sm">
-                              <span className="text-gray-600">
-                                {item.name[locale as 'nl' | 'en']}
-                              </span>
-                              <div className="flex items-center gap-2">
-                                <span className="text-xs text-gray-400">
-                                  €{item.unitPrice.toFixed(2)} {t('budget.unitPrice')}
-                                  {item.discountedPrice != null && (
-                                    <span
-                                      className="ml-1"
-                                      style={{ color: hexToRgba(cityColor, 0.8) }}
+                          {catItems.map((item, idx) => {
+                            const isExcluded = item.excluded;
+                            return (
+                              <div key={idx} className={`flex items-center justify-between text-sm ${isExcluded ? 'opacity-40' : ''}`}>
+                                <div className="flex items-center gap-2">
+                                  {onToggleExcluded && item.attractionId && (
+                                    <button
+                                      onClick={() => onToggleExcluded(item.attractionId!)}
+                                      className="text-gray-400 hover:text-gray-600 transition-colors"
+                                      title={t('budget.toggleActivity')}
                                     >
-                                      / €{item.discountedPrice.toFixed(2)}
-                                    </span>
+                                      {isExcluded ? (
+                                        <EyeOff className="w-3.5 h-3.5" />
+                                      ) : (
+                                        <Eye className="w-3.5 h-3.5" />
+                                      )}
+                                    </button>
                                   )}
-                                </span>
-                                <span className="font-medium text-gray-700 min-w-[60px] text-right">
-                                  €{item.total.toFixed(2)}
-                                </span>
+                                  <span className={`text-gray-600 ${isExcluded ? 'line-through' : ''}`}>
+                                    {item.name[locale as 'nl' | 'en']}
+                                  </span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <span className="text-xs text-gray-400">
+                                    €{item.unitPrice.toFixed(2)} {t('budget.unitPrice')}
+                                    {item.discountedPrice != null && (
+                                      <span
+                                        className="ml-1"
+                                        style={{ color: hexToRgba(cityColor, 0.8) }}
+                                      >
+                                        / €{item.discountedPrice.toFixed(2)}
+                                      </span>
+                                    )}
+                                  </span>
+                                  <span className={`font-medium min-w-[60px] text-right ${isExcluded ? 'text-gray-400 line-through' : 'text-gray-700'}`}>
+                                    €{item.total.toFixed(2)}
+                                  </span>
+                                </div>
                               </div>
-                            </div>
-                          ))}
+                            );
+                          })}
                         </div>
                       </div>
                     );

@@ -5,12 +5,15 @@ import { useTranslations, useLocale } from 'next-intl';
 import type { Restaurant } from '@/types';
 import { useTripConfig } from '@/config/trip-context';
 import { findCity, getCityBadgeStyle, getCityColor } from '@/lib/city-colors';
-import { MapPin, ExternalLink, Trash2, Loader2 } from 'lucide-react';
+import { MapPin, ExternalLink, Trash2, Loader2, ChevronDown, ChevronUp } from 'lucide-react';
+import FavoriteButton from '@/components/shared/FavoriteButton';
 
 interface RestaurantCardProps {
   restaurant: Restaurant;
   canRemove?: boolean;
   onRemove?: (id: string) => void;
+  isFavorite?: boolean;
+  onToggleFavorite?: () => void;
 }
 
 const priceLabels: Record<string, string> = {
@@ -20,7 +23,7 @@ const priceLabels: Record<string, string> = {
   '€€€€': 'fineDining',
 };
 
-export default function RestaurantCard({ restaurant, canRemove, onRemove }: RestaurantCardProps) {
+export default function RestaurantCard({ restaurant, canRemove, onRemove, isFavorite, onToggleFavorite }: RestaurantCardProps) {
   const t = useTranslations();
   const locale = useLocale() as 'nl' | 'en';
   const config = useTripConfig();
@@ -29,6 +32,9 @@ export default function RestaurantCard({ restaurant, canRemove, onRemove }: Rest
 
   const [confirming, setConfirming] = useState(false);
   const [removing, setRemoving] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+
+  const hasExpandableContent = !!restaurant.description || !!restaurant.specialties;
 
   const handleRemove = async () => {
     if (!confirming) {
@@ -94,8 +100,16 @@ export default function RestaurantCard({ restaurant, canRemove, onRemove }: Rest
           )}
         </div>
 
-        {/* Name */}
-        <h3 className="text-lg font-bold text-gray-900 mb-1">{restaurant.name}</h3>
+        {/* Name + Favorite */}
+        <div className="flex items-start justify-between gap-1">
+          <h3 className="text-lg font-bold text-gray-900 mb-1">{restaurant.name}</h3>
+          {onToggleFavorite && (
+            <FavoriteButton
+              isFavorite={isFavorite ?? false}
+              onToggle={onToggleFavorite}
+            />
+          )}
+        </div>
 
         {/* Neighborhood */}
         <div className="flex items-center gap-1.5 text-sm text-gray-500 mb-3">
@@ -103,19 +117,42 @@ export default function RestaurantCard({ restaurant, canRemove, onRemove }: Rest
           <span>{restaurant.neighborhood}</span>
         </div>
 
-        {/* Description */}
+        {/* Description - collapsed: 2-line clamp, expanded: full */}
         {restaurant.description && (
-          <p className="text-sm text-gray-600 mb-3">{restaurant.description[locale]}</p>
+          <p className={`text-sm text-gray-600 mb-3 ${!expanded ? 'line-clamp-2' : ''}`}>
+            {restaurant.description[locale]}
+          </p>
         )}
 
-        {/* Specialties */}
-        {restaurant.specialties && (
+        {/* Expanded content: specialties */}
+        {expanded && restaurant.specialties && (
           <div className="mb-3">
             <span className="text-xs font-semibold text-gray-500 uppercase">
               {t('restaurants.specialties')}
             </span>
             <p className="text-sm text-gray-700 mt-0.5">{restaurant.specialties[locale]}</p>
           </div>
+        )}
+
+        {/* Show more/less toggle */}
+        {hasExpandableContent && (
+          <button
+            onClick={() => setExpanded(!expanded)}
+            className="flex items-center gap-1 text-xs font-medium mb-3 transition-colors"
+            style={{ color: cityColor }}
+          >
+            {expanded ? (
+              <>
+                {t('restaurants.showLess')}
+                <ChevronUp className="w-3 h-3" />
+              </>
+            ) : (
+              <>
+                {t('restaurants.showMore')}
+                <ChevronDown className="w-3 h-3" />
+              </>
+            )}
+          </button>
         )}
 
         {/* Cuisine tags */}

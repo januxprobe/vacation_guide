@@ -25,6 +25,7 @@ interface PlannerWrapperProps {
   restaurants: Restaurant[];
   locale: string;
   tripSlug: string;
+  isDynamic?: boolean;
 }
 
 export default function PlannerWrapper(props: PlannerWrapperProps) {

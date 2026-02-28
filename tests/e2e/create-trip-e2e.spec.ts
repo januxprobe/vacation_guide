@@ -29,7 +29,7 @@ async function sendAndWaitForResponse(page: import('@playwright/test').Page, tex
   await page.waitForTimeout(1500);
 }
 
-test.describe('Create & Delete Trip Flow', () => {
+test.describe('Create & Delete Trip (E2E)', () => {
   test.use({
     viewport: { width: 1280, height: 800 },
   });
@@ -77,12 +77,10 @@ test.describe('Create & Delete Trip Flow', () => {
     // Accept visible attraction suggestions one at a time
     let accepted = 0;
     for (let attempt = 0; attempt < 10; attempt++) {
-      // Find a visible, enabled "Accepteren" button
       const btn = page.locator('button:has-text("Accepteren"):not([disabled])').first();
       const visible = await btn.isVisible().catch(() => false);
       if (!visible) break;
 
-      // Scroll into view and click
       await btn.scrollIntoViewIfNeeded();
       await btn.click();
       accepted++;
@@ -92,7 +90,7 @@ test.describe('Create & Delete Trip Flow', () => {
     console.log(`✓ Accepted ${accepted} attractions total`);
     await page.waitForTimeout(2000);
 
-    // Step 4: Create the trip (finalize API extracts everything from conversation)
+    // Step 4: Create the trip
     console.log('\n=== Step 4: Create Trip ===');
     const createButton = page.locator('button:has-text("Reis Aanmaken")');
     await expect(createButton.first()).toBeVisible({ timeout: 10000 });
@@ -108,7 +106,6 @@ test.describe('Create & Delete Trip Flow', () => {
     } catch {
       console.log('⚠ No redirect detected');
       console.log(`  Current URL: ${page.url()}`);
-      // Check if there's an error message in the chat
       const lastMessages = await page.locator('.rounded-2xl').allTextContents();
       const lastMsg = lastMessages[lastMessages.length - 1] || '';
       if (lastMsg.includes('Details:')) {
@@ -130,7 +127,6 @@ test.describe('Create & Delete Trip Flow', () => {
     await expect(page.locator('h1')).toContainText('Restaurants');
     console.log('✓ Restaurants page loaded');
 
-    // Check that at least some restaurants exist (AI generates 3-4 per city)
     const restaurantCounter = page.getByText(/\d+ \/ \d+/);
     await expect(restaurantCounter).toBeVisible({ timeout: 5000 });
     const counterText = await restaurantCounter.textContent();
@@ -139,25 +135,20 @@ test.describe('Create & Delete Trip Flow', () => {
     console.log(`✓ Restaurants generated: ${restaurantCount}`);
     expect(restaurantCount).toBeGreaterThan(0);
 
-    // Verify search UI is visible (dynamic trip)
     await expect(page.getByText('Restaurants Zoeken')).toBeVisible({ timeout: 3000 });
     console.log('✓ Restaurant search UI visible (dynamic trip)');
 
-    // Verify remove buttons are visible (dynamic trip)
     const trashButtons = page.locator('.grid button:has(svg.lucide-trash-2)');
     const trashCount = await trashButtons.count();
     console.log(`✓ Remove buttons visible: ${trashCount}`);
     expect(trashCount).toBeGreaterThan(0);
 
-    // Step 6: Verify planner page loads (itinerary generation is best-effort)
+    // Step 6: Verify planner page loads
     console.log('\n=== Step 6: Verify planner page ===');
     await page.goto(`${BASE_URL}/nl/${tripSlug}/planner`);
     await page.waitForTimeout(3000);
 
-    // Itinerary generation depends on Gemini producing perfectly valid data,
-    // which may not always happen. Check if it worked, but don't fail the test.
-    const noItinerary = page.getByText('Geen reisplanning beschikbaar');
-    const hasNoItinerary = await noItinerary.isVisible().catch(() => false);
+    const hasNoItinerary = await page.getByText('Geen reisplanning beschikbaar').isVisible().catch(() => false);
     if (hasNoItinerary) {
       console.log('⚠ Itinerary not generated (Gemini validation fallback - expected occasionally)');
     } else {
@@ -174,8 +165,7 @@ test.describe('Create & Delete Trip Flow', () => {
     await expect(page.locator('h1')).toContainText('Budget Calculator');
     console.log('✓ Budget page loaded');
 
-    const noBudget = page.getByText('Geen budget beschikbaar');
-    const hasBudgetData = !(await noBudget.isVisible().catch(() => false));
+    const hasBudgetData = !(await page.getByText('Geen budget beschikbaar').isVisible().catch(() => false));
     console.log(`✓ Budget has data: ${hasBudgetData}`);
 
     // Step 8: Verify on trip selector

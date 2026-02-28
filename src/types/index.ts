@@ -137,6 +137,8 @@ export interface BudgetItem {
   discountedPrice?: number;
   quantity: number;
   total: number;
+  excluded?: boolean;
+  attractionId?: string;
 }
 
 export interface DayBudget {
@@ -156,6 +158,14 @@ export interface BudgetSummary {
   subtotalByCategory: Record<string, number>;
   total: number;
   perPerson: number;
+}
+
+export interface DayComment {
+  id: string;
+  author: string;
+  text: string;
+  timestamp: number;
+  dayNumber: number;
 }
 
 export interface CityInfo {

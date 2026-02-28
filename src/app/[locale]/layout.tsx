@@ -3,6 +3,7 @@ import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import { Geist, Geist_Mono } from 'next/font/google';
+import { Toaster } from 'sonner';
 import '../globals.css';
 
 const geistSans = Geist({
@@ -70,6 +71,7 @@ export default async function LocaleLayout({
           <div className="min-h-screen flex flex-col">
             {children}
           </div>
+          <Toaster position="bottom-right" richColors />
         </NextIntlClientProvider>
       </body>
     </html>

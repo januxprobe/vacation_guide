@@ -17,7 +17,7 @@ import {
 import { renderAttractionPopup, renderRestaurantPopup } from '@/components/map/MapPopup';
 import MapRoute from '@/components/map/MapRoute';
 import MapLegend from '@/components/map/MapLegend';
-import { useWalkingRoute } from '@/hooks/useOsrmRoute';
+import { useWalkingRoute, type WalkingRouteResult } from '@/hooks/useOsrmRoute';
 
 interface PlannerMapProps {
   day: ItineraryDay;
@@ -29,6 +29,7 @@ interface PlannerMapProps {
   onMarkerClick: (attractionId: string) => void;
   locale: string;
   tripSlug: string;
+  onRouteResult?: (legDurations: number[]) => void;
 }
 
 /** Child component that can call useMap() to get imperative handle on the map */
@@ -80,6 +81,7 @@ export default function PlannerMap({
   onMarkerClick,
   locale,
   tripSlug,
+  onRouteResult,
 }: PlannerMapProps) {
   const t = useTranslations();
   const currentLocale = useLocale() as 'nl' | 'en';
@@ -108,8 +110,15 @@ export default function PlannerMap({
     return dayAttractions.map((item) => item.attraction.coordinates);
   }, [showRoute, dayAttractions]);
 
-  // Fetch OSRM walking route
-  const walkingRoute = useWalkingRoute(routeCoords, showRoute && routeCoords.length >= 2);
+  // Fetch walking route (Valhalla)
+  const walkingRouteResult = useWalkingRoute(routeCoords, showRoute && routeCoords.length >= 2);
+
+  // Notify parent of route durations
+  useEffect(() => {
+    if (walkingRouteResult && onRouteResult) {
+      onRouteResult(walkingRouteResult.legDurations);
+    }
+  }, [walkingRouteResult, onRouteResult]);
 
   // Meals with coordinates
   const mealsWithCoords = useMemo(() => {
@@ -245,7 +254,7 @@ export default function PlannerMap({
           <MapRoute
             coordinates={routeCoords}
             color={cityColor}
-            routeGeometry={walkingRoute}
+            routeGeometry={walkingRouteResult?.geometry ?? null}
           />
         )}
       </MapContainer>

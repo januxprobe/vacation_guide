@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import type { Itinerary, Attraction } from '@/types';
 import { useTripConfig } from '@/config/trip-context';
@@ -27,6 +27,19 @@ export default function BudgetCalculator({ itinerary, attractions }: BudgetCalcu
 
   const [counts, setCounts] = useState(defaultCounts);
   const [applyDiscount, setApplyDiscount] = useState(true);
+  const [excludedActivities, setExcludedActivities] = useState<Set<string>>(new Set());
+
+  const toggleExcluded = useCallback((attractionId: string) => {
+    setExcludedActivities((prev) => {
+      const next = new Set(prev);
+      if (next.has(attractionId)) {
+        next.delete(attractionId);
+      } else {
+        next.add(attractionId);
+      }
+      return next;
+    });
+  }, []);
 
   const summary = calculateBudget({
     itinerary,
@@ -36,6 +49,7 @@ export default function BudgetCalculator({ itinerary, attractions }: BudgetCalcu
       travelerCounts: counts,
       applyStudentDiscount: applyDiscount,
     },
+    excludedActivityIds: excludedActivities,
   });
 
   const totalTravelers = Object.values(counts).reduce((s, c) => s + c, 0);
@@ -66,6 +80,14 @@ export default function BudgetCalculator({ itinerary, attractions }: BudgetCalcu
             </span>
           </label>
         </div>
+
+        {excludedActivities.size > 0 && (
+          <div className="bg-amber-50 rounded-lg border border-amber-200 p-4">
+            <p className="text-xs text-amber-700">
+              {t('budget.excluded', { count: excludedActivities.size })}
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Right: Results */}
@@ -83,7 +105,10 @@ export default function BudgetCalculator({ itinerary, attractions }: BudgetCalcu
           />
         </div>
 
-        <DayBreakdown days={summary.days} />
+        <DayBreakdown
+          days={summary.days}
+          onToggleExcluded={toggleExcluded}
+        />
       </div>
     </div>
   );

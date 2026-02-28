@@ -4,6 +4,12 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 
 type Coord = { lat: number; lng: number };
 
+export interface WalkingRouteResult {
+  geometry: [number, number][];
+  totalDuration: number; // seconds
+  legDurations: number[]; // seconds per leg
+}
+
 /**
  * Decode an encoded polyline string (Valhalla uses precision 6).
  */
@@ -39,8 +45,8 @@ function decodePolyline(encoded: string, precision = 6): [number, number][] {
  * Caches results by coordinate hash, falls back to null on error.
  */
 export function useWalkingRoute(coordinates: Coord[], enabled: boolean) {
-  const [routeGeometry, setRouteGeometry] = useState<[number, number][] | null>(null);
-  const cacheRef = useRef<Map<string, [number, number][]>>(new Map());
+  const [routeResult, setRouteResult] = useState<WalkingRouteResult | null>(null);
+  const cacheRef = useRef<Map<string, WalkingRouteResult>>(new Map());
   const abortRef = useRef<AbortController | null>(null);
 
   const coordsKey = useCallback((coords: Coord[]) => {
@@ -49,7 +55,7 @@ export function useWalkingRoute(coordinates: Coord[], enabled: boolean) {
 
   useEffect(() => {
     if (!enabled || coordinates.length < 2) {
-      setRouteGeometry(null);
+      setRouteResult(null);
       return;
     }
 
@@ -58,7 +64,7 @@ export function useWalkingRoute(coordinates: Coord[], enabled: boolean) {
     // Check cache
     const cached = cacheRef.current.get(key);
     if (cached) {
-      setRouteGeometry(cached);
+      setRouteResult(cached);
       return;
     }
 
@@ -87,7 +93,15 @@ export function useWalkingRoute(coordinates: Coord[], enabled: boolean) {
         if (data.trip?.legs) {
           // Combine shapes from all legs into one polyline
           const allPoints: [number, number][] = [];
+          const legDurations: number[] = [];
+          let totalDuration = 0;
+
           for (const leg of data.trip.legs) {
+            // Extract duration from leg summary
+            const legTime = leg.summary?.time ?? 0;
+            legDurations.push(legTime);
+            totalDuration += legTime;
+
             if (leg.shape) {
               const points = decodePolyline(leg.shape);
               // Skip first point of subsequent legs (it's the same as last of previous)
@@ -99,18 +113,23 @@ export function useWalkingRoute(coordinates: Coord[], enabled: boolean) {
             }
           }
           if (allPoints.length >= 2) {
-            cacheRef.current.set(key, allPoints);
-            setRouteGeometry(allPoints);
+            const result: WalkingRouteResult = {
+              geometry: allPoints,
+              totalDuration,
+              legDurations,
+            };
+            cacheRef.current.set(key, result);
+            setRouteResult(result);
           } else {
-            setRouteGeometry(null);
+            setRouteResult(null);
           }
         } else {
-          setRouteGeometry(null);
+          setRouteResult(null);
         }
       })
       .catch((err) => {
         if (err.name !== 'AbortError') {
-          setRouteGeometry(null);
+          setRouteResult(null);
         }
       });
 
@@ -119,5 +138,5 @@ export function useWalkingRoute(coordinates: Coord[], enabled: boolean) {
     };
   }, [coordinates, enabled, coordsKey]);
 
-  return routeGeometry;
+  return routeResult;
 }

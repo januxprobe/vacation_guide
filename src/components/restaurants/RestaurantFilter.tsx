@@ -9,6 +9,9 @@ interface RestaurantFilterProps {
   selectedPrice: string;
   onCityChange: (city: string) => void;
   onPriceChange: (price: string) => void;
+  availableCuisines?: string[];
+  selectedCuisine?: string;
+  onCuisineChange?: (cuisine: string) => void;
 }
 
 const priceRanges = ['all', '€', '€€', '€€€', '€€€€'] as const;
@@ -24,6 +27,9 @@ export default function RestaurantFilter({
   selectedPrice,
   onCityChange,
   onPriceChange,
+  availableCuisines,
+  selectedCuisine,
+  onCuisineChange,
 }: RestaurantFilterProps) {
   const t = useTranslations();
   const locale = useLocale() as 'nl' | 'en';
@@ -89,6 +95,40 @@ export default function RestaurantFilter({
           ))}
         </div>
       </div>
+
+      {/* Cuisine filter */}
+      {availableCuisines && availableCuisines.length > 0 && onCuisineChange && (
+        <div>
+          <label className="text-sm font-medium text-gray-700 mb-2 block">
+            {t('restaurants.filterByCuisine')}
+          </label>
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => onCuisineChange('all')}
+              className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                selectedCuisine === 'all'
+                  ? 'bg-gray-800 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              {t('restaurants.allCuisines')}
+            </button>
+            {availableCuisines.map((cuisine) => (
+              <button
+                key={cuisine}
+                onClick={() => onCuisineChange(cuisine)}
+                className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                  selectedCuisine === cuisine
+                    ? 'bg-gray-800 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                {cuisine}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

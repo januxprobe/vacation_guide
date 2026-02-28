@@ -202,3 +202,31 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Print styles */
+.print-only {
+  display: none;
+}
+
+@media print {
+  .print-only {
+    display: block !important;
+  }
+
+  /* Hide non-print elements */
+  header, nav,
+  .skip-to-content,
+  [data-sonner-toaster] {
+    display: none !important;
+  }
+
+  /* Page breaks between days */
+  .print-day {
+    page-break-inside: avoid;
+  }
+
+  body {
+    background: white !important;
+    font-size: 12pt !important;
+  }
+}

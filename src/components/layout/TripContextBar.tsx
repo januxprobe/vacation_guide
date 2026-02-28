@@ -6,6 +6,7 @@ import { useTripConfig } from '@/config/trip-context';
 import { hexToRgba } from '@/lib/city-colors';
 import { Menu, X, ArrowLeft } from 'lucide-react';
 import { useState } from 'react';
+import ShareButton from '@/components/shared/ShareButton';
 
 export default function TripContextBar() {
   const t = useTranslations();
@@ -76,6 +77,11 @@ export default function TripContextBar() {
                 {item.label}
               </Link>
             ))}
+            <ShareButton
+              title={tripName}
+              iconOnly
+              className="p-1.5 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-200 transition-colors ml-1"
+            />
           </nav>
 
           {/* Mobile menu button */}

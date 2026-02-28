@@ -14,10 +14,11 @@ interface BudgetInput {
   attractions: Attraction[];
   travelerGroups: TravelerGroup[];
   config: BudgetConfig;
+  excludedActivityIds?: Set<string>;
 }
 
 export function calculateBudget(input: BudgetInput): BudgetSummary {
-  const { itinerary, attractions, travelerGroups, config } = input;
+  const { itinerary, attractions, travelerGroups, config, excludedActivityIds } = input;
   const items: BudgetItem[] = [];
 
   // Build attraction lookup
@@ -59,13 +60,15 @@ export function calculateBudget(input: BudgetInput): BudgetSummary {
       const attraction = attractionMap[activity.attractionId];
       if (!attraction) continue;
 
+      const isExcluded = excludedActivityIds?.has(attraction.id) ?? false;
+
       const adultPrice = attraction.pricing.adult;
       const studentPrice =
         config.applyStudentDiscount && attraction.pricing.student != null
           ? attraction.pricing.student
           : adultPrice;
 
-      const total = adultPrice * nonStudentCount + studentPrice * studentCount;
+      const total = isExcluded ? 0 : adultPrice * nonStudentCount + studentPrice * studentCount;
 
       const name: LocalizedString = {
         nl: attraction.name,
@@ -79,6 +82,8 @@ export function calculateBudget(input: BudgetInput): BudgetSummary {
         discountedPrice: studentPrice < adultPrice ? studentPrice : undefined,
         quantity: totalTravelers,
         total,
+        excluded: isExcluded,
+        attractionId: attraction.id,
       };
 
       items.push(item);

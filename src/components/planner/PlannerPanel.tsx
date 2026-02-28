@@ -7,12 +7,17 @@ import { findCity } from '@/lib/city-colors';
 import { ExternalLink } from 'lucide-react';
 import type { ItineraryDay, Attraction } from '@/types';
 import PlannerTimeline from './PlannerTimeline';
+import DayComments from './DayComments';
 
 interface PlannerPanelProps {
   day: ItineraryDay;
   attractions: Attraction[];
   highlightedActivityId: string | null;
   onActivityClick: (attractionId: string) => void;
+  legDurations?: number[];
+  tripSlug: string;
+  canReorder?: boolean;
+  onReorder?: (oldIndex: number, newIndex: number) => void;
 }
 
 function buildGoogleMapsUrl(attractions: Attraction[], activityIds: string[]): string | null {
@@ -39,6 +44,10 @@ export default function PlannerPanel({
   attractions,
   highlightedActivityId,
   onActivityClick,
+  legDurations,
+  tripSlug,
+  canReorder,
+  onReorder,
 }: PlannerPanelProps) {
   const t = useTranslations();
   const locale = useLocale() as 'nl' | 'en';
@@ -94,7 +103,7 @@ export default function PlannerPanel({
         </div>
       </div>
 
-      {/* Scrollable timeline */}
+      {/* Scrollable timeline + comments */}
       <div className="flex-1 overflow-y-auto px-4 py-3">
         <PlannerTimeline
           activities={day.activities}
@@ -104,6 +113,14 @@ export default function PlannerPanel({
           highlightedActivityId={highlightedActivityId}
           onActivityClick={onActivityClick}
           activityRefs={activityRefs}
+          legDurations={legDurations}
+          canReorder={canReorder}
+          onReorder={onReorder}
+        />
+
+        <DayComments
+          tripSlug={tripSlug}
+          dayNumber={day.dayNumber}
         />
       </div>
     </div>

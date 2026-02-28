@@ -186,13 +186,36 @@ vacation_guide/
 │   ├── images/{cities,attractions}/     # Static images
 │   └── icons/markers/                   # Custom map markers
 ├── tests/
-│   ├── visual-test.spec.ts             # Core visual tests (navigation, i18n, mobile, trip selector)
-│   ├── attractions-test.spec.ts        # Attractions feature tests (list, detail, filters)
-│   ├── create-trip-test.spec.ts        # AI trip builder E2E test (create + delete)
-│   ├── planner-test.spec.ts           # Planner split-view tests (load, day sync, mobile toggle)
-│   ├── phase3-test.spec.ts            # Planner panel + restaurants + budget tests
-│   ├── phase4-test.spec.ts            # Planner map tests (markers, route, restaurants)
-│   └── phase5-test.spec.ts            # Phase 5 tests (hero section, navigation, 404 page)
+│   ├── setup.ts                       # Vitest setup (jest-dom matchers)
+│   ├── unit/                          # Pure function tests (Vitest)
+│   │   ├── budget-calculator.test.ts  # Budget calculation logic (13 tests)
+│   │   ├── schemas.test.ts           # Zod schema validation (10 tests)
+│   │   ├── planner-utils.test.ts     # Time parsing/formatting (17 tests)
+│   │   ├── normalize-itinerary.test.ts # AI itinerary normalization (37 tests)
+│   │   └── city-colors.test.ts       # Color utility functions (16 tests)
+│   ├── hooks/                         # React hook tests (Vitest)
+│   │   ├── useFavorites.test.ts      # Favorites hook (8 tests)
+│   │   └── useDayComments.test.ts    # Day comments hook (9 tests)
+│   ├── api/                           # API route handler tests (Vitest)
+│   │   ├── helpers.ts                 # Shared mocks & fixtures
+│   │   ├── trips.test.ts             # GET/POST /api/trips (7 tests)
+│   │   ├── trips-slug.test.ts        # GET/DELETE /api/trips/[slug] (6 tests)
+│   │   ├── attractions.test.ts       # POST attractions + enum normalization (8 tests)
+│   │   ├── restaurants.test.ts       # POST/PUT/DELETE restaurants (13 tests)
+│   │   ├── itinerary.test.ts         # POST itinerary + normalization (6 tests)
+│   │   └── comments.test.ts          # GET/POST/DELETE comments (8 tests)
+│   ├── integration/                   # Browser tests, local data (Playwright)
+│   │   ├── navigation-i18n.spec.ts   # NL navigation, language switching, mobile, HTML structure
+│   │   ├── trip-selector.spec.ts     # Trip selector homepage
+│   │   ├── trip-homepage.spec.ts     # Hero section, navigation, share button
+│   │   ├── attractions.spec.ts       # List, filters, detail, search, sort, favorites
+│   │   ├── restaurants.spec.ts       # Filters, search, cuisine, expand/collapse
+│   │   ├── planner.spec.ts           # Split view, day sync, mobile, panel, comments
+│   │   ├── planner-map.spec.ts       # Map markers, route toggle, restaurant toggle
+│   │   ├── budget.spec.ts            # Calculator, what-if mode
+│   │   └── not-found.spec.ts         # 404 page (NL + EN)
+│   └── e2e/                           # Browser tests, live APIs (Playwright)
+│       └── create-trip-e2e.spec.ts    # AI trip creation + deletion (uses live Gemini API)
 ├── .env.example                         # Environment variable template
 ├── middleware.ts                        # next-intl locale detection
 ├── next.config.ts                       # Next.js config (standalone + i18n)
@@ -318,26 +341,28 @@ cp .env.example .env.local
 
 ### Commands
 ```bash
-npm run dev          # Start dev server (http://localhost:3000)
-npm run build        # Production build
-npm run lint         # ESLint
+npm run dev              # Start dev server (http://localhost:3000)
+npm run build            # Production build
+npm run lint             # ESLint
 
 # Testing
-npx playwright test --headed              # Run all tests (visible browser)
-npx playwright test --headed --grep "X"   # Run specific test
+npm run test:unit        # Run all Vitest tests (158 tests)
+npm run test:unit:watch  # Vitest in watch mode
+npm run test:integration # Playwright integration tests (33 tests, headed)
+npm run test:e2e         # Playwright E2E tests (1 test, headed, 10min timeout)
+npm run test:playwright  # All Playwright tests (headed)
 ```
 
 ### Testing Strategy
-- Playwright tests in headed mode (visible Chrome browser)
-- After any changes, run `npx playwright test --headed` to verify
-- **23 tests total:**
-  - 5 core: NL navigation, language switching, mobile, HTML structure, trip selector
-  - 4 attractions: list/filters, detail page, English mode, category filter
-  - 1 E2E: AI trip creation + verify restaurants/itinerary/budget generated + search UI visible + deletion (uses live Gemini API)
-  - 3 planner: split-view load, day sync, mobile toggle
-  - 4 phase 3: planner panel (NL + EN), restaurant filters, budget calculator
-  - 3 phase 4: planner map markers + day switching, route polyline toggle, restaurant toggle
-  - 3 phase 5: hero section with image, navigation/loading, 404 not-found page
+
+**Vitest (158 tests)** — fast, no browser needed:
+- **Unit tests** (`tests/unit/`): budget calculator, schemas, planner utils, normalize-itinerary, city-colors
+- **Hook tests** (`tests/hooks/`): useFavorites, useDayComments
+- **API route tests** (`tests/api/`): all 6 API routes with mocked repositories
+
+**Playwright (34 tests)** — headed Chrome browser:
+- **Integration** (`tests/integration/`, 33 tests): navigation, i18n, trip selector, attractions (list/detail/filters/search/sort/favorites), restaurants (filters/search/cuisine/expand), planner (split-view/day-sync/mobile/panel/comments/walking-gaps), map (markers/route/restaurants), budget (calculator/what-if), hero, 404
+- **E2E** (`tests/e2e/`, 1 test): AI trip creation + deletion (uses live Gemini API, 10min timeout)
 
 ### Adding shadcn/ui Components
 ```bash

@@ -15,7 +15,11 @@ export default async function PlannerPage({ params }: Props) {
 
   if (!trip) notFound();
 
-  const tripDataRepo = getTripDataRepository();
+  const [isProtected, tripDataRepo] = await Promise.all([
+    tripRepo.isProtected(tripSlug),
+    Promise.resolve(getTripDataRepository()),
+  ]);
+
   const [attractions, itinerary, restaurants] = await Promise.all([
     tripDataRepo.getAllAttractions(tripSlug),
     tripDataRepo.getItinerary(tripSlug),
@@ -37,6 +41,7 @@ export default async function PlannerPage({ params }: Props) {
       restaurants={restaurants}
       locale={locale}
       tripSlug={tripSlug}
+      isDynamic={!isProtected}
     />
   );
 }

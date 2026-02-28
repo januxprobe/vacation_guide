@@ -5,6 +5,7 @@ import { Link } from '@/i18n/routing';
 import { getTripRepository } from '@/lib/repositories';
 import { hexToRgba } from '@/lib/city-colors';
 import { MapPin, Calendar, Euro, Navigation } from 'lucide-react';
+import ShareButton from '@/components/shared/ShareButton';
 
 type Props = {
   params: Promise<{ locale: string; tripSlug: string }>;
@@ -83,13 +84,19 @@ export default async function TripHomePage({ params }: Props) {
               <p className="text-lg sm:text-xl text-white/90 mb-8 max-w-2xl drop-shadow">
                 {t('home.hero.subtitle')}
               </p>
-              <Link
-                href={`${prefix}/planner`}
-                className="inline-block text-white px-8 py-3 rounded-lg font-semibold transition-opacity hover:opacity-90 shadow-lg"
-                style={{ backgroundColor: primaryColor }}
-              >
-                {t('home.hero.cta')}
-              </Link>
+              <div className="flex items-center gap-3 justify-center">
+                <Link
+                  href={`${prefix}/planner`}
+                  className="inline-block text-white px-8 py-3 rounded-lg font-semibold transition-opacity hover:opacity-90 shadow-lg"
+                  style={{ backgroundColor: primaryColor }}
+                >
+                  {t('home.hero.cta')}
+                </Link>
+                <ShareButton
+                  title={trip.name[loc]}
+                  className="flex items-center gap-1.5 px-4 py-3 rounded-lg text-sm font-medium text-white/90 hover:text-white bg-white/20 hover:bg-white/30 transition-colors"
+                />
+              </div>
             </div>
           </>
         ) : (
@@ -100,13 +107,16 @@ export default async function TripHomePage({ params }: Props) {
             <p className="text-lg sm:text-xl text-gray-600 mb-8">
               {t('home.hero.subtitle')}
             </p>
-            <Link
-              href={`${prefix}/planner`}
-              className="inline-block text-white px-8 py-3 rounded-lg font-semibold transition-opacity hover:opacity-90"
-              style={{ backgroundColor: primaryColor }}
-            >
-              {t('home.hero.cta')}
-            </Link>
+            <div className="flex items-center gap-3 justify-center">
+              <Link
+                href={`${prefix}/planner`}
+                className="inline-block text-white px-8 py-3 rounded-lg font-semibold transition-opacity hover:opacity-90"
+                style={{ backgroundColor: primaryColor }}
+              >
+                {t('home.hero.cta')}
+              </Link>
+              <ShareButton title={trip.name[loc]} />
+            </div>
           </div>
         )}
       </section>

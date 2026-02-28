@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
-import type { Attraction, Itinerary, Restaurant } from '@/types';
-import { attractionSchema, itinerarySchema, restaurantsFileSchema } from '@/lib/schemas';
+import type { Attraction, Itinerary, Restaurant, DayComment } from '@/types';
+import { attractionSchema, itinerarySchema, restaurantsFileSchema, commentsFileSchema } from '@/lib/schemas';
 import type { TripDataRepository } from '../types';
 import { getTripRepository } from '../index';
 
@@ -217,5 +217,68 @@ export class JsonTripDataRepository implements TripDataRepository {
     fs.writeFileSync(filePath, JSON.stringify(itinerary, null, 2), 'utf-8');
 
     this.itineraryCache.delete(tripSlug);
+  }
+
+  // ---------- Comments ----------
+
+  private loadComments(dataDirectory: string): DayComment[] {
+    const filePath = path.join(tripsDataDir(), dataDirectory, 'comments.json');
+
+    if (!fs.existsSync(filePath)) {
+      return [];
+    }
+
+    const raw = fs.readFileSync(filePath, 'utf-8');
+    const data = JSON.parse(raw);
+    const result = commentsFileSchema.safeParse(data);
+
+    if (!result.success) {
+      console.error(`Invalid comment data in ${filePath}:`, result.error.format());
+      return [];
+    }
+
+    return result.data.comments as DayComment[];
+  }
+
+  async getComments(tripSlug: string): Promise<DayComment[]> {
+    const dataDir = await this.getDataDirectory(tripSlug);
+    return this.loadComments(dataDir);
+  }
+
+  async addComment(tripSlug: string, comment: DayComment): Promise<void> {
+    const dataDir = await this.getDataDirectory(tripSlug);
+    const filePath = path.join(tripsDataDir(), dataDir, 'comments.json');
+
+    const existing = fs.existsSync(filePath)
+      ? JSON.parse(fs.readFileSync(filePath, 'utf-8'))
+      : { comments: [] };
+
+    existing.comments.push(comment);
+    fs.writeFileSync(filePath, JSON.stringify(existing, null, 2), 'utf-8');
+  }
+
+  async deleteComment(tripSlug: string, commentId: string): Promise<boolean> {
+    const dataDir = await this.getDataDirectory(tripSlug);
+    const filePath = path.join(tripsDataDir(), dataDir, 'comments.json');
+
+    if (!fs.existsSync(filePath)) {
+      return false;
+    }
+
+    const existing = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    const filtered = existing.comments.filter(
+      (c: { id: string }) => c.id !== commentId
+    );
+
+    if (filtered.length === existing.comments.length) {
+      return false;
+    }
+
+    fs.writeFileSync(
+      filePath,
+      JSON.stringify({ comments: filtered }, null, 2),
+      'utf-8'
+    );
+    return true;
   }
 }

@@ -1,19 +1,31 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 import type { Activity, MealSuggestion, Attraction } from '@/types';
 import { ActivityCard, MealCard } from './PlannerActivityCard';
+import SortableActivityCard from './SortableActivityCard';
+import WalkingGap from './WalkingGap';
 
 type TimelineItem =
   | { type: 'activity'; data: Activity; attraction: Attraction | undefined; index: number }
   | { type: 'meal'; data: MealSuggestion };
 
-function getHour(time: string): number {
-  return parseInt(time.split(':')[0], 10);
-}
-
 function getTimePeriod(time: string): 'morning' | 'afternoon' | 'evening' {
-  const h = getHour(time);
+  const h = parseInt(time.split(':')[0], 10);
   if (h < 12) return 'morning';
   if (h < 17) return 'afternoon';
   return 'evening';
@@ -27,6 +39,9 @@ interface PlannerTimelineProps {
   highlightedActivityId: string | null;
   onActivityClick: (attractionId: string) => void;
   activityRefs: React.MutableRefObject<Map<string, HTMLDivElement>>;
+  legDurations?: number[];
+  canReorder?: boolean;
+  onReorder?: (oldIndex: number, newIndex: number) => void;
 }
 
 export default function PlannerTimeline({
@@ -37,10 +52,30 @@ export default function PlannerTimeline({
   highlightedActivityId,
   onActivityClick,
   activityRefs,
+  legDurations,
+  canReorder,
+  onReorder,
 }: PlannerTimelineProps) {
   const t = useTranslations();
 
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  );
+
   const attractionMap = new Map(attractions.map((a) => [a.id, a]));
+
+  // Build a map from activity index to walking leg duration
+  const activityLegMap = new Map<number, number>();
+  if (legDurations) {
+    const activitiesWithAttractions = activities
+      .map((a, i) => ({ index: i, attractionId: a.attractionId }))
+      .filter((a) => !!a.attractionId);
+
+    for (let i = 0; i < activitiesWithAttractions.length - 1 && i < legDurations.length; i++) {
+      activityLegMap.set(activitiesWithAttractions[i].index, legDurations[i]);
+    }
+  }
 
   // Merge activities and meals into a sorted timeline
   const items: TimelineItem[] = [
@@ -78,7 +113,75 @@ export default function PlannerTimeline({
     evening: t('planner.evening'),
   };
 
-  return (
+  // For DnD: we need sortable IDs for activities only
+  const activitySortIds = activities.map((a, i) =>
+    a.attractionId ?? `freeform-${i}`
+  );
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id || !onReorder) return;
+
+    const oldIndex = activitySortIds.indexOf(active.id as string);
+    const newIndex = activitySortIds.indexOf(over.id as string);
+    if (oldIndex !== -1 && newIndex !== -1) {
+      onReorder(oldIndex, newIndex);
+    }
+  };
+
+  const renderActivityItem = (item: TimelineItem & { type: 'activity' }, periodIndex: number) => {
+    const activityId = item.data.attractionId ?? `freeform-${periodIndex}`;
+    const walkDuration = activityLegMap.get(item.index);
+
+    if (canReorder && onReorder) {
+      return (
+        <div key={`activity-${activityId}`}>
+          <div
+            ref={(el) => {
+              if (el) activityRefs.current.set(activityId, el);
+            }}
+          >
+            <SortableActivityCard
+              id={activityId}
+              activity={item.data}
+              attraction={item.attraction}
+              index={item.index}
+              cityColor={cityColor}
+              isHighlighted={highlightedActivityId === activityId}
+              onClick={() => onActivityClick(activityId)}
+            />
+          </div>
+          {walkDuration != null && walkDuration > 0 && (
+            <WalkingGap durationSeconds={walkDuration} />
+          )}
+        </div>
+      );
+    }
+
+    return (
+      <div key={`activity-${activityId}`}>
+        <div
+          ref={(el) => {
+            if (el) activityRefs.current.set(activityId, el);
+          }}
+        >
+          <ActivityCard
+            activity={item.data}
+            attraction={item.attraction}
+            index={item.index}
+            cityColor={cityColor}
+            isHighlighted={highlightedActivityId === activityId}
+            onClick={() => onActivityClick(activityId)}
+          />
+        </div>
+        {walkDuration != null && walkDuration > 0 && (
+          <WalkingGap durationSeconds={walkDuration} />
+        )}
+      </div>
+    );
+  };
+
+  const content = (
     <div className="space-y-4">
       {(['morning', 'afternoon', 'evening'] as const).map((period) => {
         const periodItems = groups[period];
@@ -94,25 +197,7 @@ export default function PlannerTimeline({
                 if (item.type === 'meal') {
                   return <MealCard key={`meal-${item.data.type}-${item.data.time}`} meal={item.data} />;
                 }
-
-                const activityId = item.data.attractionId ?? `freeform-${i}`;
-                return (
-                  <div
-                    key={`activity-${activityId}`}
-                    ref={(el) => {
-                      if (el) activityRefs.current.set(activityId, el);
-                    }}
-                  >
-                    <ActivityCard
-                      activity={item.data}
-                      attraction={item.attraction}
-                      index={item.index}
-                      cityColor={cityColor}
-                      isHighlighted={highlightedActivityId === activityId}
-                      onClick={() => onActivityClick(activityId)}
-                    />
-                  </div>
-                );
+                return renderActivityItem(item, i);
               })}
             </div>
           </div>
@@ -120,4 +205,20 @@ export default function PlannerTimeline({
       })}
     </div>
   );
+
+  if (canReorder && onReorder) {
+    return (
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext items={activitySortIds} strategy={verticalListSortingStrategy}>
+          {content}
+        </SortableContext>
+      </DndContext>
+    );
+  }
+
+  return content;
 }

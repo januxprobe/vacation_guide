@@ -7,9 +7,12 @@ import type { Attraction } from '@/types';
 import { useTripConfig } from '@/config/trip-context';
 import { findCity, getCityBadgeStyle, getCityGradientStyle, getCityColor } from '@/lib/city-colors';
 import { Clock, MapPin, Ticket, Star } from 'lucide-react';
+import FavoriteButton from '@/components/shared/FavoriteButton';
 
 interface AttractionCardProps {
   attraction: Attraction;
+  isFavorite?: boolean;
+  onToggleFavorite?: () => void;
 }
 
 const priorityColors: Record<string, string> = {
@@ -18,7 +21,7 @@ const priorityColors: Record<string, string> = {
   optional: 'bg-gray-100 text-gray-800',
 };
 
-export default function AttractionCard({ attraction }: AttractionCardProps) {
+export default function AttractionCard({ attraction, isFavorite, onToggleFavorite }: AttractionCardProps) {
   const t = useTranslations();
   const locale = useLocale() as 'nl' | 'en';
   const config = useTripConfig();
@@ -92,10 +95,18 @@ export default function AttractionCard({ attraction }: AttractionCardProps) {
           </span>
         </div>
 
-        {/* Title */}
-        <h3 className="text-lg font-bold text-gray-900 mb-2">
-          {attraction.name}
-        </h3>
+        {/* Title + Favorite */}
+        <div className="flex items-start justify-between gap-1">
+          <h3 className="text-lg font-bold text-gray-900 mb-2">
+            {attraction.name}
+          </h3>
+          {onToggleFavorite && (
+            <FavoriteButton
+              isFavorite={isFavorite ?? false}
+              onToggle={onToggleFavorite}
+            />
+          )}
+        </div>
 
         {/* Description */}
         <p className="text-sm text-gray-600 mb-4 line-clamp-2">

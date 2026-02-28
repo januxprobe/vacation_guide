@@ -15,7 +15,15 @@
     "minutes": "minutes",
     "hours": "hours",
     "days": "days",
-    "euro": "€"
+    "euro": "€",
+    "favorite": "Add to favorites",
+    "unfavorite": "Remove from favorites",
+    "favoritesOnly": "Favorites",
+    "addedToFavorites": "Added to favorites",
+    "removedFromFavorites": "Removed from favorites",
+    "share": "Share",
+    "linkCopied": "Link copied!",
+    "shareTrip": "Share trip"
   },
   "navigation": {
     "home": "Home",
@@ -151,7 +159,15 @@
     "closeGallery": "Close gallery",
     "previousPhoto": "Previous photo",
     "nextPhoto": "Next photo",
-    "photoCounter": "{current} / {total}"
+    "photoCounter": "{current} / {total}",
+    "searchPlaceholder": "Search attractions...",
+    "sortBy": "Sort by",
+    "sortPriority": "Priority",
+    "sortPrice": "Price",
+    "sortDuration": "Duration",
+    "sortName": "Name",
+    "noResults": "No attractions found with these filters",
+    "resetFilters": "Reset filters"
   },
   "map": {
     "title": "Interactive Map",
@@ -203,7 +219,13 @@
     "removeRestaurant": "Remove",
     "confirmRemove": "Confirm?",
     "removed": "Removed",
-    "removeError": "Failed to remove restaurant"
+    "removeError": "Failed to remove restaurant",
+    "filterSearchPlaceholder": "Search restaurants...",
+    "filterByCuisine": "Filter by cuisine",
+    "allCuisines": "All cuisines",
+    "resetFilters": "Reset filters",
+    "showMore": "Show more",
+    "showLess": "Show less"
   },
   "error": {
     "title": "Something went wrong",
@@ -225,7 +247,20 @@
     "mapView": "Map",
     "listView": "Itinerary",
     "noItinerary": "No itinerary available for this trip",
-    "activity": "Activity"
+    "activity": "Activity",
+    "walkingTime": "{minutes} min walk",
+    "comments": "Comments",
+    "commentCount": "{count} comments",
+    "addComment": "Add comment",
+    "commentName": "Your name",
+    "commentPlaceholder": "Write a comment...",
+    "noComments": "No comments yet",
+    "deleteComment": "Delete",
+    "reorderHint": "Drag activities to reorder",
+    "saved": "Saved",
+    "saveError": "Failed to save",
+    "print": "Print",
+    "printTitle": "Travel Itinerary"
   },
   "budget": {
     "title": "Budget Calculator",
@@ -248,6 +283,9 @@
     "noData": "No budget available. Add an itinerary to calculate costs.",
     "studentDiscount": "Student discount",
     "dayBreakdown": "Costs per Day",
-    "unitPrice": "p.p."
+    "unitPrice": "p.p.",
+    "whatIf": "What-if mode",
+    "toggleActivity": "Toggle activity",
+    "excluded": "{count} activities excluded"
   }
 }

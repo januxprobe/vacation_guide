@@ -1,7 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
-  testDir: './tests',
   fullyParallel: false, // Run tests sequentially for better visibility
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
@@ -22,10 +21,19 @@ export default defineConfig({
 
   projects: [
     {
-      name: 'chromium',
+      name: 'integration',
+      testDir: './tests/integration',
       use: {
         ...devices['Desktop Chrome'],
-        // Make browser visible
+        headless: false,
+      },
+    },
+    {
+      name: 'e2e',
+      testDir: './tests/e2e',
+      timeout: 600000,
+      use: {
+        ...devices['Desktop Chrome'],
         headless: false,
       },
     },

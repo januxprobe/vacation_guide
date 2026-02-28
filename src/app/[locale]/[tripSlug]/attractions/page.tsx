@@ -27,7 +27,7 @@ export default async function AttractionsPage({ params }: Props) {
         {t('attractions.subtitle')}
       </p>
 
-      <AttractionsList attractions={attractions} />
+      <AttractionsList attractions={attractions} tripSlug={tripSlug} />
     </div>
   );
 }

@@ -6,6 +6,7 @@ import { Link } from '@/i18n/routing';
 import type { TripConfig } from '@/config/trip-config';
 import { hexToRgba } from '@/lib/city-colors';
 import { MapPin, Calendar, Navigation, Trash2, Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface TripCardProps {
   trip: TripConfig;
@@ -37,9 +38,11 @@ export default function TripCard({ trip, locale, deletable, onDeleted }: TripCar
         const err = await res.json();
         throw new Error(err.error || 'Delete failed');
       }
+      toast.success(t('deleteSuccess'));
       onDeleted?.();
     } catch (error) {
       console.error('Failed to delete trip:', error);
+      toast.error(t('deleteError'));
       setDeleting(false);
       setConfirming(false);
     }
@@ -56,22 +59,49 @@ export default function TripCard({ trip, locale, deletable, onDeleted }: TripCar
       href={`/${trip.slug}`}
       className="group relative block rounded-xl border border-gray-200 bg-white overflow-hidden transition-all hover:shadow-lg hover:border-gray-300"
     >
-      {/* Color header bar */}
-      <div
-        className="h-2"
-        style={{ backgroundColor: color }}
-      />
-
-      <div className="p-6">
-        <div className="flex items-start justify-between gap-2">
-          <div className="min-w-0">
-            <h3 className="text-xl font-bold text-gray-900 mb-1 group-hover:underline truncate">
+      {/* Hero image or color header bar */}
+      {trip.heroImage ? (
+        <div className="relative h-32 overflow-hidden">
+          <img
+            src={trip.heroImage}
+            alt={trip.name[loc]}
+            className="w-full h-full object-cover"
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background: `linear-gradient(to bottom, transparent 30%, ${hexToRgba(color, 0.85)} 100%)`,
+            }}
+          />
+          <div className="absolute bottom-0 left-0 right-0 px-6 pb-3">
+            <h3 className="text-lg font-bold text-white group-hover:underline truncate">
               {trip.name[loc]}
             </h3>
-            <p className="text-sm text-gray-500 mb-4">
+            <p className="text-xs text-white/80">
               {trip.region[loc]}
             </p>
           </div>
+        </div>
+      ) : (
+        <div
+          className="h-2"
+          style={{ backgroundColor: color }}
+        />
+      )}
+
+      <div className="p-6">
+        <div className="flex items-start justify-between gap-2">
+          {!trip.heroImage && (
+            <div className="min-w-0">
+              <h3 className="text-xl font-bold text-gray-900 mb-1 group-hover:underline truncate">
+                {trip.name[loc]}
+              </h3>
+              <p className="text-sm text-gray-500 mb-4">
+                {trip.region[loc]}
+              </p>
+            </div>
+          )}
+          {trip.heroImage && <div className="flex-1" />}
 
           {/* Delete button */}
           {deletable && (

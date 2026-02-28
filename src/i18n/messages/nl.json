@@ -15,7 +15,15 @@
     "minutes": "minuten",
     "hours": "uur",
     "days": "dagen",
-    "euro": "€"
+    "euro": "€",
+    "favorite": "Toevoegen aan favorieten",
+    "unfavorite": "Verwijderen uit favorieten",
+    "favoritesOnly": "Favorieten",
+    "addedToFavorites": "Toegevoegd aan favorieten",
+    "removedFromFavorites": "Verwijderd uit favorieten",
+    "share": "Delen",
+    "linkCopied": "Link gekopieerd!",
+    "shareTrip": "Reis delen"
   },
   "navigation": {
     "home": "Home",
@@ -151,7 +159,15 @@
     "closeGallery": "Galerij sluiten",
     "previousPhoto": "Vorige foto",
     "nextPhoto": "Volgende foto",
-    "photoCounter": "{current} / {total}"
+    "photoCounter": "{current} / {total}",
+    "searchPlaceholder": "Zoek bezienswaardigheden...",
+    "sortBy": "Sorteer op",
+    "sortPriority": "Prioriteit",
+    "sortPrice": "Prijs",
+    "sortDuration": "Duur",
+    "sortName": "Naam",
+    "noResults": "Geen bezienswaardigheden gevonden met deze filters",
+    "resetFilters": "Filters resetten"
   },
   "map": {
     "title": "Interactieve Kaart",
@@ -203,7 +219,13 @@
     "removeRestaurant": "Verwijderen",
     "confirmRemove": "Bevestigen?",
     "removed": "Verwijderd",
-    "removeError": "Verwijderen mislukt"
+    "removeError": "Verwijderen mislukt",
+    "filterSearchPlaceholder": "Zoek restaurants...",
+    "filterByCuisine": "Filter op keuken",
+    "allCuisines": "Alle keukens",
+    "resetFilters": "Filters resetten",
+    "showMore": "Toon meer",
+    "showLess": "Toon minder"
   },
   "error": {
     "title": "Er ging iets mis",
@@ -225,7 +247,20 @@
     "mapView": "Kaart",
     "listView": "Dagplanning",
     "noItinerary": "Geen reisplanning beschikbaar voor deze reis",
-    "activity": "Activiteit"
+    "activity": "Activiteit",
+    "walkingTime": "{minutes} min lopen",
+    "comments": "Opmerkingen",
+    "commentCount": "{count} opmerkingen",
+    "addComment": "Opmerking toevoegen",
+    "commentName": "Je naam",
+    "commentPlaceholder": "Schrijf een opmerking...",
+    "noComments": "Nog geen opmerkingen",
+    "deleteComment": "Verwijderen",
+    "reorderHint": "Sleep activiteiten om de volgorde te wijzigen",
+    "saved": "Opgeslagen",
+    "saveError": "Opslaan mislukt",
+    "print": "Afdrukken",
+    "printTitle": "Reisplanning"
   },
   "budget": {
     "title": "Budget Calculator",
@@ -248,6 +283,9 @@
     "noData": "Geen budget beschikbaar. Voeg een reisplanning toe om kosten te berekenen.",
     "studentDiscount": "Studentenkorting",
     "dayBreakdown": "Kosten per Dag",
-    "unitPrice": "p.p."
+    "unitPrice": "p.p.",
+    "whatIf": "Wat-als modus",
+    "toggleActivity": "Activiteit in-/uitschakelen",
+    "excluded": "{count} activiteiten uitgesloten"
   }
 }

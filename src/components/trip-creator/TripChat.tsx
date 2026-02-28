@@ -7,6 +7,7 @@ import ChatMessage from './ChatMessage';
 import ChatInput from './ChatInput';
 import TripPreview from './TripPreview';
 import CreateTripButton from './CreateTripButton';
+import { toast } from 'sonner';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -224,12 +225,14 @@ export default function TripChat() {
       }
 
       // Step 6: Redirect to the new trip
+      toast.success(t('success'));
       // Use window.location for full reload so the server picks up new files
       const locale = window.location.pathname.split('/')[1] || 'nl';
       window.location.href = `/${locale}/${tripConfig.slug}`;
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : String(error);
       console.error('Create trip error:', errorMsg);
+      toast.error(t('error'));
       setMessages((prev) => [
         ...prev,
         {

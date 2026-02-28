@@ -170,3 +170,19 @@ export const restaurantsFileSchema = z.object({
 });
 
 export type RestaurantInput = z.infer<typeof restaurantSchema>;
+
+// --- Comment Schemas ---
+
+export const dayCommentSchema = z.object({
+  id: z.string(),
+  author: z.string().min(1),
+  text: z.string().min(1),
+  timestamp: z.number(),
+  dayNumber: z.number(),
+});
+
+export const commentsFileSchema = z.object({
+  comments: z.array(dayCommentSchema),
+});
+
+export type DayCommentInput = z.infer<typeof dayCommentSchema>;

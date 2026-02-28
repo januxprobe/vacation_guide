@@ -2,11 +2,14 @@
 
 import { useState, useMemo, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
-import { Map, List } from 'lucide-react';
+import { Map, List, Printer } from 'lucide-react';
+import { toast } from 'sonner';
 import type { Attraction, Itinerary, Restaurant } from '@/types';
+import { recalculateTimes } from '@/lib/planner-utils';
 import DayTabBar from './DayTabBar';
 import PlannerPanel from './PlannerPanel';
 import PlannerMap from './PlannerMap';
+import PrintableItinerary from './PrintableItinerary';
 
 interface PlannerViewProps {
   attractions: Attraction[];
@@ -14,22 +17,26 @@ interface PlannerViewProps {
   restaurants: Restaurant[];
   locale: string;
   tripSlug: string;
+  isDynamic?: boolean;
 }
 
 export default function PlannerView({
   attractions,
-  itinerary,
+  itinerary: initialItinerary,
   restaurants,
   locale,
   tripSlug,
+  isDynamic,
 }: PlannerViewProps) {
   const t = useTranslations();
 
+  const [itinerary, setItinerary] = useState(initialItinerary);
   const [selectedDay, setSelectedDay] = useState(1);
   const [highlightedActivityId, setHighlightedActivityId] = useState<string | null>(null);
   const [showRestaurants, setShowRestaurants] = useState(false);
   const [showRoute, setShowRoute] = useState(true);
   const [mobileView, setMobileView] = useState<'map' | 'panel'>('panel');
+  const [legDurations, setLegDurations] = useState<number[]>([]);
 
   const currentDay = useMemo(() => {
     return itinerary.days.find((d) => d.dayNumber === selectedDay) ?? itinerary.days[0];
@@ -38,21 +45,60 @@ export default function PlannerView({
   // When clicking an activity card → highlight on map
   const handleActivityClick = useCallback((attractionId: string) => {
     setHighlightedActivityId(attractionId);
-    // On mobile, switch to map view when clicking an activity
     setMobileView('map');
   }, []);
 
   // When clicking a map marker → highlight in panel
   const handleMarkerClick = useCallback((attractionId: string) => {
     setHighlightedActivityId(attractionId);
-    // On mobile, switch to panel view when clicking a marker
     setMobileView('panel');
   }, []);
 
   const handleDayChange = useCallback((day: number) => {
     setSelectedDay(day);
     setHighlightedActivityId(null);
+    setLegDurations([]);
   }, []);
+
+  const handleRouteResult = useCallback((durations: number[]) => {
+    setLegDurations(durations);
+  }, []);
+
+  // Reorder activities within a day (DnD)
+  const handleReorder = useCallback(async (oldIndex: number, newIndex: number) => {
+    const dayIndex = itinerary.days.findIndex((d) => d.dayNumber === selectedDay);
+    if (dayIndex === -1) return;
+
+    const newDays = [...itinerary.days];
+    const day = { ...newDays[dayIndex] };
+    const activities = [...day.activities];
+
+    // Move activity
+    const [moved] = activities.splice(oldIndex, 1);
+    activities.splice(newIndex, 0, moved);
+
+    // Recalculate times based on order
+    const recalculated = recalculateTimes(activities);
+    day.activities = recalculated;
+    newDays[dayIndex] = day;
+
+    const newItinerary = { ...itinerary, days: newDays };
+    setItinerary(newItinerary);
+
+    // Persist
+    try {
+      const res = await fetch(`/api/trips/${tripSlug}/itinerary`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newItinerary),
+      });
+      if (!res.ok) throw new Error('Save failed');
+      toast.success(t('planner.saved'));
+    } catch {
+      toast.error(t('planner.saveError'));
+      setItinerary(initialItinerary);
+    }
+  }, [itinerary, selectedDay, tripSlug, t, initialItinerary]);
 
   return (
     <div className="flex flex-col" style={{ height: 'calc(100vh - 92px)' }}>
@@ -111,6 +157,15 @@ export default function PlannerView({
           />
           {t('map.showRestaurants')}
         </label>
+        <div className="ml-auto">
+          <button
+            onClick={() => window.print()}
+            className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-700 transition-colors print:hidden"
+          >
+            <Printer className="w-3.5 h-3.5" />
+            {t('planner.print')}
+          </button>
+        </div>
       </div>
 
       {/* Split view */}
@@ -131,6 +186,7 @@ export default function PlannerView({
             onMarkerClick={handleMarkerClick}
             locale={locale}
             tripSlug={tripSlug}
+            onRouteResult={handleRouteResult}
           />
         </div>
 
@@ -145,9 +201,17 @@ export default function PlannerView({
             attractions={attractions}
             highlightedActivityId={highlightedActivityId}
             onActivityClick={handleActivityClick}
+            legDurations={legDurations}
+            tripSlug={tripSlug}
+            canReorder={isDynamic}
+            onReorder={isDynamic ? handleReorder : undefined}
           />
         </div>
       </div>
+
+      {/* Print-only itinerary */}
+      <PrintableItinerary itinerary={itinerary} attractions={attractions} />
     </div>
   );
 }
+
