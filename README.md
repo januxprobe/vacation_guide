@@ -7,7 +7,7 @@ Currently features a pre-configured **Andalusia 2026** trip covering Seville, Co
 ## Features
 
 - **Trip Selector Homepage** - Browse existing trips, create new ones, delete user-created trips
-- **AI Trip Builder** - Chat with Gemini AI (markdown-rendered responses) to plan trips with real-time data from Google Search grounding, auto-enriched with real Wikipedia/Wikimedia Commons images
+- **AI Trip Builder** - Chat with Gemini AI (markdown-rendered responses) to plan trips with real-time data from Google Search grounding, auto-enriched with real images via multi-language Wikidata/Wikipedia/Commons/tourism site pipeline
 - **Multi-trip architecture** - Each trip has its own config, data, and URL namespace (`/nl/andalusia-2026/attractions`)
 - **25+ attractions** with photos, YouTube videos, pricing, opening hours, and tips
 - **7-day itinerary** - Expandable day cards with activity timeline, meals, transport indicators, and attraction links
@@ -20,6 +20,7 @@ Currently features a pre-configured **Andalusia 2026** trip covering Seville, Co
 - **Media galleries** - Fullscreen carousel with images and embedded YouTube videos
 - **Responsive** - Works on desktop and mobile with collapsible navigation
 - **Data validation** - Zod schemas validate all data; AI-generated itineraries are auto-normalized (enum casing, time formats, type coercion) before validation
+- **AI Travel Story** - Generate a narrative travel story from trip data (4 styles: adventure/cultural/romantic/family) with embedded attraction photos, restaurant highlights, and flowing transitions
 - **Trip management** - Create trips via AI chat, delete user-created trips with two-step confirmation
 
 ## Tech Stack
@@ -67,8 +68,8 @@ The homepage shows all available trips as cards. Pre-configured trips (like Anda
 2. Describe your trip idea in natural language (e.g., "5-day trip to Torremolinos with family")
 3. Gemini AI asks clarifying questions and suggests attractions with real data (prices, GPS coordinates, descriptions) from Google Search
 4. Accept or reject each suggestion via rich cards (with thumbnail previews from Wikipedia)
-5. Click "Create Trip" - the AI auto-generates restaurants and an itinerary, enriches all attractions with real Wikimedia images
-6. Get redirected to your new trip with hero image, itinerary, restaurants, budget, and story generation
+5. Click "Create Trip" - the AI auto-generates restaurants and an itinerary, enriches all attractions with real images via Wikidata/Wikipedia/Commons/tourism sites (multi-language)
+6. Get redirected to your new trip with hero image, itinerary, restaurants, budget, and AI travel story generation
 
 ### Trip Pages (`/{locale}/{tripSlug}/...`)
 Each trip has dedicated pages:
@@ -77,6 +78,7 @@ Each trip has dedicated pages:
 - **Restaurants** - Filterable list by city and price range with cuisine tags, specialties, AI-powered search, and add/remove for user-created trips
 - **Budget** - Interactive calculator with configurable traveler counts and student discount toggle
 - **Planner** - Split-view with interactive map (photo markers, walking routes, meal stops) and day-by-day itinerary panel
+- **Story** - AI-generated narrative travel story with 4 styles, embedded attraction media, and restaurant highlights
 
 ## Project Structure
 
@@ -87,25 +89,26 @@ src/
 │   │   ├── ai/chat/               # Streaming Gemini chat (SSE)
 │   │   ├── ai/finalize-trip/      # Extract structured trip data from conversation
 │   │   ├── ai/search-restaurants/ # Gemini-powered restaurant search
-│   │   └── trips/                 # Trip CRUD + attraction/restaurant/itinerary management
+│   │   └── trips/                 # Trip CRUD + attraction/restaurant/itinerary/story management
 │   └── [locale]/
 │       ├── page.tsx               # Trip selector homepage
 │       ├── create-trip/           # AI trip builder chat interface
 │       └── [tripSlug]/            # Trip-scoped pages (attractions, map, etc.)
 ├── components/
 │   ├── attractions/               # Attraction cards, filters, detail views, media
-│   ├── itinerary/                 # Day cards, activity timeline, itinerary list
-│   ├── restaurants/               # Restaurant cards, filters, restaurant list
+│   ├── restaurants/               # Restaurant cards, filters, restaurant list, AI search
 │   ├── budget/                    # Budget calculator, traveler selector, category breakdown
 │   ├── map/                       # Map utilities, photo/meal/restaurant markers, route, legend
 │   ├── planner/                   # Split-view planner (map + itinerary panel + day tabs)
+│   ├── story/                     # Trip story (style picker, chapters, block renderer, actions)
 │   ├── trip-selector/             # Trip cards, grid, create card
 │   ├── trip-creator/              # Chat UI, attraction suggestions, trip preview
+│   ├── shared/                    # Shared components (FavoriteButton)
 │   └── layout/                    # Headers (trip-scoped + generic), language switcher
 ├── config/trips/                  # Trip configurations (static TS + dynamic JSON)
 ├── data/trips/                    # Trip data on disk (attraction JSON files)
 ├── hooks/                         # Custom hooks (walking route via Valhalla)
-├── lib/                           # Data loaders, budget calculator, color utilities, Zod schemas, AI normalization, Wikimedia API
+├── lib/                           # Repositories, budget calculator, color utilities, Zod schemas, AI normalization, multi-language Wikimedia enrichment pipeline
 └── i18n/messages/                 # Translation files (nl.json, en.json)
 ```
 
@@ -131,14 +134,14 @@ See [RESOURCES.md](./RESOURCES.md) for detailed patterns on data sourcing, image
 ## Testing
 
 ```bash
-npm run test:unit        # Vitest unit/hook/API tests (~200 tests)
+npm run test:unit        # Vitest unit/hook/API tests (~255 tests)
 npm run test:integration # Playwright integration tests (~41 tests, headed)
 npm run test:e2e         # Playwright E2E tests (1 test, headed, 10min timeout)
 npm run test:playwright  # All Playwright tests (headed)
 ```
 
-**Vitest (~200 tests)** — fast, no browser needed:
-- Unit tests: budget calculator, schemas, planner utils, normalize-itinerary, normalize-story, city-colors
+**Vitest (~255 tests)** — fast, no browser needed:
+- Unit tests: budget calculator, schemas, planner utils, normalize-itinerary, normalize-story, city-colors, wikimedia enrichment (48 tests)
 - Hook tests: useFavorites, useDayComments
 - API route tests: all 7 API routes with mocked repositories
 
@@ -158,7 +161,7 @@ npm run test:playwright  # All Playwright tests (headed)
 npm run dev              # Development server (http://localhost:3000)
 npm run build            # Production build
 npm run lint             # ESLint
-npm run test:unit        # Vitest tests (~200 tests)
+npm run test:unit        # Vitest tests (~255 tests)
 npm run test:integration # Playwright integration tests (~41 tests)
 npm run test:e2e         # Playwright E2E tests (1 test)
 ```
