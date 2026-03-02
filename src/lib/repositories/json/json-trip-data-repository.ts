@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
-import type { Attraction, Itinerary, Restaurant, DayComment } from '@/types';
-import { attractionSchema, itinerarySchema, restaurantsFileSchema, commentsFileSchema } from '@/lib/schemas';
+import type { Attraction, Itinerary, Restaurant, DayComment, TripStory } from '@/types';
+import { attractionSchema, itinerarySchema, restaurantsFileSchema, commentsFileSchema, storyFileSchema } from '@/lib/schemas';
 import type { TripDataRepository } from '../types';
 import { getTripRepository } from '../index';
 
@@ -13,6 +13,7 @@ export class JsonTripDataRepository implements TripDataRepository {
   private attractionCache = new Map<string, Attraction[]>();
   private restaurantCache = new Map<string, Restaurant[]>();
   private itineraryCache = new Map<string, Itinerary | null>();
+  private storyCache = new Map<string, TripStory>();
 
   private async getDataDirectory(tripSlug: string): Promise<string> {
     const tripRepo = getTripRepository();
@@ -284,5 +285,48 @@ export class JsonTripDataRepository implements TripDataRepository {
       'utf-8'
     );
     return true;
+  }
+
+  // ---------- Story ----------
+
+  private loadStory(dataDirectory: string): TripStory | null {
+    const filePath = path.join(tripsDataDir(), dataDirectory, 'story.json');
+
+    if (!fs.existsSync(filePath)) {
+      return null;
+    }
+
+    const raw = fs.readFileSync(filePath, 'utf-8');
+    const data = JSON.parse(raw);
+    const result = storyFileSchema.safeParse(data);
+
+    if (!result.success) {
+      console.error(`Invalid story data in ${filePath}:`, result.error.format());
+      return null;
+    }
+
+    return result.data.story as TripStory;
+  }
+
+  async getStory(tripSlug: string): Promise<TripStory | null> {
+    if (this.storyCache.has(tripSlug)) {
+      return this.storyCache.get(tripSlug)!;
+    }
+    const dataDir = await this.getDataDirectory(tripSlug);
+    const story = this.loadStory(dataDir);
+    if (story) {
+      this.storyCache.set(tripSlug, story);
+    }
+    // Don't cache null — same pattern as getItinerary
+    return story;
+  }
+
+  async saveStory(tripSlug: string, story: TripStory): Promise<void> {
+    const dataDir = await this.getDataDirectory(tripSlug);
+    const filePath = path.join(tripsDataDir(), dataDir, 'story.json');
+
+    fs.writeFileSync(filePath, JSON.stringify({ story }, null, 2), 'utf-8');
+
+    this.storyCache.delete(tripSlug);
   }
 }

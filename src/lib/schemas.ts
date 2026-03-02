@@ -186,3 +186,59 @@ export const commentsFileSchema = z.object({
 });
 
 export type DayCommentInput = z.infer<typeof dayCommentSchema>;
+
+// --- Trip Story Schemas ---
+
+export const narrativeStyleSchema = z.enum(['adventure', 'cultural', 'romantic', 'family']);
+
+const narrativeBlockSchema = z.object({
+  type: z.literal('narrative'),
+  content: localizedStringSchema,
+});
+
+const attractionHighlightBlockSchema = z.object({
+  type: z.literal('attraction_highlight'),
+  attractionId: z.string(),
+  narrative: localizedStringSchema,
+});
+
+const mealHighlightBlockSchema = z.object({
+  type: z.literal('meal_highlight'),
+  mealType: z.string(),
+  restaurantName: z.string().optional(),
+  narrative: localizedStringSchema,
+});
+
+const transitionBlockSchema = z.object({
+  type: z.literal('transition'),
+  narrative: localizedStringSchema,
+});
+
+const storyBlockSchema = z.discriminatedUnion('type', [
+  narrativeBlockSchema,
+  attractionHighlightBlockSchema,
+  mealHighlightBlockSchema,
+  transitionBlockSchema,
+]);
+
+const storyChapterSchema = z.object({
+  dayNumber: z.number(),
+  city: z.string(),
+  title: localizedStringSchema,
+  blocks: z.array(storyBlockSchema),
+});
+
+export const tripStorySchema = z.object({
+  style: narrativeStyleSchema,
+  generatedAt: z.number(),
+  title: localizedStringSchema,
+  introduction: localizedStringSchema,
+  chapters: z.array(storyChapterSchema),
+  conclusion: localizedStringSchema,
+});
+
+export const storyFileSchema = z.object({
+  story: tripStorySchema,
+});
+
+export type TripStoryInput = z.infer<typeof tripStorySchema>;

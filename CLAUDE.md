@@ -20,6 +20,7 @@ A reusable Next.js web application for planning multi-city trips. Users can brow
 - **Trip Selector Homepage** - Browse existing trips, create new ones, delete user-created trips
 - **AI Trip Builder** - Conversational chat with Gemini AI to plan trips, suggest attractions with real data from Google Search
 - **Auto-generated restaurants & itinerary** - Trip creation automatically generates restaurant recommendations and day-by-day itineraries via Gemini
+- **AI Travel Story** - Generate a narrative travel story from trip data (4 styles: adventure/cultural/romantic/family), saved and cached, with embedded attraction photos and restaurant highlights
 - **Restaurant search & CRUD** - Search for restaurants via AI on dynamic trips, add/remove with two-step confirmation
 - Attraction details with photos, prices, opening hours
 - Budget calculator with configurable student discounts and day-by-day breakdown
@@ -66,8 +67,10 @@ vacation_guide/
 │   │   │   │       │   └── route.ts    # POST - Add attraction to trip
 │   │   │   │       ├── restaurants/
 │   │   │   │       │   └── route.ts    # POST/PUT/DELETE - Restaurant CRUD
-│   │   │   │       └── itinerary/
-│   │   │   │           └── route.ts    # POST - Save itinerary
+│   │   │   │       ├── itinerary/
+│   │   │   │       │   └── route.ts    # POST - Save itinerary
+│   │   │   │       └── story/
+│   │   │   │           └── route.ts    # GET/POST - Get/generate trip story
 │   │   │   └── ai/
 │   │   │       ├── chat/route.ts       # POST - Streaming Gemini chat (SSE)
 │   │   │       ├── finalize-trip/route.ts # POST - Extract structured trip data
@@ -146,6 +149,12 @@ vacation_guide/
 │   │   │   ├── MapPopup.tsx             # HTML popup content for markers
 │   │   │   ├── MapRoute.tsx             # Walking route polyline (OSRM geometry or straight-line fallback)
 │   │   │   └── map-utils.ts            # Photo/meal/restaurant marker icons + bounds calculation
+│   │   ├── story/
+│   │   │   ├── TripStorySection.tsx    # Main story wrapper (style picker or story view)
+│   │   │   ├── StoryStylePicker.tsx    # 4 narrative style cards (2x2 grid)
+│   │   │   ├── StoryChapterView.tsx    # Single chapter with day badge + blocks
+│   │   │   ├── StoryBlockRenderer.tsx  # Switch on block type (narrative/highlight/meal/transition)
+│   │   │   └── StoryActions.tsx        # Regenerate + share + print buttons
 │   │   └── trip-creator/
 │   │       ├── TripChat.tsx             # Main chat container + state management
 │   │       ├── ChatMessage.tsx          # Message bubble with structured data parsing
@@ -157,8 +166,9 @@ vacation_guide/
 │   │   └── useOsrmRoute.ts             # Valhalla pedestrian walking route hook with cache
 │   ├── lib/
 │   │   ├── utils.ts                     # cn() helper from shadcn
-│   │   ├── schemas.ts                   # Zod schemas (attraction, tripConfig, itinerary, restaurant)
+│   │   ├── schemas.ts                   # Zod schemas (attraction, tripConfig, itinerary, restaurant, story)
 │   │   ├── normalize-itinerary.ts      # Normalize AI-generated itinerary data before Zod validation
+│   │   ├── normalize-story.ts          # Normalize AI-generated story data before Zod validation
 │   │   ├── budget-calculator.ts        # Pure utility: calculateBudget() from itinerary + attractions (includes free attractions in breakdown)
 │   │   ├── city-colors.ts              # Color utilities (hex->rgba, badge/gradient styles)
 │   │   └── repositories/
@@ -174,6 +184,7 @@ vacation_guide/
 │   │       └── andalusia-2026/          # Static trip (25 attractions)
 │   │           ├── itinerary.json       # 7-day itinerary (activities, meals, transport)
 │   │           ├── restaurants.json     # 12 restaurants (4 per city)
+│   │           ├── story.json           # AI-generated travel story (7 chapters, 25 attractions, 12 restaurants)
 │   │           └── attractions/
 │   │               ├── seville/         # 10 JSON files
 │   │               ├── cordoba/         # 7 JSON files
@@ -191,9 +202,10 @@ vacation_guide/
 │   ├── setup.ts                       # Vitest setup (jest-dom matchers)
 │   ├── unit/                          # Pure function tests (Vitest)
 │   │   ├── budget-calculator.test.ts  # Budget calculation logic (13 tests)
-│   │   ├── schemas.test.ts           # Zod schema validation (10 tests)
+│   │   ├── schemas.test.ts           # Zod schema validation (28 tests)
 │   │   ├── planner-utils.test.ts     # Time parsing/formatting (17 tests)
 │   │   ├── normalize-itinerary.test.ts # AI itinerary normalization (37 tests)
+│   │   ├── normalize-story.test.ts   # AI story normalization (22 tests)
 │   │   └── city-colors.test.ts       # Color utility functions (16 tests)
 │   ├── hooks/                         # React hook tests (Vitest)
 │   │   ├── useFavorites.test.ts      # Favorites hook (8 tests)
@@ -205,11 +217,13 @@ vacation_guide/
 │   │   ├── attractions.test.ts       # POST attractions + enum normalization (8 tests)
 │   │   ├── restaurants.test.ts       # POST/PUT/DELETE restaurants (13 tests)
 │   │   ├── itinerary.test.ts         # POST itinerary + normalization (6 tests)
-│   │   └── comments.test.ts          # GET/POST/DELETE comments (8 tests)
+│   │   ├── comments.test.ts          # GET/POST/DELETE comments (8 tests)
+│   │   └── story.test.ts            # GET/POST story + normalization (10 tests)
 │   ├── integration/                   # Browser tests, local data (Playwright)
 │   │   ├── navigation-i18n.spec.ts   # NL navigation, language switching, mobile, HTML structure
 │   │   ├── trip-selector.spec.ts     # Trip selector homepage
-│   │   ├── trip-homepage.spec.ts     # Hero section, navigation, share button
+│   │   ├── trip-homepage.spec.ts     # Hero section, navigation, share button, story section
+│   │   ├── trip-story.spec.ts       # Story chapters, blocks, locale, actions
 │   │   ├── attractions.spec.ts       # List, filters, detail, search, sort, favorites
 │   │   ├── restaurants.spec.ts       # Filters, search, cuisine, expand/collapse
 │   │   ├── planner.spec.ts           # Split view, day sync, mobile, panel, comments
@@ -319,6 +333,17 @@ const attractions = await tripDataRepo.getAllAttractions(slug);
 - **Finalize prompt:** Uses a concrete one-shot example (Rome trip day) instead of abstract `"..."` placeholders, plus explicit FORMAT RULES block calling out the 5 most common Gemini mistakes.
 - **Optional attractionId:** `Activity.attractionId` is optional — Gemini generates free-form activities (train transfers, free time, souvenir shopping) that don't reference a specific attraction. All consumers (planner, map, budget) handle this gracefully.
 
+### AI Trip Story Architecture
+- **Story API** (`/api/trips/[slug]/story`): GET returns saved story, POST generates a new one using Gemini
+- **Generation:** `gemini-2.5-flash` with `responseMimeType: 'application/json'` (no tools needed, all data comes from itinerary/attractions/restaurants)
+- **Narrative styles:** adventure, cultural, romantic, family — each has tailored writing instructions
+- **Data structure:** `TripStory` with `StoryChapter[]`, each containing `StoryBlock[]` (discriminated union: narrative, attraction_highlight, meal_highlight, transition)
+- **Normalization:** `normalizeStory()` fixes capitalized enums, plain strings → LocalizedString, string → number coercion (same pattern as normalizeItinerary)
+- **Storage:** `story.json` in trip data directory, wrapped as `{ story: TripStory }`
+- **Cache:** `storyCache` in JsonTripDataRepository, does not cache null (same pattern as getItinerary)
+- **Homepage integration:** Trip homepage shows `TripStorySection` when itinerary exists, falls back to quick links when no itinerary
+- **Print styles:** `@media print` hides story-actions and trip-context-bar, sets serif font
+
 ### Planner Map Architecture
 - **Photo markers:** `createPhotoMarkerIcon()` in `map-utils.ts` renders attraction thumbnails as 44px square markers with city-colored borders and number badges. Highlighted markers scale to 56px.
 - **Walking routes:** `useWalkingRoute()` hook in `src/hooks/useOsrmRoute.ts` fetches pedestrian routes from **Valhalla** (`valhalla1.openstreetmap.de/route`), a free public OpenStreetMap routing service. No API key needed. Responses use encoded polyline (precision 6). Results are cached in a `useRef<Map>` keyed by coordinate hash. Falls back to straight-line dashed polyline on error.
@@ -348,22 +373,22 @@ npm run build            # Production build
 npm run lint             # ESLint
 
 # Testing
-npm run test:unit        # Run all Vitest tests (158 tests)
+npm run test:unit        # Run all Vitest tests (~200 tests)
 npm run test:unit:watch  # Vitest in watch mode
-npm run test:integration # Playwright integration tests (33 tests, headed)
+npm run test:integration # Playwright integration tests (~41 tests, headed)
 npm run test:e2e         # Playwright E2E tests (1 test, headed, 10min timeout)
 npm run test:playwright  # All Playwright tests (headed)
 ```
 
 ### Testing Strategy
 
-**Vitest (158 tests)** — fast, no browser needed:
-- **Unit tests** (`tests/unit/`): budget calculator, schemas, planner utils, normalize-itinerary, city-colors
+**Vitest (~200 tests)** — fast, no browser needed:
+- **Unit tests** (`tests/unit/`): budget calculator, schemas, planner utils, normalize-itinerary, normalize-story, city-colors
 - **Hook tests** (`tests/hooks/`): useFavorites, useDayComments
-- **API route tests** (`tests/api/`): all 6 API routes with mocked repositories
+- **API route tests** (`tests/api/`): all 7 API routes with mocked repositories
 
-**Playwright (34 tests)** — headed Chrome browser:
-- **Integration** (`tests/integration/`, 33 tests): navigation, i18n, trip selector, attractions (list/detail/filters/search/sort/favorites), restaurants (filters/search/cuisine/expand), planner (split-view/day-sync/mobile/panel/comments/walking-gaps), map (markers/route/restaurants), budget (calculator/what-if), hero, 404
+**Playwright (~42 tests)** — headed Chrome browser:
+- **Integration** (`tests/integration/`, ~41 tests): navigation, i18n, trip selector, trip story (chapters/blocks/locale/actions), attractions (list/detail/filters/search/sort/favorites), restaurants (filters/search/cuisine/expand), planner (split-view/day-sync/mobile/panel/comments/walking-gaps), map (markers/route/restaurants), budget (calculator/what-if), hero, 404
 - **E2E** (`tests/e2e/`, 1 test): AI trip creation + deletion (uses live Gemini API, 10min timeout)
 
 ### Adding shadcn/ui Components
@@ -527,4 +552,11 @@ npx shadcn@latest add card      # Example: add card component
      Check off items as they are implemented and committed.
      Keep completed plans for reference; archive old ones under a "### Completed" sub-heading. -->
 
-_No active plans._
+### Trip Story Feature
+- [x] Phase 1: Types + Zod schemas (TripStory, StoryBlock, StoryChapter, NarrativeStyle)
+- [x] Phase 2: Story normalizer (normalize-story.ts + tests)
+- [x] Phase 3: Repository layer (getStory/saveStory on TripDataRepository)
+- [x] Phase 4: Story API route (GET + POST /api/trips/[slug]/story)
+- [x] Phase 5: Translations (NL + EN story.* keys)
+- [x] Phase 6: Frontend components (TripStorySection, StoryStylePicker, StoryChapterView, StoryBlockRenderer, StoryActions)
+- [x] Phase 7: Homepage integration (replace quick links with story) + print styles

@@ -2,10 +2,11 @@ import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { Link } from '@/i18n/routing';
-import { getTripRepository } from '@/lib/repositories';
+import { getTripRepository, getTripDataRepository } from '@/lib/repositories';
 import { hexToRgba } from '@/lib/city-colors';
 import { MapPin, Calendar, Euro, Navigation } from 'lucide-react';
 import ShareButton from '@/components/shared/ShareButton';
+import TripStorySection from '@/components/story/TripStorySection';
 
 type Props = {
   params: Promise<{ locale: string; tripSlug: string }>;
@@ -31,6 +32,18 @@ export default async function TripHomePage({ params }: Props) {
   const trip = await tripRepo.getBySlug(tripSlug);
 
   if (!trip) notFound();
+
+  const tripDataRepo = getTripDataRepository();
+  const itinerary = await tripDataRepo.getItinerary(tripSlug);
+  const hasItinerary = itinerary !== null;
+
+  // Load story and attractions only if we have an itinerary
+  const [story, attractions] = hasItinerary
+    ? await Promise.all([
+        tripDataRepo.getStory(tripSlug),
+        tripDataRepo.getAllAttractions(tripSlug),
+      ])
+    : [null, []];
 
   const stats = [
     {
@@ -144,41 +157,53 @@ export default async function TripHomePage({ params }: Props) {
           })}
         </div>
 
-        {/* Quick Links - one per city using config colors */}
-        <div className="grid md:grid-cols-3 gap-4 sm:gap-6">
-          {trip.cities.map((city, index) => {
-            const links = [`${prefix}/planner`, `${prefix}/attractions`, `${prefix}/restaurants`];
-            const linkLabels = [
-              t('navigation.planner'),
-              t('navigation.attractions'),
-              t('navigation.restaurants'),
-            ];
-            const descKeys = [
-              'home.sections.itineraryDesc',
-              'home.sections.attractionsDesc',
-              'home.sections.restaurantsDesc',
-            ] as const;
+        {/* Story section (when itinerary exists) or Quick Links fallback */}
+        {hasItinerary ? (
+          <TripStorySection
+            initialStory={story}
+            attractions={attractions}
+            tripSlug={tripSlug}
+            locale={loc}
+            primaryColor={primaryColor}
+            cities={trip.cities}
+            tripName={trip.name[loc]}
+          />
+        ) : (
+          <div className="grid md:grid-cols-3 gap-4 sm:gap-6">
+            {trip.cities.map((city, index) => {
+              const links = [`${prefix}/planner`, `${prefix}/attractions`, `${prefix}/restaurants`];
+              const linkLabels = [
+                t('navigation.planner'),
+                t('navigation.attractions'),
+                t('navigation.restaurants'),
+              ];
+              const descKeys = [
+                'home.sections.itineraryDesc',
+                'home.sections.attractionsDesc',
+                'home.sections.restaurantsDesc',
+              ] as const;
 
-            return (
-              <Link
-                key={city.id}
-                href={links[index] ?? `${prefix}/attractions`}
-                className="rounded-lg p-6 transition-opacity hover:opacity-80 border"
-                style={{
-                  backgroundColor: hexToRgba(city.color, 0.05),
-                  borderColor: hexToRgba(city.color, 0.2),
-                }}
-              >
-                <h2 className="text-xl font-bold text-gray-900 mb-2">
-                  {linkLabels[index]}
-                </h2>
-                <p className="text-gray-600">
-                  {t(descKeys[index])}
-                </p>
-              </Link>
-            );
-          })}
-        </div>
+              return (
+                <Link
+                  key={city.id}
+                  href={links[index] ?? `${prefix}/attractions`}
+                  className="rounded-lg p-6 transition-opacity hover:opacity-80 border"
+                  style={{
+                    backgroundColor: hexToRgba(city.color, 0.05),
+                    borderColor: hexToRgba(city.color, 0.2),
+                  }}
+                >
+                  <h2 className="text-xl font-bold text-gray-900 mb-2">
+                    {linkLabels[index]}
+                  </h2>
+                  <p className="text-gray-600">
+                    {t(descKeys[index])}
+                  </p>
+                </Link>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );

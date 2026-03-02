@@ -31,9 +31,10 @@ test.describe('Trip Homepage', () => {
     await expect(statCards).toHaveCount(4);
     console.log('✓ 4 stat cards displayed');
 
-    const quickLinks = page.locator('.grid.md\\:grid-cols-3 > a');
-    await expect(quickLinks).toHaveCount(3);
-    console.log('✓ 3 quick link cards displayed');
+    // Story section is shown instead of quick links (andalusia-2026 has an itinerary)
+    const storySection = page.locator('.story-container');
+    await expect(storySection).toBeVisible();
+    console.log('✓ Story section displayed (itinerary present)');
 
     console.log('✅ Hero section test passed!');
   });

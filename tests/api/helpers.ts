@@ -1,7 +1,7 @@
 import { vi } from 'vitest';
 import type { TripRepository, TripDataRepository } from '@/lib/repositories/types';
 import type { TripConfig } from '@/config/trip-config';
-import type { Attraction, Restaurant, DayComment, Itinerary } from '@/types';
+import type { Attraction, Restaurant, DayComment, Itinerary, TripStory } from '@/types';
 
 // ── Mock factory: TripRepository ────────────────────────────────────
 
@@ -39,6 +39,8 @@ export function createMockTripDataRepo(
     getComments: vi.fn().mockResolvedValue([]),
     addComment: vi.fn().mockResolvedValue(undefined),
     deleteComment: vi.fn().mockResolvedValue(false),
+    getStory: vi.fn().mockResolvedValue(null),
+    saveStory: vi.fn().mockResolvedValue(undefined),
     ...overrides,
   };
 }
@@ -118,6 +120,36 @@ export const MOCK_COMMENT: DayComment = {
   text: 'Great day!',
   timestamp: 1700000000000,
   dayNumber: 1,
+};
+
+export const MOCK_TRIP_STORY: TripStory = {
+  style: 'adventure',
+  generatedAt: 1700000000000,
+  title: { nl: 'Avontuur in Andalusië', en: 'Adventure in Andalusia' },
+  introduction: { nl: 'Welkom bij deze reis', en: 'Welcome to this trip' },
+  chapters: [
+    {
+      dayNumber: 1,
+      city: 'testcity',
+      title: { nl: 'Dag 1: Teststad', en: 'Day 1: Test City' },
+      blocks: [
+        { type: 'narrative', content: { nl: 'Het begon...', en: 'It started...' } },
+        {
+          type: 'attraction_highlight',
+          attractionId: 'test-attraction',
+          narrative: { nl: 'Een bijzondere plek', en: 'A special place' },
+        },
+        {
+          type: 'meal_highlight',
+          mealType: 'lunch',
+          restaurantName: 'Test Restaurant',
+          narrative: { nl: 'Lunchpauze', en: 'Lunch break' },
+        },
+        { type: 'transition', narrative: { nl: 'Daarna...', en: 'Then...' } },
+      ],
+    },
+  ],
+  conclusion: { nl: 'Tot ziens', en: 'Goodbye' },
 };
 
 export const MOCK_ITINERARY: Itinerary = {

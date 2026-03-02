@@ -1,5 +1,5 @@
 import type { TripConfig } from '@/config/trip-config';
-import type { Attraction, Itinerary, Restaurant, DayComment } from '@/types';
+import type { Attraction, Itinerary, Restaurant, DayComment, TripStory } from '@/types';
 
 export interface TripRepository {
   getAll(): Promise<TripConfig[]>;
@@ -29,4 +29,7 @@ export interface TripDataRepository {
   getComments(tripSlug: string): Promise<DayComment[]>;
   addComment(tripSlug: string, comment: DayComment): Promise<void>;
   deleteComment(tripSlug: string, commentId: string): Promise<boolean>;
+  // Story
+  getStory(tripSlug: string): Promise<TripStory | null>;
+  saveStory(tripSlug: string, story: TripStory): Promise<void>;
 }

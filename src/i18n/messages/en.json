@@ -287,5 +287,31 @@
     "whatIf": "What-if mode",
     "toggleActivity": "Toggle activity",
     "excluded": "{count} activities excluded"
+  },
+  "story": {
+    "title": "Travel Story",
+    "generate": "Generate Story",
+    "generating": "Writing your story...",
+    "regenerate": "Regenerate",
+    "generatedAt": "Generated on {date}",
+    "error": "Could not generate the story. Please try again.",
+    "noItinerary": "Add an itinerary first to generate a story.",
+    "print": "Print",
+    "share": "Share",
+    "chapter": "Chapter {number}",
+    "stylePicker": {
+      "title": "Choose a Narrative Style",
+      "subtitle": "How would you like your travel story to be told?"
+    },
+    "styles": {
+      "adventure": "Adventure",
+      "adventureDesc": "Exciting discoveries, hidden gems, and the thrill of exploring",
+      "cultural": "Cultural",
+      "culturalDesc": "Enriching historical context, art, and architecture",
+      "romantic": "Romantic",
+      "romanticDesc": "Warm and intimate, with beautiful settings and shared moments",
+      "family": "Family",
+      "familyDesc": "Fun and inclusive, with tips for the whole family"
+    }
   }
 }

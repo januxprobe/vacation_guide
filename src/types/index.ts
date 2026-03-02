@@ -168,6 +168,32 @@ export interface DayComment {
   dayNumber: number;
 }
 
+// --- Trip Story Types ---
+
+export type NarrativeStyle = 'adventure' | 'cultural' | 'romantic' | 'family';
+
+export type StoryBlock =
+  | { type: 'narrative'; content: LocalizedString }
+  | { type: 'attraction_highlight'; attractionId: string; narrative: LocalizedString }
+  | { type: 'meal_highlight'; mealType: string; restaurantName?: string; narrative: LocalizedString }
+  | { type: 'transition'; narrative: LocalizedString };
+
+export interface StoryChapter {
+  dayNumber: number;
+  city: string;
+  title: LocalizedString;
+  blocks: StoryBlock[];
+}
+
+export interface TripStory {
+  style: NarrativeStyle;
+  generatedAt: number;
+  title: LocalizedString;
+  introduction: LocalizedString;
+  chapters: StoryChapter[];
+  conclusion: LocalizedString;
+}
+
 export interface CityInfo {
   id: City;
   name: string;

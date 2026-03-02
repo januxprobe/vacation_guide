@@ -1,0 +1,673 @@
+{
+  "story": {
+    "style": "cultural",
+    "generatedAt": 1700000000000,
+    "title": {
+      "nl": "Dromen van Andalusië: Een Reis Die Je Nooit Vergeet",
+      "en": "Dreaming of Andalusia: A Journey You'll Never Forget"
+    },
+    "introduction": {
+      "nl": "Sluit je ogen en stel je voor: de geur van sinaasappelbloesem die door eeuwenoude straatjes zweeft, de warme septemberzon die op Moorse mozaïeken danst, en het geluid van flamencogitaar dat uit een verborgen binnenplaats klinkt. Van de adembenemende paleizen van Sevilla tot de mystieke grotten van Sacromonte, van de eindeloze zuilen van de Mezquita tot de sprookjesachtige tuinen van het Alhambra — dit is Andalusië. Zeven dagen die je voorgoed zullen veranderen. Ben je er klaar voor?",
+      "en": "Close your eyes and imagine: the scent of orange blossoms drifting through ancient streets, the warm September sun dancing on Moorish mosaics, and the sound of flamenco guitar spilling from a hidden courtyard. From the breathtaking palaces of Seville to the mystical caves of Sacromonte, from the endless columns of the Mezquita to the fairytale gardens of the Alhambra — this is Andalusia. Seven days that will change you forever. Are you ready?"
+    },
+    "chapters": [
+      {
+        "dayNumber": 1,
+        "city": "seville",
+        "title": {
+          "nl": "Dag 1: Sevilla's Koninklijke Schatten",
+          "en": "Day 1: Seville's Royal Treasures"
+        },
+        "blocks": [
+          {
+            "type": "narrative",
+            "content": {
+              "nl": "De septemberzon verwelkomt je in Sevilla met een warme omhelzing. Terwijl je door de schaduwrijke straten van de oude stad loopt, voel je de energie van een stad die al duizenden jaren het hart van Andalusië is. Dit is de stad van Carmen, van flamenco, van koninklijke paleizen — en vandaag is het jouw stad.",
+              "en": "The September sun welcomes you to Seville with a warm embrace. As you walk through the shaded streets of the old town, you feel the energy of a city that has been the heart of Andalusia for thousands of years. This is the city of Carmen, of flamenco, of royal palaces — and today it's your city."
+            }
+          },
+          {
+            "type": "attraction_highlight",
+            "attractionId": "seville-real-alcazar",
+            "narrative": {
+              "nl": "Het Real Alcázar laat je sprakeloos achter. Terwijl je door de Patio de las Doncellas wandelt, waar het ochtendlicht door de filigraan Mudéjar-bogen filtert, besef je waarom dit paleis al meer dan duizend jaar de fantasie van koningen en keizers prikkelt. De tuinen — eindeloos, vol fonteinen en sinaasappelbomen — zijn zo betoverend dat Game of Thrones hier de paleizen van Dorne filmde. Reserveer je tickets vroeg; dit is een plek waar je minstens twee uur wilt verdwalen.",
+              "en": "The Real Alcázar leaves you speechless. As you wander through the Patio de las Doncellas, where morning light filters through filigree Mudéjar arches, you understand why this palace has fired the imagination of kings and emperors for over a thousand years. The gardens — endless, full of fountains and orange trees — are so enchanting that Game of Thrones filmed the palaces of Dorne here. Book your tickets early; this is a place where you'll want to lose yourself for at least two hours."
+            }
+          },
+          {
+            "type": "transition",
+            "narrative": {
+              "nl": "Met het Alcázar nog op je netvlies stap je door de poort het labyrint van de Santa Cruz-wijk in. De smalle straatjes zijn hier zo smal dat balkons elkaar bijna raken, en de geur van gebakken vis leidt je neus naar het levendigste plein van de buurt.",
+              "en": "With the Alcázar still imprinted on your retinas, you step through the gate into the labyrinth of the Santa Cruz quarter. The narrow lanes here are so tight that balconies nearly touch, and the smell of fried fish leads your nose to the liveliest square in the neighborhood."
+            }
+          },
+          {
+            "type": "meal_highlight",
+            "mealType": "lunch",
+            "restaurantName": "Bodega Santa Cruz",
+            "narrative": {
+              "nl": "Bij Bodega Santa Cruz schuif je aan in het hart van de Santa Cruz-wijk. Deze authentieke staande tapasbar is altijd vol locals — geen reservering mogelijk, maar dat maakt het juist zo echt. De montaditos zijn legendarisch, de huiswijn vloeit rijkelijk, en de sfeer is puur Sevilla. Dit is geen toeristenval; dit is waar de stad eet.",
+              "en": "At Bodega Santa Cruz you squeeze in, right in the heart of the Santa Cruz quarter. This authentic standing tapas bar is always packed with locals — no reservations possible, but that's what makes it so real. The montaditos are legendary, the house wine flows freely, and the atmosphere is pure Seville. This isn't a tourist trap; this is where the city eats."
+            }
+          },
+          {
+            "type": "transition",
+            "narrative": {
+              "nl": "Verfrist door de tapas loop je vijf minuten door de schaduwrijke steegjes. Dan, plotseling, opent het steegje zich en rijst de grootste gotische kathedraal ter wereld voor je op — zo massief dat je even achteruit stapt.",
+              "en": "Refreshed by the tapas, you walk five minutes through the shaded alleys. Then, suddenly, the lane opens up and the largest Gothic cathedral in the world rises before you — so massive you take a step back."
+            }
+          },
+          {
+            "type": "attraction_highlight",
+            "attractionId": "seville-cathedral",
+            "narrative": {
+              "nl": "De Kathedraal van Sevilla is een monument van onbeschaamde ambitie. Binnen is het zo enorm dat je even moet slikken. De Giralda-toren, ooit een Moorse minaret, biedt via haar 35 oplopende hellingen een panorama dat je adem beneemt: de hele stad, uitgestrekt onder de blauwe Andalusische hemel.",
+              "en": "Seville's Cathedral is a monument to unbridled ambition. Inside, it's so vast it takes your breath away. The Giralda tower, once a Moorish minaret, offers via its 35 ascending ramps a panorama that stops you in your tracks: the entire city, spread beneath the blue Andalusian sky."
+            }
+          },
+          {
+            "type": "transition",
+            "narrative": {
+              "nl": "Je stapt de kathedraal uit en staat direct in het kloppende hart van Barrio Santa Cruz. Bloemenpotten hangen aan witgekalkte muren, een straatmuzikant speelt zachte Spaanse gitaar, en het late middaglicht valt schuin door de smalle straatjes.",
+              "en": "You step out of the cathedral and find yourself right in the beating heart of Barrio Santa Cruz. Flower pots hang from whitewashed walls, a street musician plays soft Spanish guitar, and the late afternoon light falls at an angle through the narrow lanes."
+            }
+          },
+          {
+            "type": "attraction_highlight",
+            "attractionId": "seville-barrio-santa-cruz",
+            "narrative": {
+              "nl": "Verlies jezelf in het labyrint van Barrio Santa Cruz — het voormalige Joodse kwartier waar elke straat smaller lijkt dan de vorige. Plotseling opent zich een verborgen plaza vol bougainville, of stuit je op een betegelde fontein waar katten in de schaduw liggen. Hier heeft de tijd geen haast, en jij ook niet.",
+              "en": "Lose yourself in the labyrinth of Barrio Santa Cruz — the former Jewish quarter where every street seems narrower than the last. Suddenly a hidden plaza opens up, draped in bougainvillea, or you stumble upon a tiled fountain where cats doze in the shade. Here time is in no hurry, and neither are you."
+            }
+          },
+          {
+            "type": "transition",
+            "narrative": {
+              "nl": "Het avondlicht kleurt de gevels goud als je door de straten van het centrum wandelt. De stad komt tot leven — terrassen vullen zich, het geroezemoes neemt toe, en de geur van knoflook en olijfolie trekt je naar een van de oudste adressen van Sevilla.",
+              "en": "The evening light paints the facades gold as you stroll through the city center streets. The city comes alive — terraces fill up, the hum of conversation grows, and the scent of garlic and olive oil draws you toward one of Seville's oldest addresses."
+            }
+          },
+          {
+            "type": "meal_highlight",
+            "mealType": "dinner",
+            "restaurantName": "El Rinconcillo",
+            "narrative": {
+              "nl": "Je eerste avond in Sevilla eindig je bij El Rinconcillo — de oudste bar van de stad, onafgebroken open sinds 1670. De espinacas con garbanzos (spinazie met kikkererwten) is hun beroemde specialiteit, en terwijl de ober je bestelling met krijt op de houten toonbank schrijft, voel je je deel van een traditie die al meer dan drie eeuwen duurt.",
+              "en": "Your first evening in Seville ends at El Rinconcillo — the city's oldest bar, continuously open since 1670. The espinacas con garbanzos (spinach with chickpeas) is their famous specialty, and as the waiter chalks your order on the wooden counter, you feel part of a tradition spanning more than three centuries."
+            }
+          }
+        ]
+      },
+      {
+        "dayNumber": 2,
+        "city": "seville",
+        "title": {
+          "nl": "Dag 2: Van Sprookjespleinen tot Futuristische Paddestoelen",
+          "en": "Day 2: From Fairytale Plazas to Futuristic Mushrooms"
+        },
+        "blocks": [
+          {
+            "type": "narrative",
+            "content": {
+              "nl": "Je tweede dag in Sevilla begint met een belofte: vandaag ga je het onmogelijke zien. Van het meest gefotografeerde plein van Spanje tot een futuristisch bouwwerk dat eruitziet als paddenstoelen van een andere planeet — Sevilla is een stad die constant verrast.",
+              "en": "Your second day in Seville begins with a promise: today you'll see the impossible. From Spain's most photographed plaza to a futuristic structure that looks like mushrooms from another planet — Seville is a city that constantly surprises."
+            }
+          },
+          {
+            "type": "attraction_highlight",
+            "attractionId": "seville-plaza-de-espana",
+            "narrative": {
+              "nl": "Plaza de España is een schok van schoonheid. Dit halfronde meesterwerk, gebouwd voor de Ibero-Amerikaanse Tentoonstelling van 1929, is zo overweldigend mooi dat het pijn doet. De 48 tegeltableaus vertellen het verhaal van elke Spaanse provincie, het kanaal met Venetiaanse bruggen glinstert in het ochtendlicht, en de hele compositie is zo perfect dat het onwerkelijk lijkt. Neem de tijd — dit is een plek waar foto's geen recht aan doen.",
+              "en": "Plaza de España is a shock of beauty. This semicircular masterpiece, built for the 1929 Ibero-American Exhibition, is so overwhelmingly beautiful it almost hurts. The 48 tile tableaux tell the story of every Spanish province, the canal with Venetian bridges glimmers in the morning light, and the whole composition is so perfect it seems unreal. Take your time — this is a place photos can't do justice."
+            }
+          },
+          {
+            "type": "transition",
+            "narrative": {
+              "nl": "Vanaf het plein wandel je onder de schaduw van honderdjarige platanen direct het aangrenzende park in. Het stadsgeluid vervaagt, vervangen door vogelgezang en het zachte kabbelen van water.",
+              "en": "From the plaza you walk beneath the shade of century-old plane trees directly into the adjacent park. The city noise fades, replaced by birdsong and the gentle murmur of water."
+            }
+          },
+          {
+            "type": "attraction_highlight",
+            "attractionId": "seville-parque-maria-luisa",
+            "narrative": {
+              "nl": "Parque María Luisa strekt zich uit als een groene oase van rust. Onder de schaduw van honderdjarige bomen wandel je langs betegelde fonteinen en romantische vijvers vol eenden. De geur van jasmijn hangt in de lucht. Dit is het park waar Sevillanos langzaam leven — en na een paar minuten begrijp je waarom.",
+              "en": "Parque María Luisa stretches out as a green oasis of calm. Beneath the shade of century-old trees, you stroll past tiled fountains and romantic ponds full of ducks. The scent of jasmine hangs in the air. This is the park where Sevillanos live slowly — and after a few minutes, you understand why."
+            }
+          },
+          {
+            "type": "transition",
+            "narrative": {
+              "nl": "Vanuit het park loop je twintig minuten noordwaarts door het centrum. De straten worden smaller, het ritme verandert, tot je plotseling op een plein staat en omhoogkijkt naar iets wat niet op deze aarde lijkt te horen.",
+              "en": "From the park you walk twenty minutes northward through the center. The streets grow narrower, the rhythm changes, until you suddenly stand in a square and look up at something that doesn't seem to belong on this earth."
+            }
+          },
+          {
+            "type": "attraction_highlight",
+            "attractionId": "seville-setas-de-sevilla",
+            "narrative": {
+              "nl": "Midden in het oude centrum doemt de Metropol Parasol op — door iedereen 'Las Setas' (de paddenstoelen) genoemd. Deze houten wafelvormige structuur is het grootste houten bouwwerk ter wereld en biedt vanaf de bovenkant een spectaculair uitzicht over de daken van Sevilla. Bij zonsondergang baadt het hele bouwwerk in gouden licht. Surrealistisch, futuristisch, en absoluut onvergetelijk.",
+              "en": "Right in the old center, the Metropol Parasol looms — known by everyone as 'Las Setas' (the mushrooms). This waffle-shaped wooden structure is the world's largest timber construction, offering spectacular views over Seville's rooftops from the top. At sunset, the entire structure bathes in golden light. Surreal, futuristic, and absolutely unforgettable."
+            }
+          },
+          {
+            "type": "transition",
+            "narrative": {
+              "nl": "Vanaf Las Setas wandel je een kwartier naar het zuiden, door levendige winkelstraten en langs de geur van versgebakken churros, tot de Guadalquivir-rivier voor je opdoemt en een gouden toren in het late middaglicht schittert.",
+              "en": "From Las Setas you walk fifteen minutes south, through lively shopping streets and past the scent of freshly baked churros, until the Guadalquivir river appears before you and a golden tower gleams in the late afternoon light."
+            }
+          },
+          {
+            "type": "attraction_highlight",
+            "attractionId": "seville-torre-del-oro",
+            "narrative": {
+              "nl": "Aan de oever van de Guadalquivir schittert de Torre del Oro, de 'Gouden Toren', als een vuurtoren uit een piratenfilm. Deze 13e-eeuwse toren was ooit onderdeel van de stadsmuren en bewaakt nog steeds de rivier. Het kleine maritieme museum binnenin vertelt verhalen van ontdekkingsreizigers die vanuit deze exacte plek vertrokken naar de Nieuwe Wereld.",
+              "en": "On the banks of the Guadalquivir, the Torre del Oro — the 'Golden Tower' — gleams like a lighthouse from a pirate movie. This 13th-century tower was once part of the city walls and still guards the river. The small maritime museum inside tells tales of explorers who departed from this very spot for the New World."
+            }
+          },
+          {
+            "type": "transition",
+            "narrative": {
+              "nl": "Je steekt de iconische Puente de Triana over. De ondergaande zon spiegelt in de rivier terwijl je de overkant bereikt — Triana, de wijk waar flamenco geboren werd. Aan de waterkant wacht het restaurant waar je vanavond een onvergetelijke zonsondergang zult meemaken.",
+              "en": "You cross the iconic Puente de Triana. The setting sun reflects in the river as you reach the other side — Triana, the neighborhood where flamenco was born. Along the waterfront, the restaurant where you'll experience an unforgettable sunset tonight awaits."
+            }
+          },
+          {
+            "type": "meal_highlight",
+            "mealType": "dinner",
+            "restaurantName": "Abades Triana",
+            "narrative": {
+              "nl": "Het hoogtepunt van de avond: diner bij Abades Triana, pal aan de Guadalquivir-rivier. Terwijl je geniet van innovatieve Andalusische keuken, kijk je uit over de verlichte Torre del Oro en de glinsterende rivier. De zonsondergang kleurt de hemel in tinten van roze en goud — het soort moment waarvoor je reist.",
+              "en": "The highlight of the evening: dinner at Abades Triana, right on the Guadalquivir river. As you savor innovative Andalusian cuisine, you gaze out at the illuminated Torre del Oro and the glittering river. The sunset paints the sky in shades of pink and gold — the kind of moment you travel for."
+            }
+          }
+        ]
+      },
+      {
+        "dayNumber": 3,
+        "city": "seville",
+        "title": {
+          "nl": "Dag 3: Triana, Ruïnes en Sherry",
+          "en": "Day 3: Triana, Ruins and Sherry"
+        },
+        "blocks": [
+          {
+            "type": "narrative",
+            "content": {
+              "nl": "Op je derde dag verlaat je het toeristische centrum en ontdek je het Sevilla dat de meeste bezoekers nooit zien. Over de brug naar Triana, met de bus naar Romeinse ruïnes, en met de trein naar het sherryparadijs van Jerez — vandaag is een dag van verrassingen en avontuur.",
+              "en": "On your third day, you leave the tourist center and discover the Seville most visitors never see. Across the bridge to Triana, by bus to Roman ruins, and by train to the sherry paradise of Jerez — today is a day of surprises and adventure."
+            }
+          },
+          {
+            "type": "attraction_highlight",
+            "attractionId": "seville-triana",
+            "narrative": {
+              "nl": "Triana is het kloppende hart van Sevilla's ziel. Deze wijk aan de overkant van de rivier is de geboorteplaats van flamenco, de thuisbasis van keramiekwerkplaatsen die al eeuwen dezelfde technieken gebruiken, en de plek waar je de meest authentieke tapas van de stad vindt. Loop door de Calle Betis, kijk hoe een pottenbakker een azulejo-tegel beschildert, en voel hoe het echte Sevilla ademt.",
+              "en": "Triana is the beating heart of Seville's soul. This neighborhood across the river is the birthplace of flamenco, home to ceramic workshops using the same techniques for centuries, and the place to find the city's most authentic tapas. Walk down Calle Betis, watch a potter paint an azulejo tile, and feel how the real Seville breathes."
+            }
+          },
+          {
+            "type": "transition",
+            "narrative": {
+              "nl": "Vanaf de Plaza de Armas stap je op bus M-172A. De dertig minuten rijden voeren je door de buitenwijken van Sevilla, langs velden met zonnebloemen en olijfbomen, tot de contouren van een tweeduizend jaar oud amfitheater aan de horizon verschijnen.",
+              "en": "From Plaza de Armas you board bus M-172A. The thirty-minute ride takes you through Seville's outskirts, past fields of sunflowers and olive trees, until the outline of a two-thousand-year-old amphitheater appears on the horizon."
+            }
+          },
+          {
+            "type": "attraction_highlight",
+            "attractionId": "seville-italica",
+            "narrative": {
+              "nl": "De ruïnes van Itálica, de geboorteplaats van twee Romeinse keizers: Trajanus en Hadrianus. Het enorme amfitheater — het derde grootste van het Romeinse Rijk — is zo goed bewaard dat je je kunt voorstellen hoe 25.000 toeschouwers hier ooit brulden. De mozaïekvloeren in de huizen zijn adembenemend gedetailleerd. Game of Thrones-fans herkennen de locatie als de 'Drakenput'.",
+              "en": "The ruins of Itálica, birthplace of two Roman emperors: Trajan and Hadrian. The enormous amphitheater — the third largest in the Roman Empire — is so well preserved you can imagine 25,000 spectators roaring here. The mosaic floors in the houses are breathtakingly detailed. Game of Thrones fans will recognize the location as the 'Dragonpit'."
+            }
+          },
+          {
+            "type": "transition",
+            "narrative": {
+              "nl": "Terug in Sevilla stap je op de trein naar Jerez de la Frontera. Het uur vliegt voorbij terwijl het Andalusische platteland aan je raam voorbijglijdt — golvende heuvels bedekt met wijnranken, witte dorpjes in de verte, en af en toe een eenzame stier onder een kurkeik.",
+              "en": "Back in Seville you board the train to Jerez de la Frontera. The hour flies by as the Andalusian countryside glides past your window — rolling hills covered with grapevines, white villages in the distance, and the occasional solitary bull beneath a cork oak."
+            }
+          },
+          {
+            "type": "attraction_highlight",
+            "attractionId": "seville-jerez",
+            "narrative": {
+              "nl": "Jerez de la Frontera — de wereldhoofdstad van sherry. Hier bezoek je de historische bodegas waar sherry rijpt in eeuwenoude vaten, bewaakt door de witte kalk van de muren. Een proeverij van fino, oloroso en Pedro Ximénez is een smaakexplosie die je nooit meer vergeet. En als bonus: de beroemde dansende paarden van de Koninklijke Andalusische Rijschool.",
+              "en": "Jerez de la Frontera — the world capital of sherry. Here you visit historic bodegas where sherry ages in centuries-old barrels, guarded by whitewashed walls. A tasting of fino, oloroso, and Pedro Ximénez is a flavor explosion you'll never forget. And as a bonus: the famous dancing horses of the Royal Andalusian School of Equestrian Art."
+            }
+          },
+          {
+            "type": "transition",
+            "narrative": {
+              "nl": "De trein brengt je terug naar Sevilla voor je laatste avond in deze magische stad. Door de verlichte straten loop je naar het restaurant waar je afscheid zult nemen — maar niet zonder stijl.",
+              "en": "The train brings you back to Seville for your last evening in this magical city. Through the illuminated streets you walk to the restaurant where you'll say your goodbyes — but not without style."
+            }
+          },
+          {
+            "type": "meal_highlight",
+            "mealType": "dinner",
+            "restaurantName": "Duo Tapas",
+            "narrative": {
+              "nl": "Je afscheid van Sevilla vier je bij Duo Tapas, waar traditionele smaken een moderne twist krijgen. De creatieve tapas hier zijn een feest voor zowel de ogen als het gehemelte — de perfecte afsluiting van drie onvergetelijke dagen in de mooiste stad van het zuiden.",
+              "en": "You celebrate your farewell to Seville at Duo Tapas, where traditional flavors get a modern twist. The creative tapas here are a feast for both the eyes and the palate — the perfect ending to three unforgettable days in the most beautiful city in the south."
+            }
+          }
+        ]
+      },
+      {
+        "dayNumber": 4,
+        "city": "cordoba",
+        "title": {
+          "nl": "Dag 4: Córdoba — Waar Twee Werelden Samenkomen",
+          "en": "Day 4: Córdoba — Where Two Worlds Collide"
+        },
+        "blocks": [
+          {
+            "type": "narrative",
+            "content": {
+              "nl": "De AVE-trein schiet in slechts een uur van Sevilla naar Córdoba, maar brengt je eeuwen terug in de tijd. Dit was ooit de grootste stad van Europa, het intellectuele centrum van de wereld, waar moslims, joden en christenen zij aan zij leefden. Die geest is nog overal voelbaar.",
+              "en": "The AVE train shoots from Seville to Córdoba in just an hour, but transports you centuries back in time. This was once Europe's largest city, the intellectual center of the world, where Muslims, Jews, and Christians lived side by side. That spirit is still everywhere."
+            }
+          },
+          {
+            "type": "attraction_highlight",
+            "attractionId": "cordoba-mezquita",
+            "narrative": {
+              "nl": "Niets bereidt je voor op de Mezquita. Je stapt binnen en het wordt plotseling stil in je hoofd. Meer dan 850 zuilen van jasper, onyx en marmer creëren een eindeloos bos van rood-witte bogen dat zich in alle richtingen uitstrekt. In het hart van deze Moorse moskee staat een complete Renaissance-kathedraal — een architectonisch onmogelijk meesterwerk dat je moet zien om te geloven. Dit is het moment van de reis waarop iedereen 'wauw' fluistert.",
+              "en": "Nothing prepares you for the Mezquita. You step inside and suddenly your mind goes quiet. More than 850 columns of jasper, onyx, and marble create an endless forest of red-and-white arches stretching in every direction. In the heart of this Moorish mosque stands a complete Renaissance cathedral — an architecturally impossible masterpiece you have to see to believe. This is the moment of the trip when everyone whispers 'wow.'"
+            }
+          },
+          {
+            "type": "transition",
+            "narrative": {
+              "nl": "Nog verdwaasd van de Mezquita stap je het felle Andalusische zonlicht in. Recht aan de overkant van de straat, amper twintig meter verderop, hangt de vertrouwde geur van gebakken aardappelen en eieren in de lucht.",
+              "en": "Still dazed from the Mezquita, you step into the bright Andalusian sunlight. Right across the street, barely twenty meters away, the familiar smell of fried potatoes and eggs hangs in the air."
+            }
+          },
+          {
+            "type": "meal_highlight",
+            "mealType": "lunch",
+            "restaurantName": "Bar Santos",
+            "narrative": {
+              "nl": "Recht tegenover de Mezquita staat Bar Santos, legendarisch om één ding: de beste tortilla de patatas van heel Córdoba. De omelet is zo dik als een taart, goudbruin van buiten, romig van binnen, en kost bijna niets. De perfecte lunch na een ochtend van verwondering.",
+              "en": "Right across from the Mezquita stands Bar Santos, legendary for one thing: the best tortilla de patatas in all of Córdoba. The omelet is thick as a cake, golden-brown outside, creamy inside, and costs next to nothing. The perfect lunch after a morning of wonder."
+            }
+          },
+          {
+            "type": "transition",
+            "narrative": {
+              "nl": "Met hernieuwde energie loop je tien minuten langs de oude stadsmuur naar het zuiden. De palmbomen werpen schaduwen op de keitjes, en dan verschijnen de torens van een ander koninklijk paleis — dit keer met tuinen die zelfs het Alcázar van Sevilla in de schaduw stellen.",
+              "en": "With renewed energy you walk ten minutes south along the old city wall. Palm trees cast shadows on the cobblestones, and then the towers of another royal palace appear — this time with gardens that rival even Seville's Alcázar."
+            }
+          },
+          {
+            "type": "attraction_highlight",
+            "attractionId": "cordoba-alcazar-reyes",
+            "narrative": {
+              "nl": "Het Alcázar de los Reyes Cristianos combineert militaire kracht met verrassende schoonheid. De tuinen — een cascade van terrassen, fonteinen en hagen — zijn zo rustgevend dat je hier uren kunt zitten. Hier planden Ferdinand en Isabella de verovering van Granada, en hier ontvingen ze Columbus voor zijn reis naar de Nieuwe Wereld.",
+              "en": "The Alcázar de los Reyes Cristianos combines military might with surprising beauty. The gardens — a cascade of terraces, fountains, and hedges — are so calming you could sit here for hours. Here Ferdinand and Isabella planned the conquest of Granada, and here they received Columbus before his voyage to the New World."
+            }
+          },
+          {
+            "type": "transition",
+            "narrative": {
+              "nl": "Vanuit de tuinen van het Alcázar loop je vijf minuten naar het noorden en je bent plotseling in een andere wereld: witgekalkte muren, bloemenpotten in elke kleur, en steegjes waar je je schouders bijna niet door kunt draaien.",
+              "en": "From the Alcázar gardens you walk five minutes north and suddenly you're in another world: whitewashed walls, flower pots in every color, and alleys so narrow you can barely turn your shoulders."
+            }
+          },
+          {
+            "type": "attraction_highlight",
+            "attractionId": "cordoba-juderia",
+            "narrative": {
+              "nl": "La Judería, het voormalige Joodse kwartier, is een doolhof van witgekalkte steegjes met bloemenpotten aan elke muur. Achter onopvallende deuren verbergen zich betegelde binnenplaatsen — Córdoba's beroemde patios, die elke mei wedijveren om de titel van mooiste van de stad. Loop langzaam, kijk omhoog, en laat je verrassen.",
+              "en": "La Judería, the former Jewish quarter, is a maze of whitewashed alleys with flower pots on every wall. Behind unassuming doors hide tiled courtyards — Córdoba's famous patios, which compete every May for the title of most beautiful in the city. Walk slowly, look up, and let yourself be surprised."
+            }
+          },
+          {
+            "type": "transition",
+            "narrative": {
+              "nl": "Een verborgen parel in de Judería verdient een stop — Casa Pepe, waar generaties Córdobezen al hun rabo de toro komen eten.",
+              "en": "A hidden gem in the Judería deserves a stop — Casa Pepe, where generations of Córdobans have been coming for their rabo de toro."
+            }
+          },
+          {
+            "type": "meal_highlight",
+            "mealType": "lunch",
+            "restaurantName": "Casa Pepe de la Judería",
+            "narrative": {
+              "nl": "Bij Casa Pepe wordt de rabo de toro (ossenstaart) urenlang gestoofd tot perfectie. Het terras biedt doorkijkjes naar de Mezquita, en de sfeer is die van een Andalusisch familiehuis waar iedereen welkom is.",
+              "en": "At Casa Pepe, the rabo de toro (oxtail) is slow-braised for hours to perfection. The terrace offers glimpses of the Mezquita, and the atmosphere is that of an Andalusian family home where everyone is welcome."
+            }
+          },
+          {
+            "type": "transition",
+            "narrative": {
+              "nl": "Vanuit de middeleeuwse straatjes loop je tien minuten naar het moderne stadscentrum. Het contrast is opvallend — en dan stuit je plotseling op iets dat je hier niet verwacht had.",
+              "en": "From the medieval alleys you walk ten minutes to the modern city center. The contrast is striking — and then you suddenly stumble upon something you didn't expect here."
+            }
+          },
+          {
+            "type": "attraction_highlight",
+            "attractionId": "cordoba-templo-romano",
+            "narrative": {
+              "nl": "Midden in het moderne stadscentrum staan de zuilen van een Romeinse tempel uit de 1e eeuw. De Templo Romano is een gratis open-air monument dat je eraan herinnert dat Córdoba al tweeduizend jaar een belangrijke stad is.",
+              "en": "In the middle of the modern city center stand the columns of a 1st-century Roman temple. The Templo Romano is a free open-air monument reminding you that Córdoba has been an important city for two thousand years."
+            }
+          },
+          {
+            "type": "transition",
+            "narrative": {
+              "nl": "Tussen de bezienswaardigheden door verdient het trendy La Regadera een tussenstop voor verfrissing — een korte wandeling door de zijstraatjes brengt je er.",
+              "en": "Between sights, the trendy La Regadera deserves a refreshment stop — a short walk through the side streets brings you there."
+            }
+          },
+          {
+            "type": "meal_highlight",
+            "mealType": "snack",
+            "restaurantName": "La Regadera",
+            "narrative": {
+              "nl": "La Regadera serveert een verfrissende mix van traditionele en moderne Córdobese keuken met lokale seizoensingrediënten. Ideaal voor een late-afternoon snack of een glas wijn op hun gezellige terras.",
+              "en": "La Regadera serves a refreshing mix of traditional and modern Córdoban cuisine with local seasonal ingredients. Ideal for a late-afternoon snack or a glass of wine on their cozy terrace."
+            }
+          },
+          {
+            "type": "transition",
+            "narrative": {
+              "nl": "Verfrist loop je een kwartier naar het noorden, door brede lanen met sinaasappelbomen, naar een paleis dat zelfs de meeste gidsen vergeten te vermelden.",
+              "en": "Refreshed, you walk fifteen minutes north through wide avenues lined with orange trees, toward a palace that even most guidebooks forget to mention."
+            }
+          },
+          {
+            "type": "attraction_highlight",
+            "attractionId": "cordoba-palacio-viana",
+            "narrative": {
+              "nl": "Het Palacio de Viana is het best bewaarde geheim van Córdoba: twaalf schitterende binnenplaatsen, elk met een eigen karakter, vol rozen, fonteinen en eeuwenoude bomen. Het paleis zelf is een tijdcapsule van adellijk leven, met kamers vol antiek meubilair en Vlaamse wandtapijten.",
+              "en": "The Palacio de Viana is Córdoba's best-kept secret: twelve stunning courtyards, each with its own character, full of roses, fountains, and ancient trees. The palace itself is a time capsule of noble life, with rooms full of antique furniture and Flemish tapestries."
+            }
+          },
+          {
+            "type": "transition",
+            "narrative": {
+              "nl": "De zon begint te zakken als je een kwartier terug naar het zuiden wandelt. Door de avondschemer loop je naar de rivier, waar de oudste brug van de stad op je wacht in het gouden licht.",
+              "en": "The sun begins to set as you walk fifteen minutes back south. Through the evening dusk you head for the river, where the city's oldest bridge awaits you in the golden light."
+            }
+          },
+          {
+            "type": "attraction_highlight",
+            "attractionId": "cordoba-roman-bridge",
+            "narrative": {
+              "nl": "De Romeinse Brug, 2000 jaar oud en 16 bogen lang, strekt zich uit over de Guadalquivir. Bij zonsondergang, wanneer het licht de stenen in warm goud baadt en de Mezquita als silhouet achter je opdoemt, is dit misschien wel het mooiste fotomoment van je hele reis.",
+              "en": "The Roman Bridge, 2,000 years old and 16 arches long, stretches across the Guadalquivir. At sunset, when the light bathes the stones in warm gold and the Mezquita looms as a silhouette behind you, this might be the most beautiful photo moment of your entire trip."
+            }
+          },
+          {
+            "type": "transition",
+            "narrative": {
+              "nl": "Vanaf de brug loop je tien minuten door de avondstraten, langs verlichte etalages en drukke terrasjes, naar het enige volledig omsloten plein van Andalusië.",
+              "en": "From the bridge you walk ten minutes through the evening streets, past illuminated shop windows and busy terraces, to Andalusia's only fully enclosed square."
+            }
+          },
+          {
+            "type": "attraction_highlight",
+            "attractionId": "cordoba-plaza-corredera",
+            "narrative": {
+              "nl": "Plaza de la Corredera is het enige volledig omsloten plein van Andalusië, ooit gebruikt voor stierengevechten en openbare markten. Nu is het een ontspannen plek om een café con leche te drinken terwijl je de ochre-gekleurde gevels bewondert — een verrassend Castiliaans plein in het hart van Andalusië.",
+              "en": "Plaza de la Corredera is Andalusia's only fully enclosed square, once used for bullfights and public markets. Now it's a relaxing spot for a café con leche while admiring the ochre-colored facades — a surprisingly Castilian square in the heart of Andalusia."
+            }
+          },
+          {
+            "type": "transition",
+            "narrative": {
+              "nl": "De honger meldt zich weer als je langs het plein de avondlijke straten in loopt, op weg naar een restaurant met uitzicht op het mooiste bouwwerk dat je vandaag hebt gezien.",
+              "en": "Hunger announces itself again as you leave the square and walk into the evening streets, heading for a restaurant with views of the most beautiful building you saw today."
+            }
+          },
+          {
+            "type": "meal_highlight",
+            "mealType": "dinner",
+            "restaurantName": "Bodegas Mezquita",
+            "narrative": {
+              "nl": "Voor het diner laat je je verwennen bij Bodegas Mezquita, met uitzicht op de verlichte Mezquita. Hun salmorejo (een dikkere, romigere variant van gazpacho) is hemels, en de flamenquín — een Córdobese specialiteit van ham gewikkeld in varkensvlees — is het proberen meer dan waard.",
+              "en": "For dinner, you treat yourself at Bodegas Mezquita, with views of the illuminated Mezquita. Their salmorejo (a thicker, creamier version of gazpacho) is heavenly, and the flamenquín — a Córdoban specialty of ham wrapped in pork — is absolutely worth trying."
+            }
+          }
+        ]
+      },
+      {
+        "dayNumber": 5,
+        "city": "granada",
+        "title": {
+          "nl": "Dag 5: Het Alhambra — Een Droom in Steen",
+          "en": "Day 5: The Alhambra — A Dream in Stone"
+        },
+        "blocks": [
+          {
+            "type": "narrative",
+            "content": {
+              "nl": "De ochtendtrein van Córdoba naar Granada duurt bijna twee uur, maar elke minuut is het waard. Het landschap verandert dramatisch — de vlakke rivier-vallei maakt plaats voor golvende heuvels vol olijfbomen, en dan doemen plotseling de besneeuwde toppen van de Sierra Nevada op. Granada, aan de voet van deze bergketen, is de perfecte setting voor het kroonjuweel van je reis.",
+              "en": "The morning train from Córdoba to Granada takes nearly two hours, but every minute is worth it. The landscape changes dramatically — the flat river valley gives way to rolling hills full of olive trees, and then suddenly the snow-capped peaks of the Sierra Nevada appear. Granada, at the foot of this mountain range, is the perfect setting for the crown jewel of your trip."
+            }
+          },
+          {
+            "type": "attraction_highlight",
+            "attractionId": "granada-alhambra",
+            "narrative": {
+              "nl": "Het Alhambra is meer dan een paleis — het is een complete wereld. De Nasridenpalezen zijn een hallucinatie van stucwerk zo fijn als kant, waterbekkens die de hemel weerspiegelen, en lichteffecten die elke kamer in een lantaarn veranderen. De Leeuwenhof, met zijn twaalf marmeren leeuwen en kristalhelder water, is zo volmaakt dat het surrealistisch voelt. De Generalife-tuinen, hoog boven de stad, bieden een vredige afsluiting met het geluid van klaterende fonteinen en het uitzicht op de Sierra Nevada. Reserveer minstens drie uur — en bereid je voor op het mooiste dat je ooit hebt gezien.",
+              "en": "The Alhambra is more than a palace — it's a complete world. The Nasrid Palaces are a hallucination of stucco work as fine as lace, reflecting pools mirroring the sky, and light effects that turn every room into a lantern. The Court of the Lions, with its twelve marble lions and crystal-clear water, is so perfect it feels surreal. The Generalife gardens, high above the city, offer a peaceful conclusion with the sound of bubbling fountains and views of the Sierra Nevada. Reserve at least three hours — and prepare yourself for the most beautiful thing you've ever seen."
+            }
+          },
+          {
+            "type": "transition",
+            "narrative": {
+              "nl": "Met je hoofd nog vol van het Alhambra neem je minibus C30 de heuvel af. Het busje kronkelt door steile straatjes, langs ommuurde tuinen en gepleisterde gevels, tot je uitstapt in het oudste deel van Granada — waar de straten steil omhoog klimmen en de huizen steeds witter worden.",
+              "en": "With your head still full of the Alhambra, you take minibus C30 down the hill. The bus winds through steep lanes, past walled gardens and plastered facades, until you step out in the oldest part of Granada — where the streets climb steeply and the houses grow ever whiter."
+            }
+          },
+          {
+            "type": "attraction_highlight",
+            "attractionId": "granada-albaicin",
+            "narrative": {
+              "nl": "Het Albaicín — UNESCO Werelderfgoed — is het oude Moorse kwartier dat al bijna duizend jaar onveranderd is. De smalle straatjes, de carmenes (ommuurde tuinen met spectaculaire uitzichten), en de Mirador de San Nicolás met zijn legendarische panorama over het Alhambra tegen de achtergrond van de Sierra Nevada: dit is het beeld dat je altijd bij je zult dragen. Bij zonsondergang, wanneer het Alhambra oplicht in goud en de lucht diep paars kleurt, begrijp je waarom Granada Arabisch is voor 'paradijs'.",
+              "en": "The Albaicín — UNESCO World Heritage Site — is the old Moorish quarter that has remained virtually unchanged for almost a thousand years. The narrow streets, the carmenes (walled gardens with spectacular views), and the Mirador de San Nicolás with its legendary panorama of the Alhambra against the backdrop of the Sierra Nevada: this is the image you'll carry forever. At sunset, when the Alhambra lights up in gold and the sky turns deep purple, you understand why Granada is Arabic for 'paradise.'"
+            }
+          },
+          {
+            "type": "transition",
+            "narrative": {
+              "nl": "De zonsondergang trekt langzaam weg terwijl je door de steile straatjes van het Albaicín afdaalt. De lantaarns gaan aan, de lucht is zacht en warm, en je volgt het geluid van stromend water naar een verborgen carmen met een ongelooflijk terras.",
+              "en": "The sunset slowly fades as you descend through the steep lanes of the Albaicín. The lanterns flicker on, the air is soft and warm, and you follow the sound of flowing water to a hidden carmen with an incredible terrace."
+            }
+          },
+          {
+            "type": "meal_highlight",
+            "mealType": "dinner",
+            "restaurantName": "Carmen de Aben Humeya",
+            "narrative": {
+              "nl": "Het diner is onvergetelijk: Carmen de Aben Humeya, een restaurant verscholen in een historische carmen met een terras dat uitkijkt over het verlichte Alhambra. De keuken combineert Andalusische en Arabische invloeden — net als Granada zelf. Bij het kaarslicht, met het Alhambra als decor, weet je: dit is een van die avonden die je nooit vergeet.",
+              "en": "Dinner is unforgettable: Carmen de Aben Humeya, a restaurant hidden in a historic carmen with a terrace overlooking the illuminated Alhambra. The cuisine combines Andalusian and Arabic influences — just like Granada itself. By candlelight, with the Alhambra as your backdrop, you know: this is one of those evenings you'll never forget."
+            }
+          }
+        ]
+      },
+      {
+        "dayNumber": 6,
+        "city": "granada",
+        "title": {
+          "nl": "Dag 6: Kathedralen, Flamenco en de Ziel van Granada",
+          "en": "Day 6: Cathedrals, Flamenco and the Soul of Granada"
+        },
+        "blocks": [
+          {
+            "type": "narrative",
+            "content": {
+              "nl": "Na het Alhambra zou je denken dat Granada geen verrassingen meer heeft. Je hebt het mis. Vandaag ontdek je de stad van Ferdinand en Isabella, de geheimen van de zigeuners in Sacromonte, en een wandeling langs de mooiste rivier van Spanje.",
+              "en": "After the Alhambra, you might think Granada has no more surprises. You'd be wrong. Today you discover the city of Ferdinand and Isabella, the secrets of the gypsies in Sacromonte, and a walk along Spain's most beautiful river."
+            }
+          },
+          {
+            "type": "attraction_highlight",
+            "attractionId": "granada-capilla-real",
+            "narrative": {
+              "nl": "De Capilla Real is het graf van Ferdinand en Isabella, de Katholieke Koningen die Spanje verenigden en de wereld voorgoed veranderden. De marmeren graftombes zijn meesterwerken van Renaissance-beeldhouwkunst, en de koninklijke schatkamer bevat Isabella's persoonlijke sieradencollectie en het zwaard van Ferdinand. Dit is geschiedenis die je kunt aanraken.",
+              "en": "The Capilla Real is the tomb of Ferdinand and Isabella, the Catholic Monarchs who united Spain and changed the world forever. The marble tombs are masterpieces of Renaissance sculpture, and the royal treasury contains Isabella's personal jewelry collection and Ferdinand's sword. This is history you can touch."
+            }
+          },
+          {
+            "type": "transition",
+            "narrative": {
+              "nl": "Je stapt de Capilla Real uit en hoeft slechts een paar meter te lopen — de ingang van de kathedraal bevindt zich direct naast het koninklijke graf, alsof de twee gebouwen in elkaars armen liggen.",
+              "en": "You step out of the Capilla Real and need only walk a few meters — the cathedral entrance is right next to the royal tomb, as if the two buildings are cradled in each other's arms."
+            }
+          },
+          {
+            "type": "attraction_highlight",
+            "attractionId": "granada-cathedral",
+            "narrative": {
+              "nl": "De Kathedraal van Granada is een kolossaal Renaissance-bouwwerk dat meer dan 200 jaar in de maak was. De witte interieurs baden in het licht van enorme ramen, en het contrast met de intieme Capilla Real is opvallend — alsof je van een fluistering naar een symfonieorkest gaat.",
+              "en": "Granada's Cathedral is a colossal Renaissance structure that took over 200 years to build. The white interiors are bathed in light from enormous windows, and the contrast with the intimate Capilla Real is striking — as if moving from a whisper to a symphony orchestra."
+            }
+          },
+          {
+            "type": "transition",
+            "narrative": {
+              "nl": "Vanuit de kathedraal loop je tien minuten bergafwaarts, door smalle straatjes met winkeltjes vol Arabische lampen en specerijen. Het geluid van de rivier wordt luider naarmate je de Darro nadert, en plotseling opent zich een van de mooiste vergezichten van Spanje.",
+              "en": "From the cathedral you walk ten minutes downhill, through narrow streets lined with shops full of Arabic lamps and spices. The sound of the river grows louder as you approach the Darro, and suddenly one of Spain's most beautiful views opens up before you."
+            }
+          },
+          {
+            "type": "attraction_highlight",
+            "attractionId": "granada-carrera-del-darro",
+            "narrative": {
+              "nl": "De Carrera del Darro is misschien wel de mooiste straat van Spanje. Het smalle pad volgt de rivier Darro langs middeleeuwse bruggen en oeroude Arabische badhuizen, met het Alhambra dat boven je uittorent. Elke bocht onthult een nieuw postkaarttafereel. Neem je tijd, want je wilt dit voor altijd onthouden.",
+              "en": "The Carrera del Darro may be the most beautiful street in Spain. The narrow path follows the Darro river past medieval bridges and ancient Arab baths, with the Alhambra towering above you. Every bend reveals a new postcard scene. Take your time, because you'll want to remember this forever."
+            }
+          },
+          {
+            "type": "transition",
+            "narrative": {
+              "nl": "Aan het einde van de Carrera del Darro sla je een zijstraat in naar het centrum. Na een paar minuten stap je een drukke, rommelige bar binnen waar de vaten vermouth tot het plafond reiken — dit is het echte Granada.",
+              "en": "At the end of the Carrera del Darro you turn into a side street toward the center. After a few minutes you step into a busy, cluttered bar where vermouth barrels reach the ceiling — this is the real Granada."
+            }
+          },
+          {
+            "type": "meal_highlight",
+            "mealType": "lunch",
+            "restaurantName": "Bodegas Castañeda",
+            "narrative": {
+              "nl": "Lunch bij Bodegas Castañeda, een van Granada's meest geliefde tapas-instituties. De vaten met vermouth staan opgestapeld langs de muren, de ham hangt aan het plafond, en de sfeer is zo authentiek dat het voelt alsof de tijd hier stil is blijven staan. Probeer hun beroemde tablas — houten planken beladen met ham, kaas en olijven.",
+              "en": "Lunch at Bodegas Castañeda, one of Granada's most beloved tapas institutions. The vermouth barrels are stacked along the walls, ham hangs from the ceiling, and the atmosphere is so authentic it feels like time has stood still. Try their famous tablas — wooden boards loaded with ham, cheese, and olives."
+            }
+          },
+          {
+            "type": "transition",
+            "narrative": {
+              "nl": "Na de lunch loop je een kort stukje door de kleurrijke Calderería Nueva — de 'theestraat' van Granada, vol Noord-Afrikaanse winkeltjes. De geur van munt en kaneel trekt je naar binnen bij een schitterend betegeld theehuis.",
+              "en": "After lunch you walk a short stretch through the colorful Calderería Nueva — Granada's 'tea street,' full of North African shops. The scent of mint and cinnamon draws you into a beautifully tiled tea house."
+            }
+          },
+          {
+            "type": "meal_highlight",
+            "mealType": "snack",
+            "restaurantName": "Arrayanes",
+            "narrative": {
+              "nl": "Arrayanes, een Noord-Afrikaans juweel in de Calderería Nueva. Hun Marokkaanse theeceremonie met verse muntthee en zoete baklava is de perfecte middag-pick-me-up, genoten op kleurrijke kussens in een betegeld interieur dat je naar Fez transporteert.",
+              "en": "Arrayanes, a North African gem on the Calderería Nueva. Their Moroccan tea ceremony with fresh mint tea and sweet baklava is the perfect afternoon pick-me-up, enjoyed on colorful cushions in a tiled interior that transports you to Fez."
+            }
+          },
+          {
+            "type": "transition",
+            "narrative": {
+              "nl": "Vanuit de theestraat loop je twintig minuten omhoog, steeds steiler, langs witgekalkte huizen die in de heuvel gegraven lijken. De huizen worden kleiner, de straten stiller, en plotseling zie je de eerste grotwoning — uitgehouwen in de rode klei van de Sacromonte-heuvel.",
+              "en": "From the tea street you walk twenty minutes uphill, ever steeper, past whitewashed houses that seem carved into the hillside. The houses grow smaller, the streets quieter, and suddenly you see the first cave dwelling — carved from the red clay of the Sacromonte hill."
+            }
+          },
+          {
+            "type": "attraction_highlight",
+            "attractionId": "granada-sacromonte",
+            "narrative": {
+              "nl": "Sacromonte is waar de magie van Granada het diepst wordt. Dit zigeunerkwartier, uitgehouwen in de heuvels, is de geboorteplaats van de zambra — de meest rauwe, emotionele vorm van flamenco. De grotwoningen, nu omgetoverd tot tablaos, bieden intieme shows waar de dans zo dichtbij is dat je de stamping van hakken in je borst voelt. Dit is geen voorstelling — dit is een ritueel.",
+              "en": "Sacromonte is where Granada's magic runs deepest. This gypsy quarter, carved into the hillside, is the birthplace of the zambra — the rawest, most emotional form of flamenco. The cave dwellings, now transformed into tablaos, offer intimate shows where the dance is so close you feel the stamping of heels in your chest. This isn't a performance — it's a ritual."
+            }
+          },
+          {
+            "type": "transition",
+            "narrative": {
+              "nl": "Na de emoties van de flamenco daal je langzaam af in de avondschemering. De lichten van Granada twinkelen beneden je als sterren. In een rustig straatje op de grens van het Albaicín wacht een intiem Marokkaans restaurant — de perfecte afsluiting van een dag vol ziel.",
+              "en": "After the emotions of the flamenco, you slowly descend in the twilight. The lights of Granada twinkle below you like stars. In a quiet lane on the edge of the Albaicín, an intimate Moroccan restaurant awaits — the perfect close to a day full of soul."
+            }
+          },
+          {
+            "type": "meal_highlight",
+            "mealType": "dinner",
+            "restaurantName": "Om Kalsum",
+            "narrative": {
+              "nl": "Om Kalsum is de perfecte afsluiting: een intiem Marokkaans restaurant waar de couscous handgerold is en de tajine urenlang pruttelt. De Arabische invloeden in Granada's keuken worden nergens zo mooi belichaamd als hier — het voelt als eten in een riad in Marrakech, maar dan in het hart van Andalusië.",
+              "en": "Om Kalsum is the perfect close: an intimate Moroccan restaurant where the couscous is hand-rolled and the tajine simmers for hours. The Arabic influences in Granada's cuisine are nowhere more beautifully embodied than here — it feels like dining in a riad in Marrakech, but in the heart of Andalusia."
+            }
+          }
+        ]
+      },
+      {
+        "dayNumber": 7,
+        "city": "granada",
+        "title": {
+          "nl": "Dag 7: Bergen, Zee en Afscheid",
+          "en": "Day 7: Mountains, Sea and Farewell"
+        },
+        "blocks": [
+          {
+            "type": "narrative",
+            "content": {
+              "nl": "De laatste dag is een verademing — letterlijk. Weg van de steden, de paleizen en de kathedralen, en op naar de wilde natuur die Andalusië zo bijzonder maakt. In een huurauto rijd je een uur en een kwartier naar het zuiden, de Sierra Nevada in. De weg kronkelt omhoog langs ravijnen en olijfgaarden, de lucht wordt kouder en helderder, en dan verschijnen de eerste witte dorpjes als stipjes tegen de bergwand.",
+              "en": "The last day is a breath of fresh air — literally. Away from the cities, the palaces, and the cathedrals, and into the wild nature that makes Andalusia so special. In a rental car you drive an hour and fifteen minutes south, into the Sierra Nevada. The road winds upward along ravines and olive groves, the air grows cooler and clearer, and then the first white villages appear like dots against the mountainside."
+            }
+          },
+          {
+            "type": "attraction_highlight",
+            "attractionId": "granada-alpujarras",
+            "narrative": {
+              "nl": "Las Alpujarras is een andere wereld. De witte bergdorpjes, vastgeklampt aan de steile flanken van de Sierra Nevada, lijken buiten de tijd te bestaan. Hier leven mensen nog in huizen met platte daken en dikke muren, kweken ze hun eigen groenten, en maken ze ham die maandenlang in de berglucht droogt. Een wandeling door de dorpjes Pampaneira, Bubión en Capileira voelt als tijdreizen naar het Spanje van honderd jaar geleden.",
+              "en": "Las Alpujarras is another world. The white mountain villages, clinging to the steep flanks of the Sierra Nevada, seem to exist outside of time. Here people still live in houses with flat roofs and thick walls, grow their own vegetables, and make ham that dries for months in the mountain air. A walk through the villages of Pampaneira, Bubión, and Capileira feels like time-traveling to the Spain of a hundred years ago."
+            }
+          },
+          {
+            "type": "transition",
+            "narrative": {
+              "nl": "Na de bergen rijd je een uur naar het zuiden. Het landschap verandert dramatisch — de besneeuwde toppen maken plaats voor tropische vergezichten, de temperatuur stijgt, en plotseling ruik je de zee. De weg daalt in haarspeldbochten naar de kust, en aan de horizon glinstert de Middellandse Zee.",
+              "en": "After the mountains you drive an hour south. The landscape changes dramatically — the snowy peaks give way to tropical vistas, the temperature rises, and suddenly you smell the sea. The road descends in hairpin bends toward the coast, and on the horizon the Mediterranean Sea glistens."
+            }
+          },
+          {
+            "type": "attraction_highlight",
+            "attractionId": "granada-costa-tropical",
+            "narrative": {
+              "nl": "De Costa Tropical is Granada's verrassende geheim: een subtropische kuststrook waar avocado's, mango's en chirimoya's groeien. Het strand van Almuñécar, ingeklemd tussen rotsen en palmbomen, biedt kristalhelder water en een ontspannen sfeer die mijlenver verwijderd is van de toeristische costa's. De perfecte plek om je reis te laten bezinken met je voeten in het zand.",
+              "en": "The Costa Tropical is Granada's surprising secret: a subtropical coastal strip where avocados, mangoes, and cherimoyas grow. The beach at Almuñécar, nestled between rocks and palm trees, offers crystal-clear water and a relaxed atmosphere miles away from the tourist costas. The perfect place to let your trip sink in with your feet in the sand."
+            }
+          },
+          {
+            "type": "transition",
+            "narrative": {
+              "nl": "De terugrit naar Granada duurt een uur — je rijdt terug door de bergen, langs dezelfde olijfbomen en ravijnen, maar nu met zout op je huid en de zon laag aan de hemel. Het is tijd voor een laatste culinair afscheid.",
+              "en": "The drive back to Granada takes an hour — you travel back through the mountains, past the same olive trees and ravines, but now with salt on your skin and the sun low in the sky. It's time for one last culinary farewell."
+            }
+          },
+          {
+            "type": "meal_highlight",
+            "mealType": "lunch",
+            "restaurantName": "Bodegas Castañeda",
+            "narrative": {
+              "nl": "Terug in Granada sluit je je culinaire reis af waar je begon: bij Bodegas Castañeda. Eén laatste ronde tapas, één laatste glas fino sherry, en de belofte om terug te komen. Want dat ga je doen. Granada laat niemand los.",
+              "en": "Back in Granada, you close your culinary journey where you started: at Bodegas Castañeda. One last round of tapas, one last glass of fino sherry, and the promise to return. Because you will. Granada never lets anyone go."
+            }
+          }
+        ]
+      }
+    ],
+    "conclusion": {
+      "nl": "Zeven dagen door Andalusië — van Sevilla's koninklijke paleizen tot Granada's betoverende Alhambra, van de eindeloze zuilen van de Mezquita tot de rauwe flamenco in Sacromonte's grotten, van de smalle straatjes van Barrio Santa Cruz tot de witte bergdorpen van de Alpujarras. Elke dag onthulde een nieuw wonder, elke maaltijd vertelde een verhaal, elke zonsondergang was mooier dan de vorige. Dit is niet het soort reis dat je vergeet. Dit is het soort reis dat deel van je wordt — en je voor altijd terugtrekt naar het zuiden van Spanje.",
+      "en": "Seven days through Andalusia — from Seville's royal palaces to Granada's enchanting Alhambra, from the endless columns of the Mezquita to the raw flamenco in Sacromonte's caves, from the narrow streets of Barrio Santa Cruz to the white mountain villages of the Alpujarras. Every day revealed a new wonder, every meal told a story, every sunset was more beautiful than the last. This is not the kind of trip you forget. This is the kind of trip that becomes part of you — and forever pulls you back to the south of Spain."
+    }
+  }
+}

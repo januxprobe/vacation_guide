@@ -287,5 +287,31 @@
     "whatIf": "Wat-als modus",
     "toggleActivity": "Activiteit in-/uitschakelen",
     "excluded": "{count} activiteiten uitgesloten"
+  },
+  "story": {
+    "title": "Reisverhaal",
+    "generate": "Verhaal Genereren",
+    "generating": "Verhaal wordt geschreven...",
+    "regenerate": "Opnieuw Genereren",
+    "generatedAt": "Gegenereerd op {date}",
+    "error": "Het verhaal kon niet worden gegenereerd. Probeer het opnieuw.",
+    "noItinerary": "Voeg eerst een reisplanning toe om een verhaal te genereren.",
+    "print": "Afdrukken",
+    "share": "Delen",
+    "chapter": "Hoofdstuk {number}",
+    "stylePicker": {
+      "title": "Kies een Vertelstijl",
+      "subtitle": "Hoe wil je dat je reisverhaal wordt verteld?"
+    },
+    "styles": {
+      "adventure": "Avontuurlijk",
+      "adventureDesc": "Spannend en vol ontdekkingen, verborgen pareltjes en sensatie",
+      "cultural": "Cultureel",
+      "culturalDesc": "Verrijkend met historische context, kunst en architectuur",
+      "romantic": "Romantisch",
+      "romanticDesc": "Warm en intiem, met mooie plekken en momenten om te delen",
+      "family": "Familie",
+      "familyDesc": "Leuk en inclusief, met tips voor het hele gezin"
+    }
   }
 }

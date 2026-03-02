@@ -229,4 +229,18 @@
     background: white !important;
     font-size: 12pt !important;
   }
+
+  /* Story print styles */
+  .story-container {
+    font-family: Georgia, serif !important;
+  }
+
+  .story-chapter {
+    page-break-inside: avoid;
+  }
+
+  .story-actions,
+  .trip-context-bar {
+    display: none !important;
+  }
 }
