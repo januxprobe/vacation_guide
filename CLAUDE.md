@@ -7,6 +7,7 @@
 - **Do NOT run tests unless explicitly asked.** Never run `npx playwright test` or `npm run build` on your own. The user will tell you when to test.
 - **Always update documentation before committing.** Before creating a commit, ensure `CLAUDE.md`, `README.md`, and `RESOURCES.md` are up to date with any changes made (new files, updated structure, new features, test counts, etc.).
 - **Record agreed plans immediately.** When the user agrees to a proposed plan (feature list, UX improvements, refactoring steps, etc.), write it as a checklist in the `## Agreed Plans` section at the bottom of this file BEFORE starting implementation. Each item should have a `[ ]` checkbox. Check items off (`[x]`) as they are implemented and committed. This ensures nothing gets lost between sessions.
+- **Test-Driven Development (TDD).** Always write tests FIRST, then implement the feature/fix to make the tests pass. The workflow is: (1) write a failing test that describes the expected behavior, (2) implement the minimum code to make the test pass, (3) refactor if needed. This applies to both Vitest unit/API tests and Playwright integration tests.
 
 ## Project Overview
 
