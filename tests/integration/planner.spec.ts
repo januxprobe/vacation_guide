@@ -157,25 +157,67 @@ test.describe('Planner', () => {
     console.log('✅ Walking gaps and print button work correctly!');
   });
 
-  test('should show comments section in planner panel', async ({ page }) => {
+  test('should add, display, and delete a comment', async ({ page }) => {
     await page.goto(`${BASE_URL}/nl/${TRIP_SLUG}/planner`);
     await page.waitForSelector('.leaflet-container', { timeout: 15000 });
     console.log('✓ Planner loaded');
 
-    const commentsToggle = page.getByText('Opmerkingen');
-    await expect(commentsToggle.first()).toBeVisible();
-    console.log('✓ Comments section toggle visible');
-
-    await commentsToggle.first().click();
+    // Open comments section
+    const commentsToggle = page.getByText('Opmerkingen').first();
+    await expect(commentsToggle).toBeVisible();
+    await commentsToggle.click();
     await page.waitForTimeout(500);
+    console.log('✓ Comments section opened');
 
-    const hasNoComments = await page.getByText('Nog geen opmerkingen').isVisible().catch(() => false);
-    const hasInput = await page.getByPlaceholder('Schrijf een opmerking...').isVisible().catch(() => false);
+    // Verify empty state
+    await expect(page.getByText('Nog geen opmerkingen')).toBeVisible();
+    console.log('✓ "No comments yet" message visible');
 
-    if (hasNoComments) console.log('✓ "No comments yet" message visible');
-    if (hasInput) console.log('✓ Comment input visible');
-    expect(hasNoComments || hasInput).toBe(true);
+    // Fill in name and comment text
+    const nameInput = page.getByPlaceholder('Je naam');
+    const textInput = page.getByPlaceholder('Schrijf een opmerking...');
+    await expect(nameInput).toBeVisible();
+    await expect(textInput).toBeVisible();
 
-    console.log('✅ Comments section works correctly!');
+    await nameInput.fill('Playwright Tester');
+    await textInput.fill('Dit is een test opmerking!');
+    console.log('✓ Filled in name and comment text');
+
+    // Submit the comment
+    await page.locator('button[type="submit"]').click();
+    await page.waitForTimeout(1000);
+    console.log('✓ Comment submitted');
+
+    // Verify the comment appears
+    await expect(page.getByText('Playwright Tester')).toBeVisible();
+    await expect(page.getByText('Dit is een test opmerking!')).toBeVisible();
+    console.log('✓ Comment visible with author and text');
+
+    // Verify "No comments" message is gone
+    await expect(page.getByText('Nog geen opmerkingen')).not.toBeVisible();
+    console.log('✓ Empty state message gone');
+
+    // Verify the text input was cleared after submit
+    await expect(textInput).toHaveValue('');
+    console.log('✓ Text input cleared after submit');
+
+    // Verify comment count badge shows (1)
+    await expect(page.getByText('(1)')).toBeVisible();
+    console.log('✓ Comment count badge shows (1)');
+
+    // Delete the comment — hover to reveal trash button, then click
+    const commentCard = page.locator('.bg-gray-50.rounded-lg').filter({ hasText: 'Playwright Tester' });
+    await commentCard.hover();
+    const deleteButton = commentCard.locator('button', { has: page.locator('.lucide-trash-2') });
+    await deleteButton.click();
+    await page.waitForTimeout(1000);
+    console.log('✓ Delete button clicked');
+
+    // Verify comment is removed
+    await expect(page.getByText('Dit is een test opmerking!')).not.toBeVisible();
+    await expect(page.getByText('Nog geen opmerkingen')).toBeVisible();
+    console.log('✓ Comment deleted, empty state restored');
+
+    console.log('✅ Comments add/display/delete flow works correctly!');
   });
 });

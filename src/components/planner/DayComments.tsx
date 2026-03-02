@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { MessageSquare, Trash2, ChevronDown, ChevronUp, Send } from 'lucide-react';
 import { useDayComments } from '@/hooks/useDayComments';
@@ -15,6 +15,15 @@ export default function DayComments({ tripSlug, dayNumber }: DayCommentsProps) {
   const t = useTranslations();
   const { comments, addComment, deleteComment, isLoading } = useDayComments(tripSlug, dayNumber);
   const [isOpen, setIsOpen] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll to show expanded content when opened
+  useEffect(() => {
+    if (isOpen && contentRef.current) {
+      contentRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }, [isOpen]);
+
   const [name, setName] = useState(() => {
     if (typeof window !== 'undefined') {
       return localStorage.getItem('vacation-guide:commenter-name') ?? '';
@@ -73,7 +82,7 @@ export default function DayComments({ tripSlug, dayNumber }: DayCommentsProps) {
       </button>
 
       {isOpen && (
-        <div className="mt-3 space-y-3">
+        <div ref={contentRef} className="mt-3 space-y-3">
           {isLoading ? (
             <div className="text-xs text-gray-400">{t('common.loading')}</div>
           ) : comments.length === 0 ? (
