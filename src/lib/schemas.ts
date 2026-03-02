@@ -57,6 +57,7 @@ export const attractionSchema = z.object({
   bookingRequired: z.boolean(),
   openingHours: openingHoursSchema.optional(),
   website: z.string().optional(),
+  wikipediaSlug: z.string().optional(),
   tips: localizedStringSchema.optional(),
 });
 

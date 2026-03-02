@@ -2,7 +2,6 @@
 
 import { useTranslations, useLocale } from 'next-intl';
 import { Link } from '@/i18n/routing';
-import Image from 'next/image';
 import type { Attraction } from '@/types';
 import { useTripConfig } from '@/config/trip-context';
 import { findCity, getCityBadgeStyle, getCityGradientStyle, getCityColor } from '@/lib/city-colors';
@@ -54,12 +53,11 @@ export default function AttractionCard({ attraction, isFavorite, onToggleFavorit
       {/* Thumbnail */}
       <div className="relative h-40 overflow-hidden">
         {attraction.thumbnail ? (
-          <Image
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
             src={attraction.thumbnail}
             alt={attraction.name}
-            fill
-            className="object-cover"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="absolute inset-0 w-full h-full object-cover"
           />
         ) : (
           <div

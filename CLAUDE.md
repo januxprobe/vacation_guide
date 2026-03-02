@@ -167,7 +167,7 @@ vacation_guide/
 │   │   └── useOsrmRoute.ts             # Valhalla pedestrian walking route hook with cache
 │   ├── lib/
 │   │   ├── utils.ts                     # cn() helper from shadcn
-│   │   ├── wikimedia.ts                 # Wikipedia/Wikimedia Commons API for real attraction images
+│   │   ├── wikimedia.ts                 # Multi-language media enrichment (Wikidata, Wikipedia, Commons, tourism sites)
 │   │   ├── schemas.ts                   # Zod schemas (attraction, tripConfig, itinerary, restaurant, story)
 │   │   ├── normalize-itinerary.ts      # Normalize AI-generated itinerary data before Zod validation
 │   │   ├── normalize-story.ts          # Normalize AI-generated story data before Zod validation
@@ -208,7 +208,8 @@ vacation_guide/
 │   │   ├── planner-utils.test.ts     # Time parsing/formatting (17 tests)
 │   │   ├── normalize-itinerary.test.ts # AI itinerary normalization (37 tests)
 │   │   ├── normalize-story.test.ts   # AI story normalization (22 tests)
-│   │   └── city-colors.test.ts       # Color utility functions (16 tests)
+│   │   ├── city-colors.test.ts       # Color utility functions (16 tests)
+│   │   └── wikimedia.test.ts         # Wikimedia enrichment pipeline (35 tests)
 │   ├── hooks/                         # React hook tests (Vitest)
 │   │   ├── useFavorites.test.ts      # Favorites hook (8 tests)
 │   │   └── useDayComments.test.ts    # Day comments hook (9 tests)
@@ -330,7 +331,15 @@ const attractions = await tripDataRepo.getAllAttractions(slug);
 - **Restaurant CRUD** (`/api/trips/[slug]/restaurants`): POST (batch save), PUT (add single), DELETE (remove by ID). Static trips are protected (403).
 - **Itinerary API** (`/api/trips/[slug]/itinerary`): POST to save `itinerary.json`.
 - **Chat markdown:** Assistant messages render markdown via `react-markdown` (bold, lists, headers, links). User messages stay plain text. Styled via `.chat-markdown` class in `globals.css`.
-- **Wikimedia enrichment:** `src/lib/wikimedia.ts` enriches attractions with real images from Wikipedia (PageImages API) and Wikimedia Commons (search API) after AI generates data. Also fetches a hero image for the trip. **Never trust LLM-generated media URLs** — Gemini hallucinates them. The finalize prompt explicitly tells Gemini to leave `thumbnail: ""` and `images: []` empty.
+- **Wikimedia enrichment:** `src/lib/wikimedia.ts` enriches attractions with real images from multiple sources after AI generates data. **Never trust LLM-generated media URLs** — Gemini hallucinates them. The finalize prompt explicitly tells Gemini to leave `thumbnail: ""` and `images: []` empty, but provide `wikipediaSlug` (exact Wikipedia article title) and `website` (real official URL).
+  - **Pipeline:** Wikidata entity resolution → multi-language Wikipedia images → Wikipedia external links (tourism sites) → Wikimedia Commons search (smart with query simplification) → tourism website scraping (og:image + img tags)
+  - **Multi-language:** `detectLanguageChain(region)` maps region strings (e.g. "Andalusia, Spain") to language codes `['en', 'es']`. Searches Wikipedia/Wikidata in all detected languages.
+  - **Wikidata:** Resolves attraction to Q-ID, extracts P18 (main Commons image), sitelinks (exact Wikipedia article titles per language), and labels (for alt text).
+  - **`wikipediaSlug`:** Optional field on Attraction — if the AI provides the exact Wikipedia article title, Wikidata search is skipped (faster, more reliable).
+  - **Rate limiting:** `throttledFetch()` enforces 100ms min delay between Wikimedia API calls, adaptive backoff to 1000ms on 429 responses, 5s timeout, proper User-Agent header.
+  - **Batch enrichment:** `enrichAttractionsBatch()` processes multiple attractions with concurrency limit of 3 (via `withConcurrencyLimit`), isolates individual failures.
+  - **Tourism scraping:** `scrapeWebsiteImages()` extracts og:image and `<img>` tags from HTTPS websites, filters logos/icons/favicons, prefers hero/gallery images.
+  - **Smart Commons search:** `searchCommonsImagesSmart()` tries full name+city, then simplified name (strips articles/prepositions like "de", "la", "strand", "promenade").
 - **Restaurant normalization:** `normalizeRestaurant()` in finalize-trip route fixes Gemini output: priceRange (`$`→`€`), coordinates (`latitude`→`lat`), cuisine (string→array), description/specialties (string→`{nl,en}`). Validation is per-restaurant (valid ones kept, invalid ones skipped).
 - **Flow:** Chat → Accept suggestions → Click "Create Trip" → Finalize → Enrich with Wikimedia images → Validate → Save config + attractions + restaurants + itinerary (restaurants non-blocking, itinerary blocking) → Redirect
 - **Gemini model:** `gemini-2.5-flash` with `tools: [{ googleSearch: {} }]` for grounding
@@ -379,7 +388,7 @@ npm run build            # Production build
 npm run lint             # ESLint
 
 # Testing
-npm run test:unit        # Run all Vitest tests (~200 tests)
+npm run test:unit        # Run all Vitest tests (~255 tests)
 npm run test:unit:watch  # Vitest in watch mode
 npm run test:integration # Playwright integration tests (~41 tests, headed)
 npm run test:e2e         # Playwright E2E tests (1 test, headed, 10min timeout)
@@ -388,8 +397,8 @@ npm run test:playwright  # All Playwright tests (headed)
 
 ### Testing Strategy
 
-**Vitest (~200 tests)** — fast, no browser needed:
-- **Unit tests** (`tests/unit/`): budget calculator, schemas, planner utils, normalize-itinerary, normalize-story, city-colors
+**Vitest (~255 tests)** — fast, no browser needed:
+- **Unit tests** (`tests/unit/`): budget calculator, schemas, planner utils, normalize-itinerary, normalize-story, city-colors, wikimedia enrichment (48 tests)
 - **Hook tests** (`tests/hooks/`): useFavorites, useDayComments
 - **API route tests** (`tests/api/`): all 7 API routes with mocked repositories
 
@@ -587,3 +596,13 @@ npx shadcn@latest add card      # Example: add card component
 - [x] Phase 5: Translations (NL + EN story.* keys)
 - [x] Phase 6: Frontend components (TripStorySection, StoryStylePicker, StoryChapterView, StoryBlockRenderer, StoryActions)
 - [x] Phase 7: Homepage integration (replace quick links with story) + print styles
+
+#### Multi-Language Media Enrichment System
+- [x] Add `wikipediaSlug` to Attraction type + Zod schema
+- [x] Write ~35 unit tests for wikimedia enrichment pipeline (TDD)
+- [x] Rewrite `src/lib/wikimedia.ts` with Wikidata, multi-lang Wikipedia, smart Commons, tourism scraping
+- [x] Update chat system prompt with `wikipediaSlug` + website instructions
+- [x] Update finalize-trip prompt with `wikipediaSlug` + website quality instructions
+- [x] Switch finalize-trip to `enrichAttractionsBatch()` with region/website/slug
+- [x] Update `fetchHeroImage()` with multi-lang fallback
+- [x] Update documentation (CLAUDE.md, MEMORY.md)

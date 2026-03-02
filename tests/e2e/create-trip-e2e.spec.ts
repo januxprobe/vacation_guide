@@ -43,7 +43,7 @@ test.describe('Create Trip with Story (E2E)', () => {
 
   test.setTimeout(600000);
 
-  test('should create a Torremolinos trip via AI chat with story generation', async ({ page }) => {
+  test('should create a Rome & Venice trip via AI chat with story generation', async ({ page }) => {
     // Step 1: Trip selector
     console.log('=== Step 1: Trip Selector ===');
     await page.goto(`${BASE_URL}/nl`);
@@ -63,9 +63,9 @@ test.describe('Create Trip with Story (E2E)', () => {
 
     console.log('✓ Sending trip description...');
     await sendAndWaitForResponse(page,
-      'Ik wil een 5-daagse reis naar Torremolinos plannen in juli 2027. ' +
+      'Ik wil een 5-daagse reis naar Rome en Venetië plannen in mei 2027. ' +
       'We gaan met 3 volwassenen, twee meisjes van 20 jaar, en oma in een rolstoel. ' +
-      'We houden van strand, cultuur en lekker eten. Budget is gemiddeld.'
+      'We houden van cultuur, architectuur en lekker eten. Budget is gemiddeld.'
     );
     console.log('✓ AI responded!');
     await page.waitForTimeout(2000);
@@ -74,9 +74,9 @@ test.describe('Create Trip with Story (E2E)', () => {
     console.log('\n=== Step 3: Confirm trip structure ===');
     console.log('✓ Asking AI to propose trip structure with trip_config...');
     await sendAndWaitForResponse(page,
-      'Dat klinkt goed! Maak een reisstructuur voor Torremolinos (5 dagen). ' +
+      'Dat klinkt goed! Maak een reisstructuur voor Rome en Venetië (5 dagen). ' +
       'Geef een trip_config JSON block met de steden, data, en reizigers. ' +
-      'We bezoeken alleen Torremolinos en eventueel Malaga als daguitstap.'
+      'We bezoeken Rome (3 dagen) en Venetië (2 dagen).'
     );
     console.log('✓ AI responded with trip structure!');
     await page.waitForTimeout(2000);
@@ -91,7 +91,7 @@ test.describe('Create Trip with Story (E2E)', () => {
       console.log('  → Nudging AI to emit trip_config...');
       await sendAndWaitForResponse(page,
         'Ja, bevestig deze reisstructuur. Genereer het trip_config JSON block met alle details: ' +
-        'slug "torremolinos-2027", data van 1-5 juli 2027, 3 volwassenen (2 studenten), steden met kleuren en coordinaten.'
+        'slug "rome-venetie-2027", data van 1-5 mei 2027, 3 volwassenen (2 studenten), steden met kleuren en coordinaten.'
       );
       await page.waitForTimeout(2000);
       const hasTripConfigNow = await tripConfigCard.isVisible().catch(() => false);
@@ -102,7 +102,7 @@ test.describe('Create Trip with Story (E2E)', () => {
     console.log('\n=== Step 4: Ask for structured attractions ===');
     console.log('✓ Asking for attraction suggestions...');
     await sendAndWaitForResponse(page,
-      'Stel nu 5 bezienswaardigheden voor voor Torremolinos en omgeving. ' +
+      'Stel nu 5 bezienswaardigheden voor voor Rome en Venetië. ' +
       'Geef ze als JSON code blocks met type "attraction_suggestion" zodat ik ze kan accepteren. ' +
       'Gebruik echte prijzen, GPS coordinaten en categorieën.'
     );
@@ -130,7 +130,7 @@ test.describe('Create Trip with Story (E2E)', () => {
       await sendAndWaitForResponse(page,
         'Geef me alsjeblieft 5 bezienswaardigheden als JSON code blocks met exact dit format:\n' +
         '```json\n{"type": "attraction_suggestion", "data": {"id": "...", "name": "...", ...}}\n```\n' +
-        'Elk in een apart JSON code block. Gebruik echte data voor Torremolinos/Malaga.'
+        'Elk in een apart JSON code block. Gebruik echte data voor Rome/Venetië.'
       );
       await page.waitForTimeout(2000);
 

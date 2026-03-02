@@ -1,7 +1,7 @@
 import { GoogleGenAI } from '@google/genai';
 import { restaurantSchema, restaurantsFileSchema, itinerarySchema } from '@/lib/schemas';
 import { normalizeItinerary } from '@/lib/normalize-itinerary';
-import { enrichAttractionMedia, fetchHeroImage } from '@/lib/wikimedia';
+import { enrichAttractionsBatch, fetchHeroImage } from '@/lib/wikimedia';
 
 const PRICE_RANGE_MAP: Record<string, string> = {
   '$': '€', '$$': '€€', '$$$': '€€€', '$$$$': '€€€€',
@@ -112,6 +112,7 @@ The output must be valid JSON with this exact structure:
       "thumbnail": "",
       "bookingRequired": false,
       "website": "https://...",
+      "wikipediaSlug": "Attraction_Article_Title",
       "tips": { "nl": "Praktische tip in het Nederlands...", "en": "Practical tip in English..." }
     }
   ],
@@ -208,6 +209,8 @@ CONTENT QUALITY:
 - Descriptions must be rich and evocative (2-3 sentences minimum), not dry one-liners.
 - Tips must be practical and useful for travelers.
 - Do NOT include image URLs, thumbnail URLs, or YouTube video IDs — media is added automatically by the system.
+- The "website" field MUST be a real, working URL to the attraction's official site or the local tourism board page. Use the data from the conversation.
+- The "wikipediaSlug" field MUST be the exact Wikipedia article title (e.g., "Alhambra", "Museo_Picasso_Málaga"). If unknown, set to "".
 
 RESTAURANTS:
 - Include 3-4 restaurants per city (mix of price ranges: €, €€, €€€)
@@ -353,28 +356,32 @@ export async function POST(request: Request) {
         }
       }
 
-      const enriched = await Promise.all(
-        data.attractions.map(async (attr: Record<string, unknown>) => {
-          const name = attr.name as string;
-          const cityId = attr.city as string;
-          const cityName = cityNames[cityId] || cityId;
-          try {
-            const { thumbnail, media } = await enrichAttractionMedia(name, cityName);
-            if (thumbnail) attr.thumbnail = thumbnail;
-            if (media.length > 0) attr.media = media;
-          } catch (e) {
-            console.warn(`Failed to enrich media for ${name}:`, e);
-          }
-          return attr;
-        })
-      );
-      data.attractions = enriched;
+      const region = data.tripConfig?.region?.en;
+      const enrichInput = data.attractions.map((attr: Record<string, unknown>) => ({
+        name: attr.name as string,
+        city: cityNames[attr.city as string] || (attr.city as string),
+        category: attr.category as string | undefined,
+        website: attr.website as string | undefined,
+        wikipediaSlug: attr.wikipediaSlug as string | undefined,
+      }));
+
+      try {
+        const enrichResults = await enrichAttractionsBatch(enrichInput, { region });
+        for (let i = 0; i < data.attractions.length; i++) {
+          const attr = data.attractions[i] as Record<string, unknown>;
+          const { thumbnail, media } = enrichResults[i];
+          if (thumbnail) attr.thumbnail = thumbnail;
+          if (media.length > 0) attr.media = media;
+        }
+      } catch (e) {
+        console.warn('Batch media enrichment failed:', e);
+      }
 
       // Fetch hero image from the first city
       const firstCityName = data.tripConfig?.cities?.[0]?.name?.en;
       if (firstCityName && !data.tripConfig.heroImage) {
         try {
-          const heroImage = await fetchHeroImage(firstCityName);
+          const heroImage = await fetchHeroImage(firstCityName, region);
           if (heroImage) data.tripConfig.heroImage = heroImage;
         } catch (e) {
           console.warn('Failed to fetch hero image:', e);

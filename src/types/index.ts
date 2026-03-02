@@ -66,6 +66,7 @@ export interface Attraction {
   bookingRequired: boolean;
   openingHours?: OpeningHours;
   website?: string;
+  wikipediaSlug?: string;
   tips?: LocalizedString;
 }
 

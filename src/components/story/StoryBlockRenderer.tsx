@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { Link } from '@/i18n/routing';
 import { UtensilsCrossed, ArrowRight, Star, Clock, Ticket } from 'lucide-react';
 import VideoEmbed from '@/components/attractions/VideoEmbed';
@@ -47,12 +46,11 @@ export default function StoryBlockRenderer({
           {/* Hero image — full width */}
           {heroImage && (
             <div className="relative w-full aspect-[16/7] overflow-hidden">
-              <Image
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src={heroImage}
                 alt={images[0]?.alt?.[locale] ?? attraction.name}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 700px"
+                className="absolute inset-0 w-full h-full object-cover"
               />
               {/* Overlay gradient for text readability */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
@@ -78,12 +76,11 @@ export default function StoryBlockRenderer({
               <div className="grid grid-cols-2 gap-2 mb-4">
                 {secondaryImages.map((img, i) => (
                   <div key={i} className="relative aspect-[4/3] rounded-lg overflow-hidden">
-                    <Image
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
                       src={img.src}
                       alt={img.alt[locale]}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 50vw, 340px"
+                      className="absolute inset-0 w-full h-full object-cover"
                     />
                   </div>
                 ))}

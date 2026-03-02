@@ -58,6 +58,7 @@ STRUCTURED OUTPUT FORMATS:
     "thumbnail": "",
     "bookingRequired": true,
     "website": "https://...",
+    "wikipediaSlug": "Attraction_Article_Title",
     "tips": { "nl": "Tip in het Nederlands (praktisch en nuttig)...", "en": "Tip in English (practical and useful)..." }
   }
 }
@@ -133,7 +134,9 @@ IMPORTANT RULES:
 - Assign priority: essential, recommended, or optional
 - ALWAYS output each attraction suggestion as a separate \`\`\`json code block. Plain text or markdown descriptions of attractions CANNOT be accepted by the user.
 - If the user explicitly asks for attractions (even before phase 2), provide them as JSON blocks.
-- Do NOT include image URLs, thumbnail URLs, or YouTube video IDs — media is added automatically by the system. Set "thumbnail" to "" and "images" to [].`;
+- Do NOT include image URLs, thumbnail URLs, or YouTube video IDs — media is added automatically by the system. Set "thumbnail" to "" and "images" to [].
+- The "website" field MUST be the real official URL of the attraction (tourism board, municipality, or attraction's own site). Use Google Search to find it. Do NOT use placeholder URLs.
+- The "wikipediaSlug" field MUST be the exact Wikipedia article title for this attraction (e.g., "Alhambra", "Sagrada_Família"). Search Wikipedia to verify the title exists. If no Wikipedia article exists, set it to "".`;
 
 export async function POST(request: Request) {
   try {
