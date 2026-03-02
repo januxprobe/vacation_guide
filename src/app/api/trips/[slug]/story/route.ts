@@ -87,6 +87,7 @@ export async function POST(
       contents: [{ role: 'user', parts: [{ text: prompt }] }],
       config: {
         responseMimeType: 'application/json',
+        maxOutputTokens: 65536,
       },
     });
 

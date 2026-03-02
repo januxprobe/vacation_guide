@@ -81,20 +81,29 @@
     "reject": "Remove",
     "searching": "Searching...",
     "previewEmpty": "Start a conversation to plan your trip",
-    "initialMessage": "Hi! I'm your travel planning assistant. Tell me about the trip you'd like to plan - where do you want to go, when, and with whom?"
+    "initialMessage": "Hi! I'm your travel planning assistant. Tell me about the trip you'd like to plan - where do you want to go, when, and with whom?",
+    "readiness": {
+      "destination": "Destination",
+      "dates": "Travel dates",
+      "travelers": "Travelers",
+      "cities": "Cities",
+      "attractions": "Attractions",
+      "confirmed": "confirmed",
+      "missing": "still needed",
+      "ready": "Ready to create your trip!",
+      "notReady": "Tell me more about your trip to get started"
+    }
   },
   "home": {
     "hero": {
-      "title": "Discover Magical Andalusia",
-      "subtitle": "A family trip through Seville, Córdoba and Granada - September 2026",
       "cta": "View Itinerary"
     },
     "overview": {
       "title": "Trip Overview",
-      "days": "7 days",
-      "cities": "3 cities",
-      "attractions": "25+ attractions",
-      "distance": "~350 km"
+      "days": "Days",
+      "cities": "Cities",
+      "attractions": "Attractions",
+      "distance": "Distance"
     },
     "highlights": {
       "title": "Highlights",

@@ -30,8 +30,21 @@ export default function AttractionSuggestion({ data, onAccept }: AttractionSugge
     onAccept?.();
   };
 
+  const thumbnail = (data.thumbnail as string) || '';
+
   return (
     <div className={`my-2 rounded-lg border overflow-hidden ${accepted ? 'border-green-300 bg-green-50' : 'border-gray-200 bg-white'}`}>
+      {thumbnail && (
+        <div className="relative w-full h-32 overflow-hidden bg-gray-100">
+          <img
+            src={thumbnail}
+            alt={name}
+            className="w-full h-full object-cover"
+            loading="lazy"
+            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+          />
+        </div>
+      )}
       <div className="p-4">
         <div className="flex items-start justify-between gap-2">
           <div>

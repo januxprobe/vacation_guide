@@ -47,6 +47,7 @@ A reusable Next.js web application for planning multi-city trips. Users can brow
 | Valhalla (OSM) | Pedestrian walking routes (free public API) |
 | react-leaflet-cluster | Marker clustering |
 | Zod | Runtime validation |
+| react-markdown | Markdown rendering in chat bubbles |
 | Lucide React | Icons |
 | Playwright | Visual/E2E testing |
 
@@ -157,15 +158,16 @@ vacation_guide/
 │   │   │   └── StoryActions.tsx        # Regenerate + share + print buttons
 │   │   └── trip-creator/
 │   │       ├── TripChat.tsx             # Main chat container + state management
-│   │       ├── ChatMessage.tsx          # Message bubble with structured data parsing
+│   │       ├── ChatMessage.tsx          # Message bubble with markdown rendering + structured data parsing
 │   │       ├── ChatInput.tsx            # Auto-resizing textarea + send button
-│   │       ├── AttractionSuggestion.tsx # Rich attraction card with accept button
+│   │       ├── AttractionSuggestion.tsx # Rich attraction card with thumbnail + accept button
 │   │       ├── TripPreview.tsx          # Side panel showing trip being built
 │   │       └── CreateTripButton.tsx     # "Create Trip" button with loading state
 │   ├── hooks/
 │   │   └── useOsrmRoute.ts             # Valhalla pedestrian walking route hook with cache
 │   ├── lib/
 │   │   ├── utils.ts                     # cn() helper from shadcn
+│   │   ├── wikimedia.ts                 # Wikipedia/Wikimedia Commons API for real attraction images
 │   │   ├── schemas.ts                   # Zod schemas (attraction, tripConfig, itinerary, restaurant, story)
 │   │   ├── normalize-itinerary.ts      # Normalize AI-generated itinerary data before Zod validation
 │   │   ├── normalize-story.ts          # Normalize AI-generated story data before Zod validation
@@ -231,7 +233,8 @@ vacation_guide/
 │   │   ├── budget.spec.ts            # Calculator, what-if mode
 │   │   └── not-found.spec.ts         # 404 page (NL + EN)
 │   └── e2e/                           # Browser tests, live APIs (Playwright)
-│       └── create-trip-e2e.spec.ts    # AI trip creation + deletion (uses live Gemini API)
+│       ├── create-trip-e2e.spec.ts    # AI trip creation + story generation (uses live Gemini API)
+│       └── chat-flow-e2e.spec.ts      # AI chat conversation flow (uses live Gemini API)
 ├── .env.example                         # Environment variable template
 ├── middleware.ts                        # next-intl locale detection
 ├── next.config.ts                       # Next.js config (standalone + i18n)
@@ -326,7 +329,10 @@ const attractions = await tripDataRepo.getAllAttractions(slug);
 - **Trip CRUD** (`/api/trips`): Creates trip directory + `trip-config.json`, manages attractions
 - **Restaurant CRUD** (`/api/trips/[slug]/restaurants`): POST (batch save), PUT (add single), DELETE (remove by ID). Static trips are protected (403).
 - **Itinerary API** (`/api/trips/[slug]/itinerary`): POST to save `itinerary.json`.
-- **Flow:** Chat → Accept suggestions → Click "Create Trip" → Finalize → Validate all resources present (restaurants non-empty, itinerary non-null) → Save config + attractions + restaurants + itinerary (all blocking, failures show error toast) → Redirect
+- **Chat markdown:** Assistant messages render markdown via `react-markdown` (bold, lists, headers, links). User messages stay plain text. Styled via `.chat-markdown` class in `globals.css`.
+- **Wikimedia enrichment:** `src/lib/wikimedia.ts` enriches attractions with real images from Wikipedia (PageImages API) and Wikimedia Commons (search API) after AI generates data. Also fetches a hero image for the trip. **Never trust LLM-generated media URLs** — Gemini hallucinates them. The finalize prompt explicitly tells Gemini to leave `thumbnail: ""` and `images: []` empty.
+- **Restaurant normalization:** `normalizeRestaurant()` in finalize-trip route fixes Gemini output: priceRange (`$`→`€`), coordinates (`latitude`→`lat`), cuisine (string→array), description/specialties (string→`{nl,en}`). Validation is per-restaurant (valid ones kept, invalid ones skipped).
+- **Flow:** Chat → Accept suggestions → Click "Create Trip" → Finalize → Enrich with Wikimedia images → Validate → Save config + attractions + restaurants + itinerary (restaurants non-blocking, itinerary blocking) → Redirect
 - **Gemini model:** `gemini-2.5-flash` with `tools: [{ googleSearch: {} }]` for grounding
 - **Attraction normalization:** AI-generated enum values (e.g. `"square"`, `"important"`) are mapped to valid schema values before Zod validation. See `CATEGORY_MAP` and `PRIORITY_MAP` in attractions endpoint.
 - **Itinerary normalization:** `normalizeItinerary()` in `src/lib/normalize-itinerary.ts` fixes common Gemini output issues before Zod validation: capitalized/synonym enums (e.g. `"Walk"`→`"walk"`, `"taxi"`→`"car"`, `"Breakfast"`→`"breakfast"`), AM/PM→24h time conversion, string→number coercion, plain string→`{nl,en}` localized string coercion, `latitude`/`longitude`→`lat`/`lng` coordinate normalization, and cleanup of invalid optional fields. Applied in both `finalize-trip` and `itinerary` save endpoints.
@@ -389,7 +395,7 @@ npm run test:playwright  # All Playwright tests (headed)
 
 **Playwright (~42 tests)** — headed Chrome browser:
 - **Integration** (`tests/integration/`, ~41 tests): navigation, i18n, trip selector, trip story (chapters/blocks/locale/actions), attractions (list/detail/filters/search/sort/favorites), restaurants (filters/search/cuisine/expand), planner (split-view/day-sync/mobile/panel/comments/walking-gaps), map (markers/route/restaurants), budget (calculator/what-if), hero, 404
-- **E2E** (`tests/e2e/`, 1 test): AI trip creation + deletion (uses live Gemini API, 10min timeout)
+- **E2E** (`tests/e2e/`, 1 test): AI trip creation + story generation (uses live Gemini API, 10min timeout)
 
 ### Adding shadcn/ui Components
 ```bash
@@ -552,7 +558,28 @@ npx shadcn@latest add card      # Example: add card component
      Check off items as they are implemented and committed.
      Keep completed plans for reference; archive old ones under a "### Completed" sub-heading. -->
 
-### Trip Story Feature
+### Completed
+
+#### Chat UX Fixes: Markdown + JSON Blocks + Media Enrichment
+- [x] Install react-markdown + render markdown in assistant chat messages
+- [x] Strengthen system prompt for strict JSON attraction_suggestion blocks
+- [x] Add `.chat-markdown` prose styles in globals.css
+- [x] Fix trip homepage to use dynamic trip data (not hardcoded Andalusia)
+- [x] Fix story generation truncation (maxOutputTokens: 65536)
+- [x] Server-side Wikimedia image enrichment (never trust LLM URLs)
+- [x] Restaurant normalization in finalize-trip (priceRange, coordinates, cuisine)
+- [x] Thumbnail previews on AttractionSuggestion cards
+- [x] E2E test updated with story generation step (no deletion)
+
+#### AI Chat Flow Improvement
+- [x] Phase 1: Rewrite chat system prompt with phased conversation flow + readiness signaling
+- [x] Phase 2: Add TripReadiness state + parse trip_ready blocks + smarter create gate in TripChat
+- [x] Phase 3: Parse + render trip_ready blocks as status card in ChatMessage
+- [x] Phase 4: Pass acceptedAttractions to finalize endpoint + use in prompt
+- [x] Phase 5: Add readiness translations (EN + NL)
+- [x] Phase 6: Add readiness checklist to TripPreview sidebar
+
+#### Trip Story Feature
 - [x] Phase 1: Types + Zod schemas (TripStory, StoryBlock, StoryChapter, NarrativeStyle)
 - [x] Phase 2: Story normalizer (normalize-story.ts + tests)
 - [x] Phase 3: Repository layer (getStory/saveStory on TripDataRepository)

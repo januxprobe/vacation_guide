@@ -14,6 +14,14 @@ interface Message {
   content: string;
 }
 
+export interface TripReadiness {
+  destination: boolean;
+  dates: boolean;
+  travelers: boolean;
+  cities: boolean;
+  attractions: number;
+}
+
 export default function TripChat() {
   const t = useTranslations('tripCreator');
   const router = useRouter();
@@ -30,14 +38,23 @@ export default function TripChat() {
   const [isCreating, setIsCreating] = useState(false);
   const [tripData, setTripData] = useState<Record<string, unknown> | null>(null);
   const [acceptedAttractions, setAcceptedAttractions] = useState<Record<string, unknown>[]>([]);
+  const [readiness, setReadiness] = useState<TripReadiness>({
+    destination: false,
+    dates: false,
+    travelers: false,
+    cities: false,
+    attractions: 0,
+  });
 
   // Auto-scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Extract trip_config from messages
+  // Extract trip_config and trip_ready from messages
   useEffect(() => {
+    let latestReadiness: TripReadiness | null = null;
+
     for (const msg of messages) {
       if (msg.role !== 'assistant') continue;
       const configMatch = msg.content.match(/```json\s*\n([\s\S]*?)```/g);
@@ -49,12 +66,27 @@ export default function TripChat() {
           if (data.type === 'trip_config' && data.data) {
             setTripData(data.data);
           }
+          if (data.type === 'trip_ready' && data.data) {
+            latestReadiness = {
+              destination: !!data.data.destination,
+              dates: !!data.data.dates,
+              travelers: !!data.data.travelers,
+              cities: !!data.data.cities,
+              attractions: typeof data.data.attractions === 'number' ? data.data.attractions : 0,
+            };
+          }
         } catch {
           // ignore parse errors
         }
       }
     }
-  }, [messages]);
+
+    if (latestReadiness) {
+      // Override attractions count with actual accepted count (more reliable than AI's count)
+      latestReadiness.attractions = acceptedAttractions.length;
+      setReadiness(latestReadiness);
+    }
+  }, [messages, acceptedAttractions.length]);
 
   const handleSend = useCallback(async (text: string) => {
     const userMessage: Message = { role: 'user', content: text };
@@ -163,7 +195,7 @@ export default function TripChat() {
       const finalizeRes = await fetch('/api/ai/finalize-trip', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: allMessages }),
+        body: JSON.stringify({ messages: allMessages, acceptedAttractions }),
       });
 
       if (!finalizeRes.ok) {
@@ -177,12 +209,11 @@ export default function TripChat() {
         throw new Error('Invalid finalized data');
       }
 
-      if (!restaurants || !Array.isArray(restaurants) || restaurants.length === 0) {
-        throw new Error('No restaurants generated');
-      }
-
       if (!itinerary) {
-        throw new Error('No itinerary generated');
+        const errDetail = finalData._itineraryErrors
+          ? `\nValidation: ${JSON.stringify(finalData._itineraryErrors).slice(0, 300)}`
+          : '';
+        throw new Error(`No itinerary generated (AI output failed validation)${errDetail}`);
       }
 
       // Step 2: Create the trip
@@ -206,14 +237,16 @@ export default function TripChat() {
         });
       }
 
-      // Step 4: Save restaurants
-      const restaurantRes = await fetch(`/api/trips/${tripConfig.slug}/restaurants`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ restaurants }),
-      });
-      if (!restaurantRes.ok) {
-        throw new Error('Failed to save restaurants');
+      // Step 4: Save restaurants (if any were generated)
+      if (restaurants && Array.isArray(restaurants) && restaurants.length > 0) {
+        const restaurantRes = await fetch(`/api/trips/${tripConfig.slug}/restaurants`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ restaurants }),
+        });
+        if (!restaurantRes.ok) {
+          console.warn('Failed to save restaurants, continuing without them');
+        }
       }
 
       // Step 5: Save itinerary
@@ -245,9 +278,14 @@ export default function TripChat() {
     } finally {
       setIsCreating(false);
     }
-  }, [messages, t]);
+  }, [messages, acceptedAttractions, t]);
 
-  const hasEnoughContext = messages.length >= 4 || acceptedAttractions.length > 0;
+  const hasEnoughContext =
+    readiness.destination &&
+    readiness.dates &&
+    readiness.travelers &&
+    readiness.cities &&
+    tripData !== null;
 
   return (
     <div className="flex h-[calc(100vh-3rem)]">
@@ -294,6 +332,7 @@ export default function TripChat() {
           <TripPreview
             tripData={tripData}
             acceptedAttractions={acceptedAttractions}
+            readiness={readiness}
           />
         </div>
         {hasEnoughContext && (
@@ -348,6 +387,7 @@ export default function TripChat() {
             <TripPreview
               tripData={tripData}
               acceptedAttractions={acceptedAttractions}
+              readiness={readiness}
             />
           </div>
         </div>

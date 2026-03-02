@@ -131,6 +131,11 @@ function normalizeTransport(t: any): void {
   }
 }
 
+/** Default meal times by type when Gemini omits the time field. */
+const DEFAULT_MEAL_TIMES: Record<string, string> = {
+  breakfast: '08:30', lunch: '12:30', dinner: '20:00', snack: '16:00',
+};
+
 function normalizeMeal(meal: any): void {
   if (!meal || typeof meal !== 'object') return;
 
@@ -144,9 +149,13 @@ function normalizeMeal(meal: any): void {
     }
   }
 
-  // time
+  // time — default based on meal type if missing
   const time = normalizeTime(meal.time);
-  if (time) meal.time = time;
+  if (time) {
+    meal.time = time;
+  } else {
+    meal.time = DEFAULT_MEAL_TIMES[meal.type] ?? '12:00';
+  }
 
   // estimatedCost: string → number
   const cost = toNumber(meal.estimatedCost);
@@ -168,9 +177,14 @@ function normalizeMeal(meal: any): void {
 function normalizeActivity(act: any): void {
   if (!act || typeof act !== 'object') return;
 
-  // time
+  // attractionId: null → undefined (Zod expects string | undefined, not null)
+  if (act.attractionId === null) {
+    delete act.attractionId;
+  }
+
+  // time — default to 10:00 if missing
   const time = normalizeTime(act.time);
-  if (time) act.time = time;
+  if (time) act.time = time; else act.time = '10:00';
 
   // duration: string → number
   const dur = toNumber(act.duration);
@@ -188,17 +202,46 @@ function normalizeActivity(act: any): void {
   }
 }
 
-function normalizeDay(day: any): void {
+function normalizeDay(day: any, index: number, startDate?: string): void {
   if (!day || typeof day !== 'object') return;
 
-  // dayNumber: string → number
+  // dayNumber: string → number, default from array index
   const dn = toNumber(day.dayNumber);
   if (dn !== undefined) day.dayNumber = dn;
+  else day.dayNumber = index + 1;
 
-  // title: LocalizedString
+  // date: generate from startDate + dayNumber if missing
+  if (!day.date && startDate) {
+    try {
+      const start = new Date(startDate);
+      start.setDate(start.getDate() + (day.dayNumber - 1));
+      day.date = start.toISOString().split('T')[0];
+    } catch { /* leave as-is */ }
+  }
+  if (!day.date) day.date = `2026-01-${String(day.dayNumber).padStart(2, '0')}`;
+
+  // city: default to 'unknown' if missing
+  if (!day.city || typeof day.city !== 'string') {
+    // Try to infer from first activity's attractionId (e.g. "rome-colosseum" → "rome")
+    const firstActivity = Array.isArray(day.activities) ? day.activities[0] : null;
+    if (firstActivity?.attractionId && typeof firstActivity.attractionId === 'string') {
+      const parts = firstActivity.attractionId.split('-');
+      day.city = parts[0];
+    } else {
+      day.city = 'unknown';
+    }
+  }
+
+  // title: LocalizedString, default from dayNumber + city
   if (day.title !== undefined) {
     const t = toLocalizedString(day.title);
     if (t) day.title = t;
+  }
+  if (!day.title || typeof day.title !== 'object') {
+    const cityName = typeof day.city === 'string'
+      ? day.city.charAt(0).toUpperCase() + day.city.slice(1)
+      : 'Day';
+    day.title = { nl: `Dag ${day.dayNumber}: ${cityName}`, en: `Day ${day.dayNumber}: ${cityName}` };
   }
 
   // activities
@@ -224,16 +267,41 @@ export function normalizeItinerary(itinerary: unknown): void {
   if (!itinerary || typeof itinerary !== 'object' || Array.isArray(itinerary)) return;
   const it = itinerary as any;
 
-  // trip metadata
-  if (it.trip && typeof it.trip === 'object') {
-    if (it.trip.title !== undefined) {
-      const t = toLocalizedString(it.trip.title);
-      if (t) it.trip.title = t;
+  // trip metadata — ensure it exists
+  if (!it.trip || typeof it.trip !== 'object') {
+    it.trip = {};
+  }
+  if (it.trip.title !== undefined) {
+    const t = toLocalizedString(it.trip.title);
+    if (t) it.trip.title = t;
+  }
+  if (!it.trip.title) {
+    it.trip.title = { nl: 'Reisplan', en: 'Travel Plan' };
+  }
+  // Ensure startDate/endDate exist
+  if (!it.trip.startDate && Array.isArray(it.days) && it.days.length > 0) {
+    // Try to derive from first day's date
+    const firstDate = it.days[0]?.date;
+    if (typeof firstDate === 'string') it.trip.startDate = firstDate;
+    else it.trip.startDate = '2026-01-01';
+  }
+  if (!it.trip.endDate && Array.isArray(it.days) && it.days.length > 0) {
+    const lastDate = it.days[it.days.length - 1]?.date;
+    if (typeof lastDate === 'string') it.trip.endDate = lastDate;
+    else if (it.trip.startDate) {
+      try {
+        const start = new Date(it.trip.startDate);
+        start.setDate(start.getDate() + it.days.length - 1);
+        it.trip.endDate = start.toISOString().split('T')[0];
+      } catch {
+        it.trip.endDate = it.trip.startDate;
+      }
     }
   }
 
   // days array
   if (Array.isArray(it.days)) {
-    it.days.forEach(normalizeDay);
+    const startDate = it.trip.startDate;
+    it.days.forEach((day: any, index: number) => normalizeDay(day, index, startDate));
   }
 }

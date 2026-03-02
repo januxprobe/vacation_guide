@@ -98,6 +98,7 @@ export const tripConfigSchema = z.object({
     primaryColor: z.string(),
   }),
   highlights: z.array(z.string()),
+  heroImage: z.string().optional(),
   dataDirectory: z.string(),
 });
 

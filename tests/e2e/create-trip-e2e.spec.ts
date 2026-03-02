@@ -29,14 +29,21 @@ async function sendAndWaitForResponse(page: import('@playwright/test').Page, tex
   await page.waitForTimeout(1500);
 }
 
-test.describe('Create & Delete Trip (E2E)', () => {
+/**
+ * Helper: check if the "Reis Aanmaken" button is visible
+ */
+async function isCreateButtonVisible(page: import('@playwright/test').Page): Promise<boolean> {
+  return page.locator('button:has-text("Reis Aanmaken")').first().isVisible().catch(() => false);
+}
+
+test.describe('Create Trip with Story (E2E)', () => {
   test.use({
     viewport: { width: 1280, height: 800 },
   });
 
   test.setTimeout(600000);
 
-  test('should create a Torremolinos trip via AI chat, then delete it', async ({ page }) => {
+  test('should create a Torremolinos trip via AI chat with story generation', async ({ page }) => {
     // Step 1: Trip selector
     console.log('=== Step 1: Trip Selector ===');
     await page.goto(`${BASE_URL}/nl`);
@@ -49,7 +56,7 @@ test.describe('Create & Delete Trip (E2E)', () => {
     await page.waitForTimeout(1500);
     console.log('✓ Create trip page loaded');
 
-    // Step 2: Describe the trip
+    // Step 2: Describe the trip (Phase 1 of AI flow — gather basics)
     console.log('\n=== Step 2: Describe trip to AI ===');
     await expect(page.locator('text=reisplanner').first()).toBeVisible({ timeout: 5000 });
     console.log('✓ AI greeting visible');
@@ -63,11 +70,39 @@ test.describe('Create & Delete Trip (E2E)', () => {
     console.log('✓ AI responded!');
     await page.waitForTimeout(2000);
 
-    // Step 3: Ask for structured attraction suggestions
-    console.log('\n=== Step 3: Ask for structured attractions ===');
+    // Step 3: Confirm trip structure (Phase 2 — get AI to emit trip_config)
+    console.log('\n=== Step 3: Confirm trip structure ===');
+    console.log('✓ Asking AI to propose trip structure with trip_config...');
+    await sendAndWaitForResponse(page,
+      'Dat klinkt goed! Maak een reisstructuur voor Torremolinos (5 dagen). ' +
+      'Geef een trip_config JSON block met de steden, data, en reizigers. ' +
+      'We bezoeken alleen Torremolinos en eventueel Malaga als daguitstap.'
+    );
+    console.log('✓ AI responded with trip structure!');
+    await page.waitForTimeout(2000);
+
+    // Check if trip_config was emitted (green "Trip configuration ready!" card)
+    const tripConfigCard = page.locator('text=Trip configuration ready!');
+    const hasTripConfig = await tripConfigCard.isVisible().catch(() => false);
+    console.log(`✓ trip_config emitted: ${hasTripConfig}`);
+
+    // If trip_config wasn't emitted yet, nudge the AI
+    if (!hasTripConfig) {
+      console.log('  → Nudging AI to emit trip_config...');
+      await sendAndWaitForResponse(page,
+        'Ja, bevestig deze reisstructuur. Genereer het trip_config JSON block met alle details: ' +
+        'slug "torremolinos-2027", data van 1-5 juli 2027, 3 volwassenen (2 studenten), steden met kleuren en coordinaten.'
+      );
+      await page.waitForTimeout(2000);
+      const hasTripConfigNow = await tripConfigCard.isVisible().catch(() => false);
+      console.log(`  ✓ trip_config emitted after nudge: ${hasTripConfigNow}`);
+    }
+
+    // Step 4: Ask for structured attraction suggestions (Phase 3)
+    console.log('\n=== Step 4: Ask for structured attractions ===');
     console.log('✓ Asking for attraction suggestions...');
     await sendAndWaitForResponse(page,
-      'Stel 5 bezienswaardigheden voor voor Torremolinos en omgeving. ' +
+      'Stel nu 5 bezienswaardigheden voor voor Torremolinos en omgeving. ' +
       'Geef ze als JSON code blocks met type "attraction_suggestion" zodat ik ze kan accepteren. ' +
       'Gebruik echte prijzen, GPS coordinaten en categorieën.'
     );
@@ -88,12 +123,56 @@ test.describe('Create & Delete Trip (E2E)', () => {
       await page.waitForTimeout(500);
     }
     console.log(`✓ Accepted ${accepted} attractions total`);
+
+    // If no attractions were emitted as JSON, ask again more explicitly
+    if (accepted === 0) {
+      console.log('  → No attraction_suggestion blocks found, asking again...');
+      await sendAndWaitForResponse(page,
+        'Geef me alsjeblieft 5 bezienswaardigheden als JSON code blocks met exact dit format:\n' +
+        '```json\n{"type": "attraction_suggestion", "data": {"id": "...", "name": "...", ...}}\n```\n' +
+        'Elk in een apart JSON code block. Gebruik echte data voor Torremolinos/Malaga.'
+      );
+      await page.waitForTimeout(2000);
+
+      for (let attempt = 0; attempt < 10; attempt++) {
+        const btn = page.locator('button:has-text("Accepteren"):not([disabled])').first();
+        const visible = await btn.isVisible().catch(() => false);
+        if (!visible) break;
+
+        await btn.scrollIntoViewIfNeeded();
+        await btn.click();
+        accepted++;
+        console.log(`  ✓ Accepted attraction ${accepted}`);
+        await page.waitForTimeout(500);
+      }
+      console.log(`✓ Accepted ${accepted} attractions total (after retry)`);
+    }
     await page.waitForTimeout(2000);
 
-    // Step 4: Create the trip
-    console.log('\n=== Step 4: Create Trip ===');
+    // Step 5: Create the trip
+    console.log('\n=== Step 5: Create Trip ===');
     const createButton = page.locator('button:has-text("Reis Aanmaken")');
-    await expect(createButton.first()).toBeVisible({ timeout: 10000 });
+
+    // Wait for the button to appear — it requires all readiness flags + trip_config
+    let buttonVisible = await isCreateButtonVisible(page);
+    if (!buttonVisible) {
+      console.log('  → Create button not yet visible, sending readiness nudge...');
+      await sendAndWaitForResponse(page,
+        'Ik heb genoeg informatie. Genereer het trip_config JSON block als je dat nog niet hebt gedaan, ' +
+        'en het trip_ready block met alle velden op true. Ik wil de reis nu aanmaken.'
+      );
+      await page.waitForTimeout(3000);
+      buttonVisible = await isCreateButtonVisible(page);
+    }
+
+    if (!buttonVisible) {
+      // Last resort: check if we can see the green "Trip configuration ready!" badge
+      console.log('  → Still not visible. Checking page state...');
+      const allText = await page.locator('.border-l.border-gray-200.bg-gray-50').textContent();
+      console.log(`  Sidebar content: ${allText?.slice(0, 200)}`);
+    }
+
+    await expect(createButton.first()).toBeVisible({ timeout: 15000 });
     console.log('✓ "Reis Aanmaken" button visible');
 
     await createButton.first().click();
@@ -119,8 +198,8 @@ test.describe('Create & Delete Trip (E2E)', () => {
     const tripSlug = currentUrl.replace(`${BASE_URL}/nl/`, '').replace(/\/.*$/, '');
     console.log(`✓ Trip slug: ${tripSlug}`);
 
-    // Step 5: Verify restaurants were generated
-    console.log('\n=== Step 5: Verify generated restaurants ===');
+    // Step 6: Verify restaurants were generated
+    console.log('\n=== Step 6: Verify generated restaurants ===');
     await page.goto(`${BASE_URL}/nl/${tripSlug}/restaurants`);
     await page.waitForTimeout(2000);
 
@@ -143,8 +222,8 @@ test.describe('Create & Delete Trip (E2E)', () => {
     console.log(`✓ Remove buttons visible: ${trashCount}`);
     expect(trashCount).toBeGreaterThan(0);
 
-    // Step 6: Verify planner page loads
-    console.log('\n=== Step 6: Verify planner page ===');
+    // Step 7: Verify planner page loads
+    console.log('\n=== Step 7: Verify planner page ===');
     await page.goto(`${BASE_URL}/nl/${tripSlug}/planner`);
     await page.waitForTimeout(3000);
 
@@ -154,8 +233,8 @@ test.describe('Create & Delete Trip (E2E)', () => {
     console.log(`✓ Itinerary generated with ${dayCount} day tabs`);
     expect(dayCount).toBeGreaterThan(0);
 
-    // Step 7: Verify budget page loads
-    console.log('\n=== Step 7: Verify budget page ===');
+    // Step 8: Verify budget page loads
+    console.log('\n=== Step 8: Verify budget page ===');
     await page.goto(`${BASE_URL}/nl/${tripSlug}/budget`);
     await page.waitForTimeout(2000);
 
@@ -166,8 +245,48 @@ test.describe('Create & Delete Trip (E2E)', () => {
     expect(hasBudgetData).toBe(true);
     console.log('✓ Budget has data');
 
-    // Step 8: Verify on trip selector
-    console.log('\n=== Step 8: Verify trip on selector ===');
+    // Step 9: Generate story on trip homepage
+    console.log('\n=== Step 9: Generate trip story ===');
+    await page.goto(`${BASE_URL}/nl/${tripSlug}`);
+    await page.waitForTimeout(3000);
+
+    // The story section should show the style picker (no story generated yet)
+    const storyTitle = page.getByRole('heading', { name: 'Reisverhaal' });
+    await expect(storyTitle).toBeVisible({ timeout: 10000 });
+    console.log('✓ Story section visible with style picker');
+
+    // Pick "Avontuurlijk" (adventure) style — it's selected by default, just verify
+    const adventureButton = page.getByText('Avontuurlijk');
+    await expect(adventureButton).toBeVisible({ timeout: 5000 });
+    console.log('✓ Adventure style option visible');
+
+    // Click "Verhaal Genereren"
+    const generateButton = page.getByText('Verhaal Genereren');
+    await expect(generateButton).toBeVisible({ timeout: 5000 });
+    await generateButton.click();
+    console.log('✓ Clicked "Verhaal Genereren" — generating story (this can take a minute)...');
+
+    // Wait for the generating spinner to appear and then disappear
+    await expect(page.getByText('Verhaal wordt geschreven...')).toBeVisible({ timeout: 10000 });
+    console.log('✓ Generating spinner visible');
+
+    // Wait for story to appear (generation can take up to 2 minutes)
+    await expect(page.getByText('Gegenereerd op')).toBeVisible({ timeout: 180000 });
+    console.log('✓ Story generated successfully!');
+
+    // Verify story chapters exist (each chapter has class .story-chapter)
+    const chapters = page.locator('.story-chapter');
+    const chapterCount = await chapters.count();
+    console.log(`✓ Story has ${chapterCount} chapters`);
+    expect(chapterCount).toBeGreaterThan(0);
+
+    // Verify story actions (regenerate button) are visible
+    const regenerateButton = page.getByText('Opnieuw Genereren');
+    await expect(regenerateButton).toBeVisible({ timeout: 5000 });
+    console.log('✓ Story actions visible (Regenerate button)');
+
+    // Step 10: Verify on trip selector
+    console.log('\n=== Step 10: Verify trip on selector ===');
     await page.goto(`${BASE_URL}/nl`);
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(2000);
@@ -175,33 +294,10 @@ test.describe('Create & Delete Trip (E2E)', () => {
     const deleteButtons = page.locator('button:has(svg.lucide-trash-2)');
     const deleteCount = await deleteButtons.count();
     console.log(`✓ Delete buttons found: ${deleteCount} (user-created trips)`);
-    await page.waitForTimeout(3000);
-
-    // Step 9: Delete the trip
-    if (deleteCount > 0) {
-      console.log('\n=== Step 9: Delete trip ===');
-
-      await deleteButtons.first().click();
-      await page.waitForTimeout(1000);
-      console.log('✓ Clicked trash - confirmation shown');
-
-      const confirmDelete = page.locator('button:has-text("Verwijderen")');
-      await expect(confirmDelete.first()).toBeVisible({ timeout: 5000 });
-      await confirmDelete.first().click();
-      console.log('✓ Confirmed deletion');
-
-      await page.waitForTimeout(4000);
-      await page.waitForLoadState('networkidle');
-
-      const remaining = await page.locator('button:has(svg.lucide-trash-2)').count();
-      console.log(`✓ Delete buttons remaining: ${remaining}`);
-      expect(remaining).toBe(0);
-      console.log('✓ Trip successfully deleted!');
-    } else {
-      console.log('\n⚠ No deletable trips found');
-    }
+    expect(deleteCount).toBeGreaterThan(0);
+    console.log('✓ Trip visible on selector with delete option');
 
     await page.waitForTimeout(2000);
-    console.log('\n✅ Full create → verify → delete flow completed!');
+    console.log('\n✅ Full create → verify → story flow completed! Trip kept for manual review.');
   });
 });

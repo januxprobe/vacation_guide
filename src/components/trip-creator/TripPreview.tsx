@@ -1,17 +1,34 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { MapPin, Calendar, Navigation, Check } from 'lucide-react';
+import { MapPin, Calendar, Navigation, Check, Circle } from 'lucide-react';
+import type { TripReadiness } from './TripChat';
 
 interface TripPreviewProps {
   tripData: Record<string, unknown> | null;
   acceptedAttractions: Record<string, unknown>[];
+  readiness: TripReadiness;
 }
 
-export default function TripPreview({ tripData, acceptedAttractions }: TripPreviewProps) {
+function ReadinessItem({ label, done }: { label: string; done: boolean }) {
+  return (
+    <div className="flex items-center gap-2 text-xs">
+      {done ? (
+        <Check className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
+      ) : (
+        <Circle className="h-3.5 w-3.5 text-gray-300 flex-shrink-0" />
+      )}
+      <span className={done ? 'text-gray-700' : 'text-gray-400'}>{label}</span>
+    </div>
+  );
+}
+
+export default function TripPreview({ tripData, acceptedAttractions, readiness }: TripPreviewProps) {
   const t = useTranslations('tripCreator');
 
-  if (!tripData && acceptedAttractions.length === 0) {
+  const hasAnyReadiness = readiness.destination || readiness.dates || readiness.travelers || readiness.cities;
+
+  if (!tripData && acceptedAttractions.length === 0 && !hasAnyReadiness) {
     return (
       <div className="p-4 text-center text-sm text-gray-400">
         {t('previewEmpty')}
@@ -25,6 +42,26 @@ export default function TripPreview({ tripData, acceptedAttractions }: TripPrevi
 
   return (
     <div className="p-4 space-y-4">
+      {/* Readiness checklist */}
+      <div>
+        <h3 className="font-semibold text-gray-900 text-sm mb-2">
+          {t('readiness.notReady')}
+        </h3>
+        <div className="space-y-1">
+          <ReadinessItem label={t('readiness.destination')} done={readiness.destination} />
+          <ReadinessItem label={t('readiness.dates')} done={readiness.dates} />
+          <ReadinessItem label={t('readiness.travelers')} done={readiness.travelers} />
+          <ReadinessItem label={t('readiness.cities')} done={readiness.cities} />
+          <ReadinessItem
+            label={`${t('readiness.attractions')} (${acceptedAttractions.length})`}
+            done={acceptedAttractions.length >= 3}
+          />
+        </div>
+        {readiness.destination && readiness.dates && readiness.travelers && readiness.cities && tripData && (
+          <p className="mt-2 text-xs font-medium text-green-700">{t('readiness.ready')}</p>
+        )}
+      </div>
+
       {/* Trip info */}
       {tripData && (
         <div>

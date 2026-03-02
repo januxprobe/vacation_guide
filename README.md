@@ -7,7 +7,7 @@ Currently features a pre-configured **Andalusia 2026** trip covering Seville, Co
 ## Features
 
 - **Trip Selector Homepage** - Browse existing trips, create new ones, delete user-created trips
-- **AI Trip Builder** - Chat with Gemini AI to plan trips with real-time data from Google Search grounding
+- **AI Trip Builder** - Chat with Gemini AI (markdown-rendered responses) to plan trips with real-time data from Google Search grounding, auto-enriched with real Wikipedia/Wikimedia Commons images
 - **Multi-trip architecture** - Each trip has its own config, data, and URL namespace (`/nl/andalusia-2026/attractions`)
 - **25+ attractions** with photos, YouTube videos, pricing, opening hours, and tips
 - **7-day itinerary** - Expandable day cards with activity timeline, meals, transport indicators, and attraction links
@@ -32,6 +32,7 @@ Currently features a pre-configured **Andalusia 2026** trip covering Seville, Co
 | shadcn/ui | UI component primitives |
 | next-intl v4 | Internationalization |
 | @google/genai | Gemini AI for conversational trip builder |
+| react-markdown | Markdown rendering in AI chat bubbles |
 | React-Leaflet | Interactive maps |
 | Valhalla (OSM) | Pedestrian walking routes (free public API) |
 | react-leaflet-cluster | Marker clustering |
@@ -65,9 +66,9 @@ The homepage shows all available trips as cards. Pre-configured trips (like Anda
 1. Click "Create New Trip" on the homepage
 2. Describe your trip idea in natural language (e.g., "5-day trip to Torremolinos with family")
 3. Gemini AI asks clarifying questions and suggests attractions with real data (prices, GPS coordinates, descriptions) from Google Search
-4. Accept or reject each suggestion via rich cards
-5. Click "Create Trip" - the AI auto-generates restaurants and an itinerary alongside the attractions
-6. Get redirected to your new trip
+4. Accept or reject each suggestion via rich cards (with thumbnail previews from Wikipedia)
+5. Click "Create Trip" - the AI auto-generates restaurants and an itinerary, enriches all attractions with real Wikimedia images
+6. Get redirected to your new trip with hero image, itinerary, restaurants, budget, and story generation
 
 ### Trip Pages (`/{locale}/{tripSlug}/...`)
 Each trip has dedicated pages:
@@ -104,7 +105,7 @@ src/
 ├── config/trips/                  # Trip configurations (static TS + dynamic JSON)
 ├── data/trips/                    # Trip data on disk (attraction JSON files)
 ├── hooks/                         # Custom hooks (walking route via Valhalla)
-├── lib/                           # Data loaders, budget calculator, color utilities, Zod schemas, AI normalization
+├── lib/                           # Data loaders, budget calculator, color utilities, Zod schemas, AI normalization, Wikimedia API
 └── i18n/messages/                 # Translation files (nl.json, en.json)
 ```
 
@@ -130,20 +131,20 @@ See [RESOURCES.md](./RESOURCES.md) for detailed patterns on data sourcing, image
 ## Testing
 
 ```bash
-npm run test:unit        # Vitest unit/hook/API tests (158 tests)
-npm run test:integration # Playwright integration tests (33 tests, headed)
+npm run test:unit        # Vitest unit/hook/API tests (~200 tests)
+npm run test:integration # Playwright integration tests (~41 tests, headed)
 npm run test:e2e         # Playwright E2E tests (1 test, headed, 10min timeout)
 npm run test:playwright  # All Playwright tests (headed)
 ```
 
-**Vitest (158 tests)** — fast, no browser needed:
-- Unit tests: budget calculator, schemas, planner utils, normalize-itinerary, city-colors
+**Vitest (~200 tests)** — fast, no browser needed:
+- Unit tests: budget calculator, schemas, planner utils, normalize-itinerary, normalize-story, city-colors
 - Hook tests: useFavorites, useDayComments
-- API route tests: all 6 API routes with mocked repositories
+- API route tests: all 7 API routes with mocked repositories
 
-**Playwright (34 tests)** — headed Chrome browser:
-- Integration (33 tests): navigation, i18n, trip selector, attractions, restaurants, planner, map, budget, hero, 404
-- E2E (1 test): AI trip creation + verification of all resources (restaurants, itinerary, budget) + deletion
+**Playwright (~42 tests)** — headed Chrome browser:
+- Integration (~41 tests): navigation, i18n, trip selector, trip story, attractions, restaurants, planner, map, budget, hero, 404
+- E2E (1 test): AI trip creation + story generation + verification of all resources (restaurants, itinerary, budget, story)
 
 ## Environment Variables
 
@@ -157,8 +158,8 @@ npm run test:playwright  # All Playwright tests (headed)
 npm run dev              # Development server (http://localhost:3000)
 npm run build            # Production build
 npm run lint             # ESLint
-npm run test:unit        # Vitest tests (158 tests)
-npm run test:integration # Playwright integration tests (33 tests)
+npm run test:unit        # Vitest tests (~200 tests)
+npm run test:integration # Playwright integration tests (~41 tests)
 npm run test:e2e         # Playwright E2E tests (1 test)
 ```
 

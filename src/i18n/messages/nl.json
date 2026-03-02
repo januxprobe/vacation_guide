@@ -81,20 +81,29 @@
     "reject": "Verwijderen",
     "searching": "Zoeken...",
     "previewEmpty": "Begin een gesprek om je reis te plannen",
-    "initialMessage": "Hoi! Ik ben je reisplanner. Vertel me over de reis die je wilt plannen - waar wil je naartoe, wanneer, en met wie?"
+    "initialMessage": "Hoi! Ik ben je reisplanner. Vertel me over de reis die je wilt plannen - waar wil je naartoe, wanneer, en met wie?",
+    "readiness": {
+      "destination": "Bestemming",
+      "dates": "Reisdata",
+      "travelers": "Reizigers",
+      "cities": "Steden",
+      "attractions": "Bezienswaardigheden",
+      "confirmed": "bevestigd",
+      "missing": "nog nodig",
+      "ready": "Klaar om je reis aan te maken!",
+      "notReady": "Vertel me meer over je reis om te beginnen"
+    }
   },
   "home": {
     "hero": {
-      "title": "Ontdek het Magische Andalusië",
-      "subtitle": "Een familiereis door Sevilla, Córdoba en Granada - September 2026",
       "cta": "Bekijk Reisroute"
     },
     "overview": {
       "title": "Reis Overzicht",
-      "days": "7 dagen",
-      "cities": "3 steden",
-      "attractions": "25+ bezienswaardigheden",
-      "distance": "~350 km"
+      "days": "Dagen",
+      "cities": "Steden",
+      "attractions": "Bezienswaardigheden",
+      "distance": "Afstand"
     },
     "highlights": {
       "title": "Hoogtepunten",

@@ -1,6 +1,63 @@
 import { GoogleGenAI } from '@google/genai';
-import { restaurantsFileSchema, itinerarySchema } from '@/lib/schemas';
+import { restaurantSchema, restaurantsFileSchema, itinerarySchema } from '@/lib/schemas';
 import { normalizeItinerary } from '@/lib/normalize-itinerary';
+import { enrichAttractionMedia, fetchHeroImage } from '@/lib/wikimedia';
+
+const PRICE_RANGE_MAP: Record<string, string> = {
+  '$': '€', '$$': '€€', '$$$': '€€€', '$$$$': '€€€€',
+  'budget': '€', 'cheap': '€', 'inexpensive': '€',
+  'moderate': '€€', 'mid-range': '€€', 'mid range': '€€', 'medium': '€€',
+  'expensive': '€€€', 'upscale': '€€€', 'fine dining': '€€€€', 'luxury': '€€€€',
+};
+
+function normalizeRestaurant(r: Record<string, unknown>): void {
+  // Fix priceRange: "$" → "€", "moderate" → "€€", etc.
+  if (typeof r.priceRange === 'string') {
+    const lower = r.priceRange.toLowerCase().trim();
+    if (PRICE_RANGE_MAP[lower]) {
+      r.priceRange = PRICE_RANGE_MAP[lower];
+    } else if (!['€', '€€', '€€€', '€€€€'].includes(r.priceRange)) {
+      r.priceRange = '€€'; // safe default
+    }
+  } else {
+    r.priceRange = '€€';
+  }
+
+  // Fix coordinates: latitude/longitude → lat/lng, ensure present
+  if (!r.coordinates || typeof r.coordinates !== 'object') {
+    r.coordinates = { lat: 0, lng: 0 };
+  }
+  const coords = r.coordinates as Record<string, unknown>;
+  if ('latitude' in coords && !('lat' in coords)) {
+    coords.lat = coords.latitude; delete coords.latitude;
+  }
+  if ('longitude' in coords && !('lng' in coords)) {
+    coords.lng = coords.longitude; delete coords.longitude;
+  }
+  if (typeof coords.lat !== 'number') coords.lat = Number(coords.lat) || 0;
+  if (typeof coords.lng !== 'number') coords.lng = Number(coords.lng) || 0;
+
+  // Fix cuisine: string → array
+  if (typeof r.cuisine === 'string') {
+    r.cuisine = (r.cuisine as string).split(',').map((s: string) => s.trim()).filter(Boolean);
+  }
+  if (!Array.isArray(r.cuisine)) {
+    r.cuisine = [];
+  }
+
+  // Fix description/specialties: plain string → { nl, en }
+  for (const field of ['description', 'specialties'] as const) {
+    const val = r[field];
+    if (typeof val === 'string' && val) {
+      r[field] = { nl: val, en: val };
+    }
+  }
+
+  // Ensure neighborhood exists
+  if (!r.neighborhood || typeof r.neighborhood !== 'string') {
+    r.neighborhood = '';
+  }
+}
 
 const FINALIZE_PROMPT = `Based on the conversation so far, generate the COMPLETE trip configuration, ALL attraction data, restaurant recommendations, and a day-by-day itinerary as a single JSON object.
 
@@ -46,7 +103,7 @@ The output must be valid JSON with this exact structure:
       "name": "Attraction Name",
       "city": "city-id",
       "category": "monument",
-      "description": { "nl": "...", "en": "..." },
+      "description": { "nl": "Uitgebreide Nederlandse beschrijving (minstens 2-3 zinnen)...", "en": "Detailed English description (at least 2-3 sentences)..." },
       "coordinates": { "lat": 0.0, "lng": 0.0 },
       "pricing": { "adult": 0, "student": 0 },
       "duration": 120,
@@ -55,7 +112,7 @@ The output must be valid JSON with this exact structure:
       "thumbnail": "",
       "bookingRequired": false,
       "website": "https://...",
-      "tips": { "nl": "...", "en": "..." }
+      "tips": { "nl": "Praktische tip in het Nederlands...", "en": "Practical tip in English..." }
     }
   ],
   "restaurants": [
@@ -147,6 +204,11 @@ RULES:
 - The highlights array should contain the 3 most important attraction IDs
 - stats.totalAttractions must match the actual number of attractions
 
+CONTENT QUALITY:
+- Descriptions must be rich and evocative (2-3 sentences minimum), not dry one-liners.
+- Tips must be practical and useful for travelers.
+- Do NOT include image URLs, thumbnail URLs, or YouTube video IDs — media is added automatically by the system.
+
 RESTAURANTS:
 - Include 3-4 restaurants per city (mix of price ranges: €, €€, €€€)
 - Use real restaurant names, real GPS coordinates, real cuisine types
@@ -175,7 +237,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const { messages } = await request.json();
+    const { messages, acceptedAttractions } = await request.json();
 
     if (!messages || !Array.isArray(messages)) {
       return new Response(
@@ -186,6 +248,15 @@ export async function POST(request: Request) {
 
     const ai = new GoogleGenAI({ apiKey });
 
+    // Build the finalize prompt with accepted attractions context
+    let finalizePrompt = FINALIZE_PROMPT;
+    if (acceptedAttractions && Array.isArray(acceptedAttractions) && acceptedAttractions.length > 0) {
+      const attractionSummary = acceptedAttractions.map((a: Record<string, unknown>) =>
+        `- id: "${a.id}", name: "${a.name}", city: "${a.city}"`
+      ).join('\n');
+      finalizePrompt = `ACCEPTED ATTRACTIONS — the user accepted these during the conversation. You MUST include ALL of them in the output attractions array with their exact IDs. You may add more attractions but do NOT remove any accepted ones:\n${attractionSummary}\n\n${FINALIZE_PROMPT}`;
+    }
+
     // Build conversation history + finalize prompt
     const contents = [
       ...messages.map((msg: { role: string; content: string }) => ({
@@ -194,7 +265,7 @@ export async function POST(request: Request) {
       })),
       {
         role: 'user' as const,
-        parts: [{ text: FINALIZE_PROMPT }],
+        parts: [{ text: finalizePrompt }],
       },
     ];
 
@@ -203,6 +274,7 @@ export async function POST(request: Request) {
       contents,
       config: {
         responseMimeType: 'application/json',
+        maxOutputTokens: 65536,
       },
     });
 
@@ -232,27 +304,82 @@ export async function POST(request: Request) {
       data.tripConfig.dataDirectory = data.tripConfig.slug;
     }
 
-    // Validate restaurants (graceful fallback to empty array)
+    // Normalize + validate restaurants (keep individually valid ones)
     if (data.restaurants && Array.isArray(data.restaurants)) {
+      for (const r of data.restaurants) {
+        if (r && typeof r === 'object') normalizeRestaurant(r as Record<string, unknown>);
+      }
+      // Try batch validation first
       const restaurantsParsed = restaurantsFileSchema.safeParse({ restaurants: data.restaurants });
       if (!restaurantsParsed.success) {
-        console.warn('Restaurants validation failed, falling back to empty:', restaurantsParsed.error.format());
-        data.restaurants = [];
+        // Fall back to individual validation — keep valid ones
+        console.warn('Batch restaurant validation failed, trying individually...');
+        const valid = [];
+        for (const r of data.restaurants) {
+          const parsed = restaurantSchema.safeParse(r);
+          if (parsed.success) {
+            valid.push(parsed.data);
+          } else {
+            console.warn(`Restaurant "${(r as Record<string, unknown>).name}" validation failed:`, parsed.error.format());
+          }
+        }
+        data.restaurants = valid;
       }
     } else {
       data.restaurants = [];
     }
 
-    // Normalize + validate itinerary (graceful fallback to null)
+    // Normalize + validate itinerary
     if (data.itinerary) {
       normalizeItinerary(data.itinerary);
       const itineraryParsed = itinerarySchema.safeParse(data.itinerary);
       if (!itineraryParsed.success) {
-        console.warn('Itinerary validation failed, falling back to null:', itineraryParsed.error.format());
+        const errors = itineraryParsed.error.format();
+        console.error('Itinerary validation failed after normalization:', JSON.stringify(errors, null, 2));
+        console.error('Itinerary data (first 2000 chars):', JSON.stringify(data.itinerary).slice(0, 2000));
         data.itinerary = null;
+        data._itineraryErrors = errors;
       }
     } else {
       data.itinerary = null;
+    }
+
+    // Enrich attractions with real images from Wikipedia/Wikimedia Commons
+    if (data.attractions && Array.isArray(data.attractions)) {
+      const cityNames: Record<string, string> = {};
+      if (data.tripConfig?.cities) {
+        for (const city of data.tripConfig.cities as Array<{ id: string; name: { en: string } }>) {
+          cityNames[city.id] = city.name.en;
+        }
+      }
+
+      const enriched = await Promise.all(
+        data.attractions.map(async (attr: Record<string, unknown>) => {
+          const name = attr.name as string;
+          const cityId = attr.city as string;
+          const cityName = cityNames[cityId] || cityId;
+          try {
+            const { thumbnail, media } = await enrichAttractionMedia(name, cityName);
+            if (thumbnail) attr.thumbnail = thumbnail;
+            if (media.length > 0) attr.media = media;
+          } catch (e) {
+            console.warn(`Failed to enrich media for ${name}:`, e);
+          }
+          return attr;
+        })
+      );
+      data.attractions = enriched;
+
+      // Fetch hero image from the first city
+      const firstCityName = data.tripConfig?.cities?.[0]?.name?.en;
+      if (firstCityName && !data.tripConfig.heroImage) {
+        try {
+          const heroImage = await fetchHeroImage(firstCityName);
+          if (heroImage) data.tripConfig.heroImage = heroImage;
+        } catch (e) {
+          console.warn('Failed to fetch hero image:', e);
+        }
+      }
     }
 
     return new Response(JSON.stringify(data), {

@@ -318,4 +318,17 @@ describe('edge cases', () => {
     expect(it.days[0].activities).toEqual([]);
     expect(it.days[0].meals).toEqual([]);
   });
+
+  it('converts attractionId: null to undefined (delete the key)', () => {
+    const it = makeItinerary({
+      activities: [
+        { time: '10:00', attractionId: null, duration: 60 },
+        { time: '14:00', attractionId: 'rome-colosseum', duration: 90 },
+      ],
+    });
+    normalizeItinerary(it);
+    expect(it.days[0].activities[0].attractionId).toBeUndefined();
+    expect('attractionId' in it.days[0].activities[0]).toBe(false);
+    expect(it.days[0].activities[1].attractionId).toBe('rome-colosseum');
+  });
 });

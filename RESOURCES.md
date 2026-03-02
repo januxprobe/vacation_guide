@@ -217,10 +217,18 @@ See `src/config/trips/andalusia-2026.ts` for a complete static example, or `src/
 7. User-created trips can be deleted from the trip selector homepage
 
 **Notes on AI-generated data:**
-- Trip creation validates that restaurants (non-empty array) and itinerary (non-null) are present before saving. All saves are blocking — failures propagate to the error toast so the user is informed instead of getting a broken trip.
+- Trip creation validates that itinerary (non-null) is present before saving. Restaurant save is non-blocking (trip creation continues without them if validation fails). Itinerary save is blocking — failures propagate to the error toast.
 - Itinerary generation uses a two-layer defense: (1) the finalize prompt includes a concrete one-shot example with FORMAT RULES, and (2) `normalizeItinerary()` fixes common issues (capitalized enums, AM/PM times, string numbers, plain strings instead of `{nl,en}` objects) before Zod validation.
+- Restaurant normalization: `normalizeRestaurant()` in finalize-trip fixes priceRange (`$`→`€`), coordinates (`latitude`→`lat`), cuisine (string→array), description/specialties (string→`{nl,en}`). Validation is per-restaurant (valid ones kept, invalid ones skipped).
 - `attractionId` is optional on activities — Gemini generates free-form activities (train transfers, free time) that don't reference a specific attraction. The planner, map, and budget components all handle this gracefully.
 - Attraction categories/priorities are normalized (e.g. `"square"` → `"monument"`, `"important"` → `"essential"`) before validation
+
+**Media enrichment (server-side):**
+- **Never trust LLM-generated media URLs.** Gemini hallucinates Wikimedia Commons URLs and YouTube video IDs — they look real but return 404. The finalize prompt explicitly tells Gemini to leave `thumbnail: ""` and `images: []` empty.
+- After AI generates attraction data, `enrichAttractionMedia()` from `src/lib/wikimedia.ts` fetches real images via Wikipedia PageImages API and Wikimedia Commons search API.
+- `fetchHeroImage()` gets a 1920px banner image for the trip homepage from Wikipedia.
+- All API calls have 5s timeouts and graceful error handling (missing images don't break trip creation).
+- Too many rapid requests trigger Wikimedia's 429 rate limiter — the parallel `Promise.all` strategy works but be careful with very large attraction lists.
 
 ### Option 2: Manual
 1. Create trip config: `src/config/trips/{trip-slug}.ts` (implement TripConfig)

@@ -59,7 +59,7 @@ export default async function TripHomePage({ params }: Props) {
     {
       icon: Navigation,
       label: t('home.overview.attractions'),
-      value: `${trip.stats.totalAttractions}+`,
+      value: `${trip.stats.totalAttractions}`,
     },
     {
       icon: Euro,
@@ -92,10 +92,10 @@ export default async function TripHomePage({ params }: Props) {
             <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
             <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 py-20 sm:py-28 md:py-36">
               <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-lg">
-                {t('home.hero.title')}
+                {trip.name[loc]}
               </h1>
               <p className="text-lg sm:text-xl text-white/90 mb-8 max-w-2xl drop-shadow">
-                {t('home.hero.subtitle')}
+                {trip.description[loc]}
               </p>
               <div className="flex items-center gap-3 justify-center">
                 <Link
@@ -115,10 +115,10 @@ export default async function TripHomePage({ params }: Props) {
         ) : (
           <div className="text-center px-4 py-12 md:py-20">
             <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-gray-900 mb-4">
-              {t('home.hero.title')}
+              {trip.name[loc]}
             </h1>
             <p className="text-lg sm:text-xl text-gray-600 mb-8">
-              {t('home.hero.subtitle')}
+              {trip.description[loc]}
             </p>
             <div className="flex items-center gap-3 justify-center">
               <Link

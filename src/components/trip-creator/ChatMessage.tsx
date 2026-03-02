@@ -1,7 +1,9 @@
 'use client';
 
 import { useMemo } from 'react';
-import { Bot, User } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import { Bot, User, Check, Circle } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import AttractionSuggestion from './AttractionSuggestion';
 
 interface ChatMessageProps {
@@ -11,7 +13,7 @@ interface ChatMessageProps {
 }
 
 interface ParsedSegment {
-  type: 'text' | 'attraction' | 'trip_config';
+  type: 'text' | 'attraction' | 'trip_config' | 'trip_ready';
   content: string;
   data?: Record<string, unknown>;
 }
@@ -44,6 +46,12 @@ function parseMessageContent(content: string): ParsedSegment[] {
           content: match[1],
           data: data.data,
         });
+      } else if (data.type === 'trip_ready' && data.data) {
+        segments.push({
+          type: 'trip_ready',
+          content: match[1],
+          data: data.data,
+        });
       } else {
         segments.push({ type: 'text', content: '```json\n' + match[1] + '```' });
       }
@@ -65,6 +73,59 @@ function parseMessageContent(content: string): ParsedSegment[] {
   }
 
   return segments;
+}
+
+function ReadinessStatusCard({ data }: { data: Record<string, unknown> }) {
+  const t = useTranslations('tripCreator.readiness');
+  const items: { key: string; label: string; done: boolean }[] = [
+    { key: 'destination', label: t('destination'), done: !!data.destination },
+    { key: 'dates', label: t('dates'), done: !!data.dates },
+    { key: 'travelers', label: t('travelers'), done: !!data.travelers },
+    { key: 'cities', label: t('cities'), done: !!data.cities },
+  ];
+  const attractionCount = typeof data.attractions === 'number' ? data.attractions : 0;
+  const allDone = items.every((i) => i.done) && attractionCount >= 3;
+
+  return (
+    <div className="my-2 p-3 rounded-lg bg-gray-50 border border-gray-200 text-sm">
+      <div className="flex flex-wrap gap-2">
+        {items.map((item) => (
+          <span
+            key={item.key}
+            className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs ${
+              item.done
+                ? 'bg-green-100 text-green-700'
+                : 'bg-gray-100 text-gray-400'
+            }`}
+          >
+            {item.done ? (
+              <Check className="h-3 w-3" />
+            ) : (
+              <Circle className="h-3 w-3" />
+            )}
+            {item.label}
+          </span>
+        ))}
+        <span
+          className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs ${
+            attractionCount >= 3
+              ? 'bg-green-100 text-green-700'
+              : 'bg-gray-100 text-gray-400'
+          }`}
+        >
+          {attractionCount >= 3 ? (
+            <Check className="h-3 w-3" />
+          ) : (
+            <Circle className="h-3 w-3" />
+          )}
+          {t('attractions')} ({attractionCount})
+        </span>
+      </div>
+      {allDone && (
+        <p className="mt-1.5 text-xs font-medium text-green-700">{t('ready')}</p>
+      )}
+    </div>
+  );
 }
 
 export default function ChatMessage({ role, content, onAcceptAttraction }: ChatMessageProps) {
@@ -110,17 +171,28 @@ export default function ChatMessage({ role, content, onAcceptAttraction }: ChatM
             );
           }
 
+          if (segment.type === 'trip_ready' && segment.data) {
+            return <ReadinessStatusCard key={i} data={segment.data} />;
+          }
+
           // Regular text
+          if (isUser) {
+            return (
+              <div
+                key={i}
+                className={`inline-block px-4 py-2 rounded-2xl text-sm whitespace-pre-wrap bg-blue-600 text-white rounded-tr-md${i > 0 ? ' mt-2' : ''}`}
+              >
+                {segment.content}
+              </div>
+            );
+          }
+
           return (
             <div
               key={i}
-              className={`inline-block px-4 py-2 rounded-2xl text-sm whitespace-pre-wrap ${
-                isUser
-                  ? 'bg-blue-600 text-white rounded-tr-md'
-                  : 'bg-gray-100 text-gray-900 rounded-tl-md'
-              } ${i > 0 ? 'mt-2' : ''}`}
+              className={`inline-block px-4 py-2 rounded-2xl text-sm bg-gray-100 text-gray-900 rounded-tl-md chat-markdown${i > 0 ? ' mt-2' : ''}`}
             >
-              {segment.content}
+              <ReactMarkdown>{segment.content}</ReactMarkdown>
             </div>
           );
         })}
