@@ -142,7 +142,7 @@ Key design: all methods async, `tripSlug` is scope key, caching is internal, val
 
 ### AI Trip Story
 
-Story API (`/api/trips/[slug]/story`): Gemini generates `TripStory` with `StoryChapter[]` containing `StoryBlock[]` (narrative, attraction_highlight, meal_highlight, transition). 4 styles: adventure/cultural/romantic/family. Uses `responseMimeType: 'application/json'` + `responseSchema` (Type enum from `@google/genai`) to constrain output structure. `normalizeStory()` cross-populates `narrative`/`content` fields between block types before Zod validation. `thinkingConfig: { thinkingBudget: 0 }` prevents thinking tokens from consuming output budget.
+Story API (`/api/trips/[slug]/story`): Uses `GEMINI_STORY_MODEL` env var (separate from `GEMINI_MODEL` — use a more capable model like `gemini-3-flash-preview` for creative writing). Gemini generates `TripStory` with `StoryChapter[]` containing `StoryBlock[]` (narrative, attraction_highlight, meal_highlight, transition). 4 styles: adventure/cultural/romantic/family. Uses `responseMimeType: 'application/json'` + `responseSchema` (Type enum from `@google/genai`) to constrain output structure. Immersive prompt writes a continuous first-person journey — attraction_highlights are 3-5 sentence scenes with insider tips, not standalone descriptions. `normalizeStory()` cross-populates `narrative`/`content` fields between block types before Zod validation. `thinkingConfig: { thinkingBudget: 0 }` prevents thinking tokens from consuming output budget.
 
 ### Planner Map
 
@@ -151,7 +151,7 @@ Photo markers with city-colored borders, walking routes via **Valhalla** (`valha
 ## Development
 
 ```bash
-npm install && cp .env.example .env.local   # Add GEMINI_API_KEY + GEMINI_MODEL
+npm install && cp .env.example .env.local   # Add GEMINI_API_KEY, GEMINI_MODEL, GEMINI_STORY_MODEL
 npm run dev                                  # http://localhost:3000
 npm run build                                # Production build
 npm run test:unit                            # Vitest (~273 tests)
