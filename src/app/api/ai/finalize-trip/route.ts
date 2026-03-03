@@ -273,11 +273,12 @@ export async function POST(request: Request) {
     ];
 
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: process.env.GEMINI_MODEL!,
       contents,
       config: {
         responseMimeType: 'application/json',
         maxOutputTokens: 65536,
+        thinkingConfig: { thinkingBudget: 0 },
       },
     });
 

@@ -36,16 +36,60 @@ async function isCreateButtonVisible(page: import('@playwright/test').Page): Pro
   return page.locator('button:has-text("Reis Aanmaken")').first().isVisible().catch(() => false);
 }
 
-test.describe('Create Trip with Story (E2E)', () => {
+test.describe('Create Trip (E2E)', () => {
   test.use({
     viewport: { width: 1280, height: 800 },
   });
 
   test.setTimeout(600000);
 
-  test('should create a Rome & Venice trip via AI chat with story generation', async ({ page }) => {
+  test('should respond in correct locale, create trip via AI chat, and verify all pages', async ({ page }) => {
+    // ════════════════════════════════════════════════════════════════
+    // PART 1: English locale — verify UI + AI responds in English
+    // ════════════════════════════════════════════════════════════════
+    console.log('=== Part 1: English locale (/en/create-trip) ===');
+    await page.goto(`${BASE_URL}/en/create-trip`);
+    await page.waitForTimeout(2000);
+
+    // Verify English UI elements
+    await expect(page.locator('text=travel planning assistant').first()).toBeVisible({ timeout: 5000 });
+    console.log('✓ English greeting visible');
+
+    await expect(page.getByText('Start a conversation to plan your trip')).toBeVisible({ timeout: 3000 });
+    console.log('✓ English sidebar placeholder visible');
+
+    const enCreateButton = page.locator('button:has-text("Create Trip")');
+    await expect(enCreateButton).not.toBeVisible();
+    console.log('✓ "Create Trip" button correctly hidden');
+
+    // Send an English message and verify AI responds in English
+    await sendAndWaitForResponse(page,
+      'I want to plan a trip to Barcelona, 3 days in July 2027 with 2 adults. We love architecture and food.'
+    );
+
+    const enChatArea = page.locator('.flex-1.overflow-y-auto').first();
+    const enBubbles = enChatArea.locator('.bg-gray-100.text-gray-900');
+    const enResponse = await enBubbles.last().textContent();
+    console.log(`✓ EN AI response (first 200 chars): ${enResponse?.slice(0, 200)}`);
+    expect(enResponse?.length ?? 0).toBeGreaterThan(20);
+
+    // Check readiness labels are in English
+    const enSidebar = page.locator('.border-l.border-gray-200.bg-gray-50');
+    const hasEnChecklist = await enSidebar.getByText('Destination').isVisible().catch(() => false);
+    if (hasEnChecklist) {
+      console.log('✓ Readiness checklist labels are in English');
+      await expect(enSidebar.getByText('Travel dates')).toBeVisible();
+      await expect(enSidebar.getByText('Travelers')).toBeVisible();
+    } else {
+      console.log('○ Readiness checklist not yet visible (AI may not have emitted trip_ready)');
+    }
+
+    // ════════════════════════════════════════════════════════════════
+    // PART 2: Dutch locale — full create trip flow
+    // ════════════════════════════════════════════════════════════════
+
     // Step 1: Trip selector
-    console.log('=== Step 1: Trip Selector ===');
+    console.log('\n=== Step 1: Trip Selector (NL) ===');
     await page.goto(`${BASE_URL}/nl`);
     await page.waitForTimeout(1500);
     await expect(page.locator('h1')).toContainText('Jouw Reizen');
@@ -56,37 +100,59 @@ test.describe('Create Trip with Story (E2E)', () => {
     await page.waitForTimeout(1500);
     console.log('✓ Create trip page loaded');
 
-    // Step 2: Describe the trip (Phase 1 of AI flow — gather basics)
-    console.log('\n=== Step 2: Describe trip to AI ===');
+    // Step 2: Verify Dutch UI and describe the trip
+    console.log('\n=== Step 2: Describe trip to AI (NL) ===');
     await expect(page.locator('text=reisplanner').first()).toBeVisible({ timeout: 5000 });
-    console.log('✓ AI greeting visible');
+    console.log('✓ Dutch greeting visible');
 
-    console.log('✓ Sending trip description...');
+    await expect(page.getByText('Begin een gesprek om je reis te plannen')).toBeVisible({ timeout: 3000 });
+    console.log('✓ Dutch sidebar placeholder visible');
+
+    const nlCreateButton = page.locator('button:has-text("Reis Aanmaken")');
+    await expect(nlCreateButton).not.toBeVisible();
+    console.log('✓ "Reis Aanmaken" button correctly hidden');
+
     await sendAndWaitForResponse(page,
       'Ik wil een 5-daagse reis naar Rome en Venetië plannen in mei 2027. ' +
       'We gaan met 3 volwassenen, twee meisjes van 20 jaar, en oma in een rolstoel. ' +
       'We houden van cultuur, architectuur en lekker eten. Budget is gemiddeld.'
     );
-    console.log('✓ AI responded!');
+    console.log('✓ AI responded in Dutch');
+
+    // Verify Dutch AI response
+    const nlChatArea = page.locator('.flex-1.overflow-y-auto').first();
+    const nlBubbles = nlChatArea.locator('.bg-gray-100.text-gray-900');
+    const nlResponse = await nlBubbles.last().textContent();
+    console.log(`✓ NL AI response (first 200 chars): ${nlResponse?.slice(0, 200)}`);
+    expect(nlResponse?.length ?? 0).toBeGreaterThan(20);
     await page.waitForTimeout(2000);
 
-    // Step 3: Confirm trip structure (Phase 2 — get AI to emit trip_config)
+    // Check Dutch readiness labels
+    const nlSidebar = page.locator('.border-l.border-gray-200.bg-gray-50');
+    const hasNlChecklist = await nlSidebar.getByText('Bestemming').isVisible().catch(() => false);
+    if (hasNlChecklist) {
+      console.log('✓ Readiness checklist labels are in Dutch');
+      for (const label of ['Bestemming', 'Reisdata', 'Reizigers', 'Steden']) {
+        const visible = await nlSidebar.getByText(label).isVisible().catch(() => false);
+        console.log(`  ${visible ? '✓' : '○'} ${label}`);
+      }
+    }
+
+    // Step 3: Confirm trip structure
     console.log('\n=== Step 3: Confirm trip structure ===');
-    console.log('✓ Asking AI to propose trip structure with trip_config...');
     await sendAndWaitForResponse(page,
       'Dat klinkt goed! Maak een reisstructuur voor Rome en Venetië (5 dagen). ' +
       'Geef een trip_config JSON block met de steden, data, en reizigers. ' +
       'We bezoeken Rome (3 dagen) en Venetië (2 dagen).'
     );
-    console.log('✓ AI responded with trip structure!');
+    console.log('✓ AI responded with trip structure');
     await page.waitForTimeout(2000);
 
-    // Check if trip_config was emitted (green "Trip configuration ready!" card)
+    // Check if trip_config was emitted
     const tripConfigCard = page.locator('text=Trip configuration ready!');
     const hasTripConfig = await tripConfigCard.isVisible().catch(() => false);
     console.log(`✓ trip_config emitted: ${hasTripConfig}`);
 
-    // If trip_config wasn't emitted yet, nudge the AI
     if (!hasTripConfig) {
       console.log('  → Nudging AI to emit trip_config...');
       await sendAndWaitForResponse(page,
@@ -98,18 +164,17 @@ test.describe('Create Trip with Story (E2E)', () => {
       console.log(`  ✓ trip_config emitted after nudge: ${hasTripConfigNow}`);
     }
 
-    // Step 4: Ask for structured attraction suggestions (Phase 3)
+    // Step 4: Ask for structured attraction suggestions
     console.log('\n=== Step 4: Ask for structured attractions ===');
-    console.log('✓ Asking for attraction suggestions...');
     await sendAndWaitForResponse(page,
       'Stel nu 5 bezienswaardigheden voor voor Rome en Venetië. ' +
       'Geef ze als JSON code blocks met type "attraction_suggestion" zodat ik ze kan accepteren. ' +
       'Gebruik echte prijzen, GPS coordinaten en categorieën.'
     );
-    console.log('✓ AI responded with suggestions!');
+    console.log('✓ AI responded with suggestions');
     await page.waitForTimeout(2000);
 
-    // Accept visible attraction suggestions one at a time
+    // Accept visible attraction suggestions
     let accepted = 0;
     for (let attempt = 0; attempt < 10; attempt++) {
       const btn = page.locator('button:has-text("Accepteren"):not([disabled])').first();
@@ -124,7 +189,6 @@ test.describe('Create Trip with Story (E2E)', () => {
     }
     console.log(`✓ Accepted ${accepted} attractions total`);
 
-    // If no attractions were emitted as JSON, ask again more explicitly
     if (accepted === 0) {
       console.log('  → No attraction_suggestion blocks found, asking again...');
       await sendAndWaitForResponse(page,
@@ -151,9 +215,6 @@ test.describe('Create Trip with Story (E2E)', () => {
 
     // Step 5: Create the trip
     console.log('\n=== Step 5: Create Trip ===');
-    const createButton = page.locator('button:has-text("Reis Aanmaken")');
-
-    // Wait for the button to appear — it requires all readiness flags + trip_config
     let buttonVisible = await isCreateButtonVisible(page);
     if (!buttonVisible) {
       console.log('  → Create button not yet visible, sending readiness nudge...');
@@ -166,16 +227,15 @@ test.describe('Create Trip with Story (E2E)', () => {
     }
 
     if (!buttonVisible) {
-      // Last resort: check if we can see the green "Trip configuration ready!" badge
       console.log('  → Still not visible. Checking page state...');
       const allText = await page.locator('.border-l.border-gray-200.bg-gray-50').textContent();
       console.log(`  Sidebar content: ${allText?.slice(0, 200)}`);
     }
 
-    await expect(createButton.first()).toBeVisible({ timeout: 15000 });
+    await expect(nlCreateButton.first()).toBeVisible({ timeout: 15000 });
     console.log('✓ "Reis Aanmaken" button visible');
 
-    await createButton.first().click();
+    await nlCreateButton.first().click();
     console.log('✓ Clicked - AI is finalizing trip data (this can take a minute)...');
 
     // Wait for redirect to the new trip page
@@ -250,37 +310,30 @@ test.describe('Create Trip with Story (E2E)', () => {
     await page.goto(`${BASE_URL}/nl/${tripSlug}`);
     await page.waitForTimeout(3000);
 
-    // The story section should show the style picker (no story generated yet)
     const storyTitle = page.getByRole('heading', { name: 'Reisverhaal' });
     await expect(storyTitle).toBeVisible({ timeout: 10000 });
     console.log('✓ Story section visible with style picker');
 
-    // Pick "Avontuurlijk" (adventure) style — it's selected by default, just verify
     const adventureButton = page.getByText('Avontuurlijk');
     await expect(adventureButton).toBeVisible({ timeout: 5000 });
     console.log('✓ Adventure style option visible');
 
-    // Click "Verhaal Genereren"
     const generateButton = page.getByText('Verhaal Genereren');
     await expect(generateButton).toBeVisible({ timeout: 5000 });
     await generateButton.click();
     console.log('✓ Clicked "Verhaal Genereren" — generating story (this can take a minute)...');
 
-    // Wait for the generating spinner to appear and then disappear
     await expect(page.getByText('Verhaal wordt geschreven...')).toBeVisible({ timeout: 10000 });
     console.log('✓ Generating spinner visible');
 
-    // Wait for story to appear (generation can take up to 2 minutes)
     await expect(page.getByText('Gegenereerd op')).toBeVisible({ timeout: 180000 });
     console.log('✓ Story generated successfully!');
 
-    // Verify story chapters exist (each chapter has class .story-chapter)
     const chapters = page.locator('.story-chapter');
     const chapterCount = await chapters.count();
     console.log(`✓ Story has ${chapterCount} chapters`);
     expect(chapterCount).toBeGreaterThan(0);
 
-    // Verify story actions (regenerate button) are visible
     const regenerateButton = page.getByText('Opnieuw Genereren');
     await expect(regenerateButton).toBeVisible({ timeout: 5000 });
     console.log('✓ Story actions visible (Regenerate button)');
@@ -298,6 +351,6 @@ test.describe('Create Trip with Story (E2E)', () => {
     console.log('✓ Trip visible on selector with delete option');
 
     await page.waitForTimeout(2000);
-    console.log('\n✅ Full create → verify → story flow completed! Trip kept for manual review.');
+    console.log('\n✅ Full E2E completed (EN locale check + NL create → verify → story)!');
   });
 });

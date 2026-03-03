@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from '@/i18n/routing';
 import ChatMessage from './ChatMessage';
 import ChatInput from './ChatInput';
@@ -24,6 +24,7 @@ export interface TripReadiness {
 
 export default function TripChat() {
   const t = useTranslations('tripCreator');
+  const locale = useLocale();
   const router = useRouter();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [showPreview, setShowPreview] = useState(false);
@@ -105,7 +106,7 @@ export default function TripChat() {
       const response = await fetch('/api/ai/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: allMessages }),
+        body: JSON.stringify({ messages: allMessages, locale }),
       });
 
       if (!response.ok) {

@@ -61,7 +61,7 @@ export async function POST(request: Request) {
     const prompt = SEARCH_PROMPT.replace(/CITY_ID/g, city || tripSlug || 'unknown');
 
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: process.env.GEMINI_MODEL!,
       contents: [
         {
           role: 'user',

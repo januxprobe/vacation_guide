@@ -19,11 +19,12 @@ vi.mock('@/lib/repositories', () => ({
 
 // Mock the Gemini API
 const mockGenerateContent = vi.fn();
-vi.mock('@google/genai', () => ({
-  GoogleGenAI: vi.fn().mockImplementation(() => ({
-    models: { generateContent: mockGenerateContent },
-  })),
-}));
+vi.mock('@google/genai', () => {
+  class MockGoogleGenAI {
+    models = { generateContent: mockGenerateContent };
+  }
+  return { GoogleGenAI: MockGoogleGenAI };
+});
 
 const { GET, POST } = await import('@/app/api/trips/[slug]/story/route');
 
@@ -93,6 +94,23 @@ describe('POST /api/trips/[slug]/story', () => {
     expect(res.status).toBe(201);
     expect(body.story.style).toBe('adventure');
     expect(mockTripDataRepo.saveStory).toHaveBeenCalledOnce();
+  });
+
+  it('disables thinking to maximize output tokens', async () => {
+    vi.mocked(mockTripRepo.getBySlug).mockResolvedValueOnce(MOCK_TRIP_CONFIG);
+    vi.mocked(mockTripDataRepo.getItinerary).mockResolvedValueOnce(MOCK_ITINERARY);
+    vi.mocked(mockTripDataRepo.getAllAttractions).mockResolvedValueOnce([MOCK_ATTRACTION]);
+    vi.mocked(mockTripDataRepo.getRestaurants).mockResolvedValueOnce([]);
+    mockGenerateContent.mockResolvedValueOnce({
+      text: JSON.stringify(MOCK_TRIP_STORY),
+    });
+
+    const req = makeJsonRequest('http://localhost/api/trips/test-trip/story', { style: 'adventure' });
+    await POST(req, makeParams('test-trip'));
+
+    expect(mockGenerateContent).toHaveBeenCalledOnce();
+    const callArgs = mockGenerateContent.mock.calls[0][0];
+    expect(callArgs.config.thinkingConfig).toEqual({ thinkingBudget: 0 });
   });
 
   it('returns 404 when trip not found', async () => {

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { GoogleGenAI } from '@google/genai';
+import { GoogleGenAI, Type } from '@google/genai';
 import { getTripRepository, getTripDataRepository } from '@/lib/repositories';
 import { narrativeStyleSchema, tripStorySchema } from '@/lib/schemas';
 import { normalizeStory } from '@/lib/normalize-story';
@@ -81,13 +81,60 @@ export async function POST(
 
     const prompt = buildStoryPrompt(style, itinerary, attractions, restaurants);
 
+    const localizedString = {
+      type: Type.OBJECT,
+      properties: {
+        nl: { type: Type.STRING },
+        en: { type: Type.STRING },
+      },
+      required: ['nl', 'en'],
+    };
+
+    const storyResponseSchema = {
+      type: Type.OBJECT,
+      properties: {
+        title: localizedString,
+        introduction: localizedString,
+        chapters: {
+          type: Type.ARRAY,
+          items: {
+            type: Type.OBJECT,
+            properties: {
+              dayNumber: { type: Type.NUMBER },
+              city: { type: Type.STRING },
+              title: localizedString,
+              blocks: {
+                type: Type.ARRAY,
+                items: {
+                  type: Type.OBJECT,
+                  properties: {
+                    type: { type: Type.STRING, enum: ['narrative', 'attraction_highlight', 'meal_highlight', 'transition'] },
+                    narrative: localizedString,
+                    attractionId: { type: Type.STRING },
+                    mealType: { type: Type.STRING },
+                    restaurantName: { type: Type.STRING },
+                  },
+                  required: ['type', 'narrative'],
+                },
+              },
+            },
+            required: ['dayNumber', 'city', 'title', 'blocks'],
+          },
+        },
+        conclusion: localizedString,
+      },
+      required: ['title', 'introduction', 'chapters', 'conclusion'],
+    };
+
     const ai = new GoogleGenAI({ apiKey });
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: process.env.GEMINI_MODEL!,
       contents: [{ role: 'user', parts: [{ text: prompt }] }],
       config: {
         responseMimeType: 'application/json',
+        responseSchema: storyResponseSchema,
         maxOutputTokens: 65536,
+        thinkingConfig: { thinkingBudget: 0 },
       },
     });
 
@@ -219,7 +266,7 @@ EXAMPLE OUTPUT (showing one chapter — notice how EVERY pair of highlights has 
       "blocks": [
         {
           "type": "narrative",
-          "content": { "nl": "De ochtendzon werpt lange schaduwen over de keitjes...", "en": "The morning sun casts long shadows across the cobblestones..." }
+          "narrative": { "nl": "De ochtendzon werpt lange schaduwen over de keitjes...", "en": "The morning sun casts long shadows across the cobblestones..." }
         },
         {
           "type": "attraction_highlight",

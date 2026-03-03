@@ -1,6 +1,16 @@
 import { GoogleGenAI } from '@google/genai';
 
-const SYSTEM_PROMPT = `You are an expert travel planner helping users create detailed trip itineraries.
+function getSystemPrompt(locale: string) {
+  const isNl = locale === 'nl';
+  const langName = isNl ? 'Dutch (Nederlands)' : 'English';
+  const descExample = isNl
+    ? '"Nederlandse beschrijving (minstens 2-3 zinnen, levendig en informatief)..."'
+    : '"English description (at least 2-3 sentences, vivid and informative)..."';
+  const tipExample = isNl
+    ? '"Tip in het Nederlands (praktisch en nuttig)..."'
+    : '"Tip in English (practical and useful)..."';
+
+  return `You are an expert travel planner helping users create detailed trip itineraries.
 You are friendly, knowledgeable, and proactive in suggesting great experiences.
 
 CONVERSATION FLOW — follow this order strictly:
@@ -49,7 +59,7 @@ STRUCTURED OUTPUT FORMATS:
     "name": "Attraction Name",
     "city": "city-id",
     "category": "monument",
-    "description": { "nl": "Nederlandse beschrijving (minstens 2-3 zinnen, levendig en informatief)...", "en": "English description (at least 2-3 sentences, vivid and informative)..." },
+    "description": ${descExample},
     "coordinates": { "lat": 41.8902, "lng": 12.4922 },
     "pricing": { "adult": 16, "student": 2 },
     "duration": 120,
@@ -59,10 +69,12 @@ STRUCTURED OUTPUT FORMATS:
     "bookingRequired": true,
     "website": "https://...",
     "wikipediaSlug": "Attraction_Article_Title",
-    "tips": { "nl": "Tip in het Nederlands (praktisch en nuttig)...", "en": "Tip in English (practical and useful)..." }
+    "tips": ${tipExample}
   }
 }
 \`\`\`
+
+IMPORTANT: "description" and "tips" are plain strings in ${langName}. Do NOT use { "nl": "...", "en": "..." } objects — use a single plain string in ${langName} to save tokens.
 
 2) Trip config — include when proposing the trip structure:
 
@@ -127,9 +139,9 @@ IMPORTANT RULES:
 - Always search for real, up-to-date information. Don't make up prices or coordinates.
 - Use sensible city colors (different hex colors per city that look good as UI accents)
 - Generate slugified IDs (lowercase, hyphens, e.g. "rome-colosseum")
-- Respond in the same language the user writes in
+- ALWAYS respond in ${langName}. All conversational text, descriptions, and tips must be in ${langName}.
 - Be concise but thorough in suggestions
-- Provide descriptions in both Dutch (nl) and English (en). Descriptions must be at least 2-3 sentences: vivid, informative, evoking the atmosphere and history of the place.
+- Descriptions must be at least 2-3 sentences: vivid, informative, evoking the atmosphere and history of the place.
 - Categorize attractions as: monument, church, palace, museum, neighborhood, or nature
 - Assign priority: essential, recommended, or optional
 - ALWAYS output each attraction suggestion as a separate \`\`\`json code block. Plain text or markdown descriptions of attractions CANNOT be accepted by the user.
@@ -137,6 +149,7 @@ IMPORTANT RULES:
 - Do NOT include image URLs, thumbnail URLs, or YouTube video IDs — media is added automatically by the system. Set "thumbnail" to "" and "images" to [].
 - The "website" field MUST be the real official URL of the attraction (tourism board, municipality, or attraction's own site). Use Google Search to find it. Do NOT use placeholder URLs.
 - The "wikipediaSlug" field MUST be the exact Wikipedia article title for this attraction (e.g., "Alhambra", "Sagrada_Família"). Search Wikipedia to verify the title exists. If no Wikipedia article exists, set it to "".`;
+}
 
 export async function POST(request: Request) {
   try {
@@ -148,7 +161,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const { messages } = await request.json();
+    const { messages, locale = 'nl' } = await request.json();
 
     if (!messages || !Array.isArray(messages)) {
       return new Response(
@@ -166,11 +179,11 @@ export async function POST(request: Request) {
     }));
 
     const response = await ai.models.generateContentStream({
-      model: 'gemini-2.5-flash',
+      model: process.env.GEMINI_MODEL!,
       contents,
       config: {
         tools: [{ googleSearch: {} }],
-        systemInstruction: SYSTEM_PROMPT,
+        systemInstruction: getSystemPrompt(locale),
       },
     });
 

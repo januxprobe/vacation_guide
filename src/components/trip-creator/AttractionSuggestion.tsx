@@ -1,8 +1,9 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { MapPin, Clock, Euro, ExternalLink, Check } from 'lucide-react';
 import { useState } from 'react';
+import { resolveLocalizedField } from '@/lib/locale-utils';
 
 interface AttractionSuggestionProps {
   data: Record<string, unknown>;
@@ -11,6 +12,7 @@ interface AttractionSuggestionProps {
 
 export default function AttractionSuggestion({ data, onAccept }: AttractionSuggestionProps) {
   const t = useTranslations('tripCreator');
+  const locale = useLocale();
   const [accepted, setAccepted] = useState(false);
 
   const name = (data.name as string) || 'Unknown';
@@ -21,7 +23,7 @@ export default function AttractionSuggestion({ data, onAccept }: AttractionSugge
   const website = (data.website as string) || '';
   const bookingRequired = data.bookingRequired as boolean;
 
-  const description = data.description as { nl?: string; en?: string } | undefined;
+  const descriptionRaw = data.description as string | { nl?: string; en?: string } | undefined;
   const pricing = data.pricing as { adult?: number; student?: number } | undefined;
   const coordinates = data.coordinates as { lat?: number; lng?: number } | undefined;
 
@@ -95,9 +97,9 @@ export default function AttractionSuggestion({ data, onAccept }: AttractionSugge
           )}
         </div>
 
-        {description && (
+        {descriptionRaw && (
           <p className="mt-2 text-sm text-gray-600 line-clamp-2">
-            {description.en || description.nl}
+            {resolveLocalizedField(descriptionRaw, locale)}
           </p>
         )}
 

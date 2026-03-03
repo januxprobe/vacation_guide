@@ -67,6 +67,16 @@ function normalizeBlock(block: any): void {
     const ls = toLocalizedString(block.narrative);
     if (ls) block.narrative = ls;
   }
+
+  // Cross-populate between content and narrative fields:
+  // - "narrative" type blocks need "content" (Zod), but Gemini schema uses "narrative" for all
+  // - Other block types need "narrative" (Zod), but Gemini may use "content"
+  if (block.type === 'narrative' && !block.content && block.narrative) {
+    block.content = block.narrative;
+  }
+  if (block.type !== 'narrative' && !block.narrative && block.content) {
+    block.narrative = block.content;
+  }
 }
 
 // ── Chapter normalizer ───────────────────────────────────────────────
