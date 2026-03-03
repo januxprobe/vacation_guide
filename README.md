@@ -4,6 +4,16 @@ A modern trip planning platform built with Next.js 16, featuring an AI-powered c
 
 Currently features a pre-configured **Andalusia 2026** trip covering Seville, Cordoba, and Granada with 25 attractions, a 7-day itinerary, 12 restaurant recommendations, an interactive budget calculator, an interactive map with photo markers, pedestrian walking routes, and meal stops, photos, videos, pricing info, and opening hours. Users can also create custom trips via the AI trip builder.
 
+## Screenshots
+
+| AI Trip Builder | Trip Homepage |
+|:---:|:---:|
+| ![AI Chat](docs/screenshots/ai-chat.png) | ![Trip Homepage](docs/screenshots/trip-homepage.png) |
+
+| Interactive Planner Map | Budget Calculator |
+|:---:|:---:|
+| ![Planner Map](docs/screenshots/planner-map.png) | ![Budget Calculator](docs/screenshots/budget-calculator.png) |
+
 ## Features
 
 - **Trip Selector Homepage** - Browse existing trips, create new ones, delete user-created trips
