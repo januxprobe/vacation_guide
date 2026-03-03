@@ -13,7 +13,7 @@
 
 A Next.js web app for planning multi-city trips. Users browse pre-configured trips or create new ones via an AI-powered trip builder (Gemini + Google Search grounding). Supports multiple trips via `/{locale}/{tripSlug}/...` routing.
 
-**Key features:** Trip selector homepage, AI trip builder (chat → finalize → enrich → save), AI travel story (4 narrative styles), restaurant search & CRUD, attraction details, budget calculator, unified planner (map + itinerary), bilingual (NL/EN), walking routes (Valhalla), loading skeletons, error boundaries, accessibility.
+**Key features:** Trip selector homepage, AI trip builder (locale-aware chat → finalize → enrich → save), AI travel story (4 narrative styles, structured output via `responseSchema`), restaurant search & CRUD, attraction details, budget calculator, unified planner (map + itinerary), bilingual (NL/EN), walking routes (Valhalla), loading skeletons, error boundaries, accessibility.
 
 **Pre-configured trip:** Andalusia 2026 — Seville, Cordoba, Granada (September 2026, 5 travelers)
 
@@ -69,7 +69,7 @@ vacation_guide/
 │   │   └── trip-creator/    # TripChat, ChatMessage, ChatInput, AttractionSuggestion, TripPreview, CreateTripButton
 │   ├── hooks/useOsrmRoute.ts                   # Valhalla pedestrian walking route hook
 │   ├── lib/
-│   │   ├── utils.ts, schemas.ts, city-colors.ts, budget-calculator.ts
+│   │   ├── utils.ts, schemas.ts, city-colors.ts, budget-calculator.ts, locale-utils.ts
 │   │   ├── wikimedia.ts                        # Multi-source media enrichment pipeline
 │   │   ├── normalize-itinerary.ts, normalize-story.ts
 │   │   └── repositories/                       # DAO layer (types.ts, index.ts, json/)
@@ -77,11 +77,11 @@ vacation_guide/
 │   ├── data/trips/andalusia-2026/              # Static trip data (25 attractions, itinerary, restaurants, story)
 │   └── i18n/                                   # routing.ts, request.ts, messages/{nl,en}.json
 ├── tests/
-│   ├── unit/       # 7 files: budget-calculator, schemas, planner-utils, normalize-*, city-colors, wikimedia
+│   ├── unit/       # 8 files: budget-calculator, schemas, planner-utils, normalize-*, city-colors, wikimedia, attraction-suggestion
 │   ├── hooks/      # 2 files: useFavorites, useDayComments
-│   ├── api/        # 7 files: trips, trips-slug, attractions, restaurants, itinerary, comments, story
+│   ├── api/        # 8 files: trips, trips-slug, attractions, restaurants, itinerary, comments, story, chat
 │   ├── integration/# 10 files: navigation, trip-selector, trip-homepage, trip-story, attractions, restaurants, planner, planner-map, budget, not-found
-│   └── e2e/        # 2 files: create-trip-e2e, chat-flow-e2e
+│   └── e2e/        # 1 file: create-trip-e2e (EN locale check + NL full flow)
 ├── middleware.ts, next.config.ts, playwright.config.ts
 ├── RESOURCES.md                                # Reusable patterns for trip creation
 └── package.json
@@ -136,13 +136,13 @@ Key design: all methods async, `tripSlug` is scope key, caching is internal, val
 
 **Flow:** Chat (SSE + Gemini + Google Search) → Accept suggestions → Finalize (extract tripConfig + attractions + restaurants + itinerary) → Enrich images (Wikimedia pipeline) → Validate (Zod) → Save → Redirect.
 
-**Gemini gotchas:** `responseMimeType` cannot combine with `tools: [{ googleSearch }]`. AI enums need normalization before Zod validation (`CATEGORY_MAP`, `PRIORITY_MAP`, `normalizeItinerary()`, `normalizeRestaurant()`). `Activity.attractionId` is optional (free-form activities). **Never trust LLM-generated media URLs** — use Wikimedia enrichment pipeline instead.
+**Gemini gotchas:** `responseMimeType` cannot combine with `tools: [{ googleSearch }]`. AI enums need normalization before Zod validation (`CATEGORY_MAP`, `PRIORITY_MAP`, `normalizeItinerary()`, `normalizeRestaurant()`). `Activity.attractionId` is optional (free-form activities). **Never trust LLM-generated media URLs** — use Wikimedia enrichment pipeline instead. Model name is configured via `GEMINI_MODEL` env var (no hardcoded strings). Chat API is locale-aware — responds in user's language with single-language descriptions to save tokens.
 
 **Wikimedia enrichment** (`src/lib/wikimedia.ts`): Wikidata → multi-lang Wikipedia → Commons search → tourism site scraping. Prompt Gemini for `wikipediaSlug` + `website` (not image URLs). See MEMORY.md for detailed pipeline notes.
 
 ### AI Trip Story
 
-Story API (`/api/trips/[slug]/story`): Gemini generates `TripStory` with `StoryChapter[]` containing `StoryBlock[]` (narrative, attraction_highlight, meal_highlight, transition). 4 styles: adventure/cultural/romantic/family. Uses `responseMimeType: 'application/json'` (no tools). `normalizeStory()` fixes AI output before Zod.
+Story API (`/api/trips/[slug]/story`): Gemini generates `TripStory` with `StoryChapter[]` containing `StoryBlock[]` (narrative, attraction_highlight, meal_highlight, transition). 4 styles: adventure/cultural/romantic/family. Uses `responseMimeType: 'application/json'` + `responseSchema` (Type enum from `@google/genai`) to constrain output structure. `normalizeStory()` cross-populates `narrative`/`content` fields between block types before Zod validation. `thinkingConfig: { thinkingBudget: 0 }` prevents thinking tokens from consuming output budget.
 
 ### Planner Map
 
@@ -151,12 +151,12 @@ Photo markers with city-colored borders, walking routes via **Valhalla** (`valha
 ## Development
 
 ```bash
-npm install && cp .env.example .env.local   # Add GEMINI_API_KEY
+npm install && cp .env.example .env.local   # Add GEMINI_API_KEY + GEMINI_MODEL
 npm run dev                                  # http://localhost:3000
 npm run build                                # Production build
-npm run test:unit                            # Vitest (~255 tests)
+npm run test:unit                            # Vitest (~273 tests)
 npm run test:integration                     # Playwright integration (~41 tests, headed)
-npm run test:e2e                             # Playwright E2E (2 tests, headed, 10min timeout)
+npm run test:e2e                             # Playwright E2E (1 test, headed, 10min timeout)
 ```
 
 **Adding shadcn/ui:** `npx shadcn@latest add <component>`

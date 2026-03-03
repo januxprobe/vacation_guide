@@ -7,7 +7,7 @@ Currently features a pre-configured **Andalusia 2026** trip covering Seville, Co
 ## Features
 
 - **Trip Selector Homepage** - Browse existing trips, create new ones, delete user-created trips
-- **AI Trip Builder** - Chat with Gemini AI (markdown-rendered responses) to plan trips with real-time data from Google Search grounding, auto-enriched with real images via multi-language Wikidata/Wikipedia/Commons/tourism site pipeline
+- **AI Trip Builder** - Locale-aware chat with Gemini AI (markdown-rendered responses) to plan trips with real-time data from Google Search grounding, auto-enriched with real images via multi-language Wikidata/Wikipedia/Commons/tourism site pipeline
 - **Multi-trip architecture** - Each trip has its own config, data, and URL namespace (`/nl/andalusia-2026/attractions`)
 - **25+ attractions** with photos, YouTube videos, pricing, opening hours, and tips
 - **7-day itinerary** - Expandable day cards with activity timeline, meals, transport indicators, and attraction links
@@ -20,7 +20,7 @@ Currently features a pre-configured **Andalusia 2026** trip covering Seville, Co
 - **Media galleries** - Fullscreen carousel with images and embedded YouTube videos
 - **Responsive** - Works on desktop and mobile with collapsible navigation
 - **Data validation** - Zod schemas validate all data; AI-generated itineraries are auto-normalized (enum casing, time formats, type coercion) before validation
-- **AI Travel Story** - Generate a narrative travel story from trip data (4 styles: adventure/cultural/romantic/family) with embedded attraction photos, restaurant highlights, and flowing transitions
+- **AI Travel Story** - Generate a narrative travel story from trip data (4 styles: adventure/cultural/romantic/family) with embedded attraction photos, restaurant highlights, and flowing transitions — uses Gemini `responseSchema` for guaranteed valid output
 - **Trip management** - Create trips via AI chat, delete user-created trips with two-step confirmation
 
 ## Tech Stack
@@ -49,8 +49,8 @@ npm install
 
 # Set up environment variables
 cp .env.example .env.local
-# Edit .env.local and add your GEMINI_API_KEY
-# Get one at: https://aistudio.google.com/apikey
+# Edit .env.local and add your GEMINI_API_KEY + GEMINI_MODEL
+# Get your API key at: https://aistudio.google.com/apikey
 
 # Start development server
 npm run dev
@@ -108,7 +108,7 @@ src/
 ├── config/trips/                  # Trip configurations (static TS + dynamic JSON)
 ├── data/trips/                    # Trip data on disk (attraction JSON files)
 ├── hooks/                         # Custom hooks (walking route via Valhalla)
-├── lib/                           # Repositories, budget calculator, color utilities, Zod schemas, AI normalization, multi-language Wikimedia enrichment pipeline
+├── lib/                           # Repositories, budget calculator, color utilities, locale utilities, Zod schemas, AI normalization, multi-language Wikimedia enrichment pipeline
 └── i18n/messages/                 # Translation files (nl.json, en.json)
 ```
 
@@ -134,26 +134,27 @@ See [RESOURCES.md](./RESOURCES.md) for detailed patterns on data sourcing, image
 ## Testing
 
 ```bash
-npm run test:unit        # Vitest unit/hook/API tests (~255 tests)
+npm run test:unit        # Vitest unit/hook/API tests (~273 tests)
 npm run test:integration # Playwright integration tests (~41 tests, headed)
 npm run test:e2e         # Playwright E2E tests (1 test, headed, 10min timeout)
 npm run test:playwright  # All Playwright tests (headed)
 ```
 
-**Vitest (~255 tests)** — fast, no browser needed:
-- Unit tests: budget calculator, schemas, planner utils, normalize-itinerary, normalize-story, city-colors, wikimedia enrichment (48 tests)
+**Vitest (~273 tests)** — fast, no browser needed:
+- Unit tests: budget calculator, schemas, planner utils, normalize-itinerary, normalize-story, city-colors, wikimedia enrichment, attraction-suggestion
 - Hook tests: useFavorites, useDayComments
-- API route tests: all 7 API routes with mocked repositories
+- API route tests: all 8 API routes with mocked repositories (trips, trips-slug, attractions, restaurants, itinerary, comments, story, chat)
 
 **Playwright (~42 tests)** — headed Chrome browser:
 - Integration (~41 tests): navigation, i18n, trip selector, trip story, attractions, restaurants, planner, map, budget, hero, 404
-- E2E (1 test): AI trip creation + story generation + verification of all resources (restaurants, itinerary, budget, story)
+- E2E (1 test): EN/NL locale verification + AI trip creation + story generation + verification of all resources
 
 ## Environment Variables
 
 | Variable | Required | Description |
 |---|---|---|
-| `GEMINI_API_KEY` | Yes (for AI builder) | Google Gemini API key ([get one here](https://aistudio.google.com/apikey)) |
+| `GEMINI_API_KEY` | Yes (for AI features) | Google Gemini API key ([get one here](https://aistudio.google.com/apikey)) |
+| `GEMINI_MODEL` | Yes (for AI features) | Gemini model name (e.g. `gemini-3.1-flash-lite-preview`) |
 
 ## Scripts
 
@@ -161,7 +162,7 @@ npm run test:playwright  # All Playwright tests (headed)
 npm run dev              # Development server (http://localhost:3000)
 npm run build            # Production build
 npm run lint             # ESLint
-npm run test:unit        # Vitest tests (~255 tests)
+npm run test:unit        # Vitest tests (~273 tests)
 npm run test:integration # Playwright integration tests (~41 tests)
 npm run test:e2e         # Playwright E2E tests (1 test)
 ```

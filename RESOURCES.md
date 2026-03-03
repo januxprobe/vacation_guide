@@ -276,7 +276,7 @@ Dynamic (AI-created) trips support restaurant management. Static trips (e.g. `an
 **Request body:** `{ "query": "tapas", "city": "seville", "tripSlug": "andalusia-2026" }`
 **Response:** `{ "restaurants": [Restaurant, ...] }` (Zod-validated, invalid entries filtered out)
 
-**Important:** The Gemini `responseMimeType: 'application/json'` option cannot be combined with `tools: [{ googleSearch: {} }]`. The search endpoint relies on the system prompt to produce JSON output.
+**Important:** The Gemini `responseMimeType: 'application/json'` option cannot be combined with `tools: [{ googleSearch: {} }]`. The search endpoint relies on the system prompt to produce JSON output. For JSON endpoints without tools, use `responseSchema` (with `Type` enum from `@google/genai`) to guarantee the output matches your schema — Gemini 3.1 Flash-Lite follows JSON schemas reliably.
 
 ## Architecture Notes
 
