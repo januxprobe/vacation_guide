@@ -329,4 +329,11 @@ export class JsonTripDataRepository implements TripDataRepository {
 
     this.storyCache.delete(tripSlug);
   }
+
+  clearCaches(tripSlug: string): void {
+    this.attractionCache.delete(tripSlug);
+    this.restaurantCache.delete(tripSlug);
+    this.itineraryCache.delete(tripSlug);
+    this.storyCache.delete(tripSlug);
+  }
 }

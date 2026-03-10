@@ -97,14 +97,22 @@ describe('POST /api/trips', () => {
     expect(body.error).toContain('Invalid');
   });
 
-  it('detects duplicate slug (409)', async () => {
-    vi.mocked(mockTripRepo.getBySlug).mockResolvedValueOnce(MOCK_TRIP_CONFIG);
+  it('auto-deduplicates slug when trip already exists', async () => {
+    // First slug exists, second is free
+    vi.mocked(mockTripRepo.getBySlug)
+      .mockResolvedValueOnce(MOCK_TRIP_CONFIG)   // 'test-trip' exists
+      .mockResolvedValueOnce(undefined);           // 'test-trip-2' is free
 
     const req = makeJsonRequest('http://localhost/api/trips', MOCK_TRIP_CONFIG);
     const res = await POST(req);
     const body = await res.json();
 
-    expect(res.status).toBe(409);
-    expect(body.error).toContain('already exists');
+    expect(res.status).toBe(201);
+    expect(body.success).toBe(true);
+    expect(body.slug).toBe('test-trip-2');
+    expect(mockTripRepo.create).toHaveBeenCalledOnce();
+    expect(mockTripRepo.create).toHaveBeenCalledWith(
+      expect.objectContaining({ slug: 'test-trip-2', id: 'test-trip-2', dataDirectory: 'test-trip-2' })
+    );
   });
 });

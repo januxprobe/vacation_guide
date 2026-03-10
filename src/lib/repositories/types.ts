@@ -32,4 +32,6 @@ export interface TripDataRepository {
   // Story
   getStory(tripSlug: string): Promise<TripStory | null>;
   saveStory(tripSlug: string, story: TripStory): Promise<void>;
+  // Cache management
+  clearCaches(tripSlug: string): void;
 }

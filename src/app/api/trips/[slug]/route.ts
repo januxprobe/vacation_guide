@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getTripRepository } from '@/lib/repositories';
+import { getTripRepository, getTripDataRepository } from '@/lib/repositories';
 
 export async function GET(
   _request: Request,
@@ -39,6 +39,7 @@ export async function DELETE(
 
   try {
     await tripRepo.delete(slug);
+    getTripDataRepository().clearCaches(slug);
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Failed to delete trip:', error);

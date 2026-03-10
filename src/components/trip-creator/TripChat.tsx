@@ -229,9 +229,12 @@ export default function TripChat() {
         throw new Error(err.error || 'Failed to create trip');
       }
 
+      // Use the actual slug returned by the server (may be deduplicated)
+      const { slug: actualSlug } = await createRes.json();
+
       // Step 3: Add attractions
       for (const attraction of attractions) {
-        await fetch(`/api/trips/${tripConfig.slug}/attractions`, {
+        await fetch(`/api/trips/${actualSlug}/attractions`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(attraction),
@@ -240,7 +243,7 @@ export default function TripChat() {
 
       // Step 4: Save restaurants (if any were generated)
       if (restaurants && Array.isArray(restaurants) && restaurants.length > 0) {
-        const restaurantRes = await fetch(`/api/trips/${tripConfig.slug}/restaurants`, {
+        const restaurantRes = await fetch(`/api/trips/${actualSlug}/restaurants`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ restaurants }),
@@ -251,7 +254,7 @@ export default function TripChat() {
       }
 
       // Step 5: Save itinerary
-      const itineraryRes = await fetch(`/api/trips/${tripConfig.slug}/itinerary`, {
+      const itineraryRes = await fetch(`/api/trips/${actualSlug}/itinerary`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(itinerary),
@@ -264,7 +267,7 @@ export default function TripChat() {
       toast.success(t('success'));
       // Use window.location for full reload so the server picks up new files
       const locale = window.location.pathname.split('/')[1] || 'nl';
-      window.location.href = `/${locale}/${tripConfig.slug}`;
+      window.location.href = `/${locale}/${actualSlug}`;
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : String(error);
       console.error('Create trip error:', errorMsg);
